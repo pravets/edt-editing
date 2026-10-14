@@ -57,6 +57,17 @@ Set up rules to **Enable** as exceptions from disable rules:
 **Attantion!**  Disabled object will be skipped from project validation by 1C:EDT.
 
 
+## Copy FQN from configuration tree
+
+In the configuration tree context menu (single selection of a catalog or a catalog form) use the `Editing Restrictions` menu to:
+
+- copy the canonical FQN of the selected object, its object/manager module or the form's module to the clipboard;
+- add the FQN to `disable.fullname` in `<project>/.settings/editing.yml`;
+- add the FQN to `enable.fullname` in `<project>/.settings/editing.yml`.
+
+The commands only append entries to the chosen list (an existing identical entry is a no-op) and preserve the rest of the file. Scope: catalogs and their forms only.
+
+
 ## Set up your project rules
 
 Place Yaml file in your project settings folder: `YourProjectName/.settings/editing.yml` with content:
