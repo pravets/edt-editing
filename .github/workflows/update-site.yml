@@ -41,10 +41,14 @@ jobs:
           cp README.md /tmp/README.md
           cp build/update-site.sh /tmp/update-site.sh
 
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git init -q .
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote remove origin 2>/dev/null || true
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
-            git fetch origin gh-pages
+            git fetch -q origin gh-pages
             git switch gh-pages
           else
             git switch --orphan gh-pages
@@ -66,3 +70,4 @@ jobs:
           git push origin gh-pages
         env:
           README_FILE: /tmp/README.md
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
