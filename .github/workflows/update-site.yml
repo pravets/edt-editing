@@ -1,0 +1,69 @@
+name: update-site
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -Dtycho.localArtifacts=ignore -Dtycho.p2.httptransport.type=JavaUrl -Dmaven.repo.local=.m2/repository -f build/pom.xml -s build/settings.xml"
+  # historical versions seeded once from the upstream GitLab Pages site
+  SEED_VERSIONS: "0.6.0 0.5.0 0.4.0"
+
+jobs:
+  update-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - uses: actions/cache@v4
+        with:
+          path: .m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('build/pom.xml', '**/*.target') }}
+          restore-keys: ${{ runner.os }}-m2-
+
+      - name: Build p2 repository
+        run: mvn $MAVEN_CLI_OPTS clean package -P build,site
+
+      - name: Publish update site
+        run: |
+          set -eu
+          VER=$(sed -n 's/.*<version>\(.*\)<\/version>.*/\1/p' build/pom.xml | head -1 | sed 's/-SNAPSHOT//')
+          echo "Build version: ${VER}"
+          ZIP=$(find org.mard.dt.editing.repository/target -type f -name "repository-*-SNAPSHOT.zip")
+          cp README.md /tmp/README.md
+          cp build/update-site.sh /tmp/update-site.sh
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+            git fetch origin gh-pages
+            git switch gh-pages
+          else
+            git switch --orphan gh-pages
+          fi
+
+          # keep build outputs out of the site branch
+          printf '.m2/\n**/target/\n' > .gitignore
+
+          for V in $SEED_VERSIONS; do
+            if [ ! -d "update/$V" ]; then
+              curl -fsSL -o "/tmp/repo-$V.zip" "https://marmyshev.gitlab.io/edt-editing/$V/repo.zip"
+              bash /tmp/update-site.sh . "$V" "/tmp/repo-$V.zip"
+            fi
+          done
+          bash /tmp/update-site.sh . "$VER" "$ZIP"
+
+          git add -A
+          git commit -m "Update site: ${VER}" || echo "Nothing to commit"
+          git push origin gh-pages
+        env:
+          README_FILE: /tmp/README.md

@@ -20,9 +20,9 @@ Disable Editing plugin developer set up some rules to make read-only mode in UI 
 
 | Plugin Version | 1C:EDT version |
 |----------------|----------------|
-| [0.6.0](https://gitlab.com/marmyshev/edt-editing/-/packages/) | 2024.1+ and newer... |
-| [0.5.0](https://gitlab.com/marmyshev/edt-editing/-/packages/15488906) | 2023.1 - 2023.3 |
-| [0.4.0](https://gitlab.com/marmyshev/edt-editing/-/packages/10924902) | 2020.5 - 2022.2 |
+| [0.6.0](https://pravets.github.io/edt-editing/0.6.0/repo.zip) | 2024.1+ and newer... |
+| [0.5.0](https://pravets.github.io/edt-editing/0.5.0/repo.zip) | 2023.1 - 2023.3 |
+| [0.4.0](https://pravets.github.io/edt-editing/0.4.0/repo.zip) | 2020.5 - 2022.2 |
 | 0.3.0 | 2020.5+ and newer... |
 | 0.2.0 | 2020.5 - 2020.6 |
 | 0.1.0 | 2020.1 - 2020.4 |
@@ -31,7 +31,7 @@ Disable Editing plugin developer set up some rules to make read-only mode in UI 
 [![Drag to your running 1C:EDT* workspace. *Requires Eclipse Marketplace Client](https://marketplace.eclipse.org/sites/all/themes/solstice/public/images/marketplace/btn-install.png)](http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=5141319 "Drag to your running 1C:EDT* workspace. *Requires Eclipse Marketplace Client")
 
 
-For manual install Select menu: `Help -> Install New Software...` past in p2-repository URL [https://marmyshev.gitlab.io/edt-editing/update](https://marmyshev.gitlab.io/edt-editing/update)
+For manual install Select menu: `Help -> Install New Software...` past in p2-repository URL [https://pravets.github.io/edt-editing/update](https://pravets.github.io/edt-editing/update)
 
 Select installable feature `Disable Editing plugin for 1C:EDT`
 
@@ -141,9 +141,9 @@ Open metadata objects to check out disabling and enabling features!
 
 | Версия плагина | Версия 1C:EDT |
 |----------------|---------------|
-| [0.6.0](https://gitlab.com/marmyshev/edt-editing/-/packages/) | 2024.1+ и новее... |
-| [0.5.0](https://gitlab.com/marmyshev/edt-editing/-/packages/15488906) | 2023.1 - 2023.3 |
-| [0.4.0](https://gitlab.com/marmyshev/edt-editing/-/packages/10924902) | 2020.5 - 2022.2 |
+| [0.6.0](https://pravets.github.io/edt-editing/0.6.0/repo.zip) | 2024.1+ и новее... |
+| [0.5.0](https://pravets.github.io/edt-editing/0.5.0/repo.zip) | 2023.1 - 2023.3 |
+| [0.4.0](https://pravets.github.io/edt-editing/0.4.0/repo.zip) | 2020.5 - 2022.2 |
 | 0.3.0 | 2020.5+ и новее... |
 | 0.2.0 | 2020.5 - 2020.6 |
 | 0.1.0 | 2020.1 - 2020.4 |
@@ -152,7 +152,7 @@ Open metadata objects to check out disabling and enabling features!
 [![Перетяните это в *запущенный воркспейс EDT*. Требуется клиент Маркетплейс Эклипса](https://marketplace.eclipse.org/sites/all/themes/solstice/public/images/marketplace/btn-install.png)](http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=5141319 "Перетяните это в *запущенный воркспейс EDT*. Требуется клиент Маркетплейс Эклипса")
 
 
-Для ручной установки Выбеите меню: `Help -> Install New Software...` вставьте адрес p2-репозитория [https://marmyshev.gitlab.io/edt-editing/update](https://marmyshev.gitlab.io/edt-editing/update)
+Для ручной установки Выбеите меню: `Help -> Install New Software...` вставьте адрес p2-репозитория [https://pravets.github.io/edt-editing/update](https://pravets.github.io/edt-editing/update)
 
 Выберите фичу для установки `Disable Editing plugin for 1C:EDT`
 
