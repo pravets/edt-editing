@@ -16,13 +16,12 @@ env:
 jobs:
   update-site:
     runs-on: ubuntu-latest
+    container: maven:3.9-eclipse-temurin-25
     steps:
-      - uses: actions/checkout@v4
+      - name: Install tools
+        run: apt-get update -qq && apt-get install -y -qq git curl unzip
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 25
+      - uses: actions/checkout@v4
 
       - uses: actions/cache@v4
         with:
