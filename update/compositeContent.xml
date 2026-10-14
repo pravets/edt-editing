@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?compositeMetadataRepository version='1.0.0'?>
+<repository name='1C:EDT Disable Editing Plugins'
+    type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
+  <properties size='1'>
+    <property name='p2.timestamp' value='1791983836'/>
+  </properties>
+  <children size='4'>
+    <child location='0.7.0'/>
+    <child location='0.6.0'/>
+    <child location='0.5.0'/>
+    <child location='0.4.0'/>
+  </children>
+</repository>

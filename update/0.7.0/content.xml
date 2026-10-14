@@ -1,0 +1,1305 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?metadataRepository version='1.2.0'?>
+<repository name='Disable Editing plugin 20261014-1314' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1'>
+  <properties size='1'>
+    <property name='p2.timestamp' value='1791983833524'/>
+  </properties>
+  <units size='17'>
+    <unit id='org.mard.dt.editing' version='0.7.0.20261014-1314' generation='2'>
+      <update id='org.mard.dt.editing' range='[0.0.0,0.7.0.20261014-1314)' severity='0'/>
+      <properties size='9'>
+        <property name='df_LT.pluginName' value='Disable Editing plugin for 1C:EDT'/>
+        <property name='df_LT.vendor' value='Dmitriy Marmyshev'/>
+        <property name='org.eclipse.equinox.p2.name' value='%pluginName'/>
+        <property name='org.eclipse.equinox.p2.provider' value='%vendor'/>
+        <property name='org.eclipse.equinox.p2.bundle.localization' value='plugin'/>
+        <property name='maven-groupId' value='org.mard.dt.editing'/>
+        <property name='maven-artifactId' value='org.mard.dt.editing'/>
+        <property name='maven-version' value='0.7.0-SNAPSHOT'/>
+        <property name='maven-type' value='eclipse-plugin'/>
+      </properties>
+      <provides size='6'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing' version='0.7.0.20261014-1314'/>
+        <provided namespace='osgi.bundle' name='org.mard.dt.editing' version='0.7.0.20261014-1314'/>
+        <provided namespace='java.package' name='org.mard.dt.editing' version='0.6.0'/>
+        <provided namespace='osgi.identity' name='org.mard.dt.editing' version='0.7.0.20261014-1314'>
+          <properties size='1'>
+            <property name='type' value='osgi.bundle'/>
+          </properties>
+        </provided>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
+      </provides>
+      <requires size='22'>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='[3.15.0,4.0.0)'/>
+        <required namespace='osgi.bundle' name='org.eclipse.emf.ecore' range='[2.18.0,3.0.0)'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='[3.13.0,4.0.0)'/>
+        <required namespace='osgi.bundle' name='com._1c.g5.wiring' range='[2.2.0,3.0.0)'/>
+        <required namespace='osgi.bundle' name='org.eclipse.jgit' range='[6.0.0,7.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.v8.bm.core' range='[9.0.0,10.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.v8.bm.integration' range='[11.0.0,13.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.v8.dt.common.git' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.v8.dt.core.filesystem' range='[6.0.0,7.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.v8.dt.core.lifecycle' range='[9.0.0,11.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.v8.dt.core.model' range='[6.0.0,7.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.v8.dt.core.platform' range='[11.0.0,14.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.v8.dt.lifecycle' range='[3.0.0,4.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.v8.dt.metadata.mdclass' range='[8.0.0,13.0.0)'/>
+        <required namespace='java.package' name='com.google.common.cache' range='[33.5.0,34.0.0)'/>
+        <required namespace='java.package' name='com.google.inject' range='[1.4.0,2.0.0)'/>
+        <required namespace='java.package' name='com.google.inject.binder' range='[1.4.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml' range='[1.15.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.constructor' range='[1.15.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.introspector' range='[1.15.0,2.0.0)'/>
+        <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=25))'>
+          <description>
+            org.mard.dt.editing
+          </description>
+        </requiredProperties>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.source' range='[0.7.0.20261014-1314,0.7.0.20261014-1314]' optional='true'>
+          <filter>
+            (org.eclipse.update.install.sources=true)
+          </filter>
+        </required>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.mard.dt.editing' version='0.7.0.20261014-1314'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.mard.dt.editing;singleton:=true&#xA;Bundle-Version: 0.7.0.20261014-1314
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.yaml.snakeyaml' version='1.27.0' singleton='false'>
+      <update id='org.yaml.snakeyaml' range='[0.0.0,1.27.0)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='SnakeYAML'/>
+        <property name='org.eclipse.equinox.p2.description' value='YAML 1.1 parser and emitter for Java'/>
+      </properties>
+      <provides size='21'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.yaml.snakeyaml' version='1.27.0'/>
+        <provided namespace='osgi.bundle' name='org.yaml.snakeyaml' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.composer' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.constructor' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.emitter' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.env' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.error' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.events' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.extensions.compactnotation' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.introspector' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.nodes' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.parser' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.reader' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.representer' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.resolver' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.scanner' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.serializer' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.tokens' version='1.27.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.util' version='1.27.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='13'>
+        <required namespace='java.package' name='org.yaml.snakeyaml' range='[1.27.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.composer' range='[1.27.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.emitter' range='[1.27.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.error' range='[1.27.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.events' range='[1.27.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.introspector' range='[1.27.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.nodes' range='[1.27.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.parser' range='[1.27.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.reader' range='[1.27.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.resolver' range='[1.27.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.scanner' range='[1.27.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.serializer' range='[1.27.0,2.0.0)'/>
+        <required namespace='java.package' name='org.yaml.snakeyaml.tokens' range='[1.27.0,2.0.0)'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.yaml.snakeyaml' version='1.27.0'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.yaml.snakeyaml&#xA;Bundle-Version: 1.27.0
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.mard.dt.editing.feature.feature.jar' version='0.7.0.20261014-1314'>
+      <properties size='11'>
+        <property name='org.eclipse.equinox.p2.name' value='%featureName'/>
+        <property name='org.eclipse.equinox.p2.description' value='%description'/>
+        <property name='org.eclipse.equinox.p2.provider' value='%vendor'/>
+        <property name='df_LT.license' value='Eclipse Foundation Software User Agreement&#xA;&#xA;November 22, 2017&#xA;&#xA;Usage Of Content&#xA;&#xA;THE ECLIPSE FOUNDATION MAKES AVAILABLE SOFTWARE, DOCUMENTATION, INFORMATION&#xA;AND/OR OTHER MATERIALS FOR OPEN SOURCE PROJECTS (COLLECTIVELY &quot;CONTENT&quot;). USE OF&#xA;THE CONTENT IS GOVERNED BY THE TERMS AND CONDITIONS OF THIS AGREEMENT AND/OR THE&#xA;TERMS AND CONDITIONS OF LICENSE AGREEMENTS OR NOTICES INDICATED OR REFERENCED&#xA;BELOW. BY USING THE CONTENT, YOU AGREE THAT YOUR USE OF THE CONTENT IS GOVERNED&#xA;BY THIS AGREEMENT AND/OR THE TERMS AND CONDITIONS OF ANY APPLICABLE LICENSE&#xA;AGREEMENTS OR NOTICES INDICATED OR REFERENCED BELOW. IF YOU DO NOT AGREE TO THE&#xA;TERMS AND CONDITIONS OF THIS AGREEMENT AND THE TERMS AND CONDITIONS OF ANY&#xA;APPLICABLE LICENSE AGREEMENTS OR NOTICES INDICATED OR REFERENCED BELOW, THEN YOU&#xA;MAY NOT USE THE CONTENT.&#xA;&#xA;Applicable Licenses&#xA;&#xA;Unless otherwise indicated, all Content made available by the Eclipse Foundation&#xA;is provided to you under the terms and conditions of the Eclipse Public License&#xA;Version 2.0 (&quot;EPL&quot;). A copy of the EPL is provided with this Content and is also&#xA;available at http://www.eclipse.org/legal/epl-2.0. For purposes of the EPL,&#xA;&quot;Program&quot; will mean the Content.&#xA;&#xA;Content includes, but is not limited to, source code, object code, documentation&#xA;and other files maintained in the Eclipse Foundation source code repository&#xA;(&quot;Repository&quot;) in software modules (&quot;Modules&quot;) and made available as&#xA;downloadable archives (&quot;Downloads&quot;).&#xA;&#xA;-   Content may be structured and packaged into modules to facilitate&#xA;delivering, extending, and upgrading the Content. Typical modules may&#xA;include plug-ins (&quot;Plug-ins&quot;), plug-in fragments (&quot;Fragments&quot;), and&#xA;features (&quot;Features&quot;).&#xA;-   Each Plug-in or Fragment may be packaged as a sub-directory or JAR&#xA;(Java™ ARchive) in a directory named &quot;plugins&quot;.&#xA;-   A Feature is a bundle of one or more Plug-ins and/or Fragments and&#xA;associated material. Each Feature may be packaged as a sub-directory in a&#xA;directory named &quot;features&quot;. Within a Feature, files named &quot;feature.xml&quot; may&#xA;contain a list of the names and version numbers of the Plug-ins and/or&#xA;Fragments associated with that Feature.&#xA;-   Features may also include other Features (&quot;Included Features&quot;). Within a&#xA;Feature, files named &quot;feature.xml&quot; may contain a list of the names and&#xA;version numbers of Included Features.&#xA;&#xA;The terms and conditions governing Plug-ins and Fragments should be contained in&#xA;files named &quot;about.html&quot; (&quot;Abouts&quot;). The terms and conditions governing Features&#xA;and Included Features should be contained in files named &quot;license.html&quot;&#xA;(&quot;Feature Licenses&quot;). Abouts and Feature Licenses may be located in any&#xA;directory of a Download or Module including, but not limited to the following&#xA;locations:&#xA;&#xA;-   The top-level (root) directory&#xA;-   Plug-in and Fragment directories&#xA;-   Inside Plug-ins and Fragments packaged as JARs&#xA;-   Sub-directories of the directory named &quot;src&quot; of certain Plug-ins&#xA;-   Feature directories&#xA;&#xA;Note: if a Feature made available by the Eclipse Foundation is installed using&#xA;the Provisioning Technology (as defined below), you must agree to a license&#xA;(&quot;Feature Update License&quot;) during the installation process. If the Feature&#xA;contains Included Features, the Feature Update License should either provide you&#xA;with the terms and conditions governing the Included Features or inform you&#xA;where you can locate them. Feature Update Licenses may be found in the &quot;license&quot;&#xA;property of files named &quot;feature.properties&quot; found within a Feature. Such&#xA;Abouts, Feature Licenses, and Feature Update Licenses contain the terms and&#xA;conditions (or references to such terms and conditions) that govern your use of&#xA;the associated Content in that directory.&#xA;&#xA;THE ABOUTS, FEATURE LICENSES, AND FEATURE UPDATE LICENSES MAY REFER TO THE EPL&#xA;OR OTHER LICENSE AGREEMENTS, NOTICES OR TERMS AND CONDITIONS. SOME OF THESE&#xA;OTHER LICENSE AGREEMENTS MAY INCLUDE (BUT ARE NOT LIMITED TO):&#xA;&#xA;-   Eclipse Public License Version 1.0 (available at&#xA;http://www.eclipse.org/legal/epl-v10.html)&#xA;-   Eclipse Distribution License Version 1.0 (available at&#xA;http://www.eclipse.org/licenses/edl-v1.0.html)&#xA;-   Common Public License Version 1.0 (available at&#xA;http://www.eclipse.org/legal/cpl-v10.html)&#xA;-   Apache Software License 1.1 (available at&#xA;http://www.apache.org/licenses/LICENSE)&#xA;-   Apache Software License 2.0 (available at&#xA;http://www.apache.org/licenses/LICENSE-2.0)&#xA;-   Mozilla Public License Version 1.1 (available at&#xA;http://www.mozilla.org/MPL/MPL-1.1.html)&#xA;&#xA;IT IS YOUR OBLIGATION TO READ AND ACCEPT ALL SUCH TERMS AND CONDITIONS PRIOR TO&#xA;USE OF THE CONTENT. If no About, Feature License, or Feature Update License is&#xA;provided, please contact the Eclipse Foundation to determine what terms and&#xA;conditions govern that particular Content.&#xA;&#xA;Use of Provisioning Technology&#xA;&#xA;The Eclipse Foundation makes available provisioning software, examples of which&#xA;include, but are not limited to, p2 and the Eclipse Update Manager&#xA;(&quot;Provisioning Technology&quot;) for the purpose of allowing users to install&#xA;software, documentation, information and/or other materials (collectively&#xA;&quot;Installable Software&quot;). This capability is provided with the intent of allowing&#xA;such users to install, extend and update Eclipse-based products. Information&#xA;about packaging Installable Software is available at&#xA;http://eclipse.org/equinox/p2/repository_packaging.html (&quot;Specification&quot;).&#xA;&#xA;You may use Provisioning Technology to allow other parties to install&#xA;Installable Software. You shall be responsible for enabling the applicable&#xA;license agreements relating to the Installable Software to be presented to, and&#xA;accepted by, the users of the Provisioning Technology in accordance with the&#xA;Specification. By using Provisioning Technology in such a manner and making it&#xA;available in accordance with the Specification, you further acknowledge your&#xA;agreement to, and the acquisition of all necessary rights to permit the&#xA;following:&#xA;&#xA;1.  A series of actions may occur (&quot;Provisioning Process&quot;) in which a user may&#xA;execute the Provisioning Technology on a machine (&quot;Target Machine&quot;) with the&#xA;intent of installing, extending or updating the functionality of an&#xA;Eclipse-based product.&#xA;2.  During the Provisioning Process, the Provisioning Technology may cause third&#xA;party Installable Software or a portion thereof to be accessed and copied to&#xA;the Target Machine.&#xA;3.  Pursuant to the Specification, you will provide to the user the terms and&#xA;conditions that govern the use of the Installable Software (&quot;Installable&#xA;Software Agreement&quot;) and such Installable Software Agreement shall be&#xA;accessed from the Target Machine in accordance with the Specification. Such&#xA;Installable Software Agreement must inform the user of the terms and&#xA;conditions that govern the Installable Software and must solicit acceptance&#xA;by the end user in the manner prescribed in such Installable&#xA;Software Agreement. Upon such indication of agreement by the user, the&#xA;provisioning Technology will complete installation of the&#xA;Installable Software.&#xA;&#xA;Cryptography&#xA;&#xA;Content may contain encryption software. The country in which you are currently&#xA;may have restrictions on the import, possession, and use, and/or re-export to&#xA;another country, of encryption software. BEFORE using any encryption software,&#xA;please check the country&apos;s laws, regulations and policies concerning the import,&#xA;possession, or use, and re-export of encryption software, to see if this is&#xA;permitted.&#xA;&#xA;Java and all Java-based trademarks are trademarks of Oracle Corporation in the&#xA;United States, other countries, or both.'/>
+        <property name='df_LT.featureName' value='Disable Editing plugin for 1C:EDT'/>
+        <property name='df_LT.vendor' value='Dmitriy Marmyshev'/>
+        <property name='df_LT.description' value='1C:EDT Editing plugin allows to disable editing in UI editors via settings.'/>
+        <property name='maven-groupId' value='org.mard.dt.editing.group'/>
+        <property name='maven-artifactId' value='org.mard.dt.editing.feature'/>
+        <property name='maven-version' value='0.7.0-SNAPSHOT'/>
+        <property name='maven-type' value='eclipse-feature'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.jar' version='0.7.0.20261014-1314'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
+        <provided namespace='org.eclipse.update.feature' name='org.mard.dt.editing.feature' version='0.7.0.20261014-1314'/>
+      </provides>
+      <filter>
+        (org.eclipse.update.install.features=true)
+      </filter>
+      <artifacts size='1'>
+        <artifact classifier='org.eclipse.update.feature' id='org.mard.dt.editing.feature' version='0.7.0.20261014-1314'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='zipped'>
+            true
+          </instruction>
+        </instructions>
+      </touchpointData>
+      <licenses size='1'>
+        <license uri='%25licenseURL' url='%25licenseURL'>
+          %license
+        </license>
+      </licenses>
+    </unit>
+    <unit id='org.jcodings' version='1.0.63.v20250307-1000' singleton='false' generation='2'>
+      <update id='org.jcodings' range='[0.0.0,1.0.63.v20250307-1000)' severity='0'/>
+      <properties size='5'>
+        <property name='org.eclipse.equinox.p2.name' value='Bundle org.jruby.jcodings : jcodings'/>
+        <property name='maven-wrapped-groupId' value='org.jruby.jcodings'/>
+        <property name='maven-wrapped-artifactId' value='jcodings'/>
+        <property name='maven-wrapped-version' value='1.0.63'/>
+        <property name='maven-wrapped-classifier' value=''/>
+      </properties>
+      <provides size='15'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.jcodings' version='1.0.63.v20250307-1000'/>
+        <provided namespace='osgi.bundle' name='org.jcodings' version='1.0.63.v20250307-1000'/>
+        <provided namespace='java.package' name='org.jcodings' version='1.0.63'>
+          <properties size='1'>
+            <property name='java.package.directive.uses' value='org.jcodings.util' type='List'/>
+          </properties>
+        </provided>
+        <provided namespace='java.package' name='org.jcodings.ascii' version='1.0.63'/>
+        <provided namespace='java.package' name='org.jcodings.constants' version='1.0.63'>
+          <properties size='1'>
+            <property name='java.package.directive.uses' value='org.jcodings.util' type='List'/>
+          </properties>
+        </provided>
+        <provided namespace='java.package' name='org.jcodings.exception' version='1.0.63'/>
+        <provided namespace='java.package' name='org.jcodings.specific' version='1.0.63'>
+          <properties size='1'>
+            <property name='java.package.directive.uses' value='org.jcodings,org.jcodings.unicode' type='List'/>
+          </properties>
+        </provided>
+        <provided namespace='java.package' name='org.jcodings.spi' version='1.0.63'/>
+        <provided namespace='java.package' name='org.jcodings.transcode' version='1.0.63'>
+          <properties size='1'>
+            <property name='java.package.directive.uses' value='org.jcodings,org.jcodings.util' type='List'/>
+          </properties>
+        </provided>
+        <provided namespace='java.package' name='org.jcodings.transcode.specific' version='1.0.63'>
+          <properties size='1'>
+            <property name='java.package.directive.uses' value='org.jcodings.transcode' type='List'/>
+          </properties>
+        </provided>
+        <provided namespace='java.package' name='org.jcodings.unicode' version='1.0.63'>
+          <properties size='1'>
+            <property name='java.package.directive.uses' value='org.jcodings' type='List'/>
+          </properties>
+        </provided>
+        <provided namespace='java.package' name='org.jcodings.util' version='1.0.63'/>
+        <provided namespace='java.package' name='tables' version='1.0.63'/>
+        <provided namespace='osgi.identity' name='org.jcodings' version='1.0.63.v20250307-1000'>
+          <properties size='1'>
+            <property name='type' value='osgi.bundle'/>
+          </properties>
+        </provided>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='9'>
+        <required namespace='java.package' name='java.io' range='0.0.0'/>
+        <required namespace='java.package' name='java.lang' range='0.0.0'/>
+        <required namespace='java.package' name='java.lang.reflect' range='0.0.0'/>
+        <required namespace='java.package' name='java.nio' range='0.0.0'/>
+        <required namespace='java.package' name='java.nio.charset' range='0.0.0'/>
+        <required namespace='java.package' name='java.nio.charset.spi' range='0.0.0'/>
+        <required namespace='java.package' name='java.util' range='0.0.0'/>
+        <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=1.8))'>
+          <description>
+            org.jcodings
+          </description>
+        </requiredProperties>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.jcodings.source' range='[1.0.63.v20250307-1000,1.0.63.v20250307-1000]' optional='true'>
+          <filter>
+            (org.eclipse.update.install.sources=true)
+          </filter>
+        </required>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.jcodings' version='1.0.63.v20250307-1000'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.jcodings&#xA;Bundle-Version: 1.0.63.v20250307-1000
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.brainwy.liclipsetext.feature.feature.group' version='2.5.0.202502081502' singleton='false'>
+      <update id='org.brainwy.liclipsetext.feature.feature.group' range='[0.0.0,2.5.0.202502081502)' severity='0'/>
+      <properties size='8'>
+        <property name='org.eclipse.equinox.p2.name' value='LiClipseText Feature'/>
+        <property name='org.eclipse.equinox.p2.description' value='LiClipseText&#xA;&#xA;LiClipseText provides a lightweight editor which can be used to deal with multiple languages.&#xA;&#xA;It was initially available only as a part of LiClipse itself and is now available as a separate&#xA;Open Source based component, which provides an easy way to create an editor or use existing TextMate bundles&#xA;(it also ships with support for several languages by default).&#xA;&#xA;LiClipse itself (which is its commercial counterpart) bundles LiClipseText and provides additional features.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Brainwy Software Ltda'/>
+        <property name='org.eclipse.equinox.p2.type.group' value='true'/>
+        <property name='maven-groupId' value='org.brainwy.liclipsetext'/>
+        <property name='maven-artifactId' value='org.brainwy.liclipsetext.feature'/>
+        <property name='maven-version' value='2.5.0-SNAPSHOT'/>
+        <property name='maven-type' value='eclipse-feature'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.feature.feature.group' version='2.5.0.202502081502'/>
+      </provides>
+      <requires size='33'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.core.runtime' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jface.text' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui.editors' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.core.resources' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui.workbench.texteditor' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui.views' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.e4.ui.services' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.e4.ui.css.swt.theme' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui.ide' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.compare' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.debug.core' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.debug.ui' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.core.variables' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui.console' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.core.filesystem' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.jface' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.core.filebuffers' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui.workbench' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ltk.core.refactoring' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ltk.ui.refactoring' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.ui.forms' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.ibm.icu' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.core.expressions' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='com.google.gson' range='2.2.4'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.jcodings' range='1.0.18'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.joni' range='2.1.11'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.search' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.objectweb.asm' range='0.0.0'>
+          <filter>
+            (!(org.eclipse.equinox.p2.exclude.import=true))
+          </filter>
+        </required>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.editor' range='[2.5.0.202502081502,2.5.0.202502081502]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.shared_core' range='[2.5.0.202502081502,2.5.0.202502081502]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.shared_ui' range='[2.5.0.202502081502,2.5.0.202502081502]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.feature.feature.jar' range='[2.5.0.202502081502,2.5.0.202502081502]'>
+          <filter>
+            (org.eclipse.update.install.features=true)
+          </filter>
+        </required>
+      </requires>
+      <licenses size='1'>
+        <license uri='' url=''>
+          Eclipse Public License - v 1.0&#xA;&#xA;THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS ECLIPSE PUBLIC LICENSE (&quot;AGREEMENT&quot;). ANY USE, REPRODUCTION OR DISTRIBUTION OF THE PROGRAM CONSTITUTES RECIPIENT’S ACCEPTANCE OF THIS AGREEMENT.&#xA;&#xA;1. DEFINITIONS&#xA;&#xA;&quot;Contribution&quot; means:&#xA;&#xA;    a) in the case of the initial Contributor, the initial code and documentation distributed under this Agreement, and&#xA;    b) in the case of each subsequent Contributor:&#xA;&#xA;    i)changes to the Program, and&#xA;&#xA;    ii)additions to the Program;&#xA;&#xA;    where such changes and/or additions to the Program originate from and are distributed by that particular Contributor. A Contribution &apos;originates&apos; from a Contributor if it was added to the Program by such Contributor itself or anyone acting on such Contributor’s behalf. Contributions do not include additions to the Program which: (i) are separate modules of software distributed in conjunction with the Program under their own license agreement, and (ii) are not derivative works of the Program.&#xA;&#xA;&quot;Contributor&quot; means any person or entity that distributes the Program.&#xA;&#xA;&quot;Licensed Patents &quot; mean patent claims licensable by a Contributor which are necessarily infringed by the use or sale of its Contribution alone or when combined with the Program.&#xA;&#xA;&quot;Program&quot; means the Contributions distributed in accordance with this Agreement.&#xA;&#xA;&quot;Recipient&quot; means anyone who receives the Program under this Agreement, including all Contributors.&#xA;&#xA;2. GRANT OF RIGHTS&#xA;&#xA;a) Subject to the terms of this Agreement, each Contributor hereby grants Recipient a non-exclusive, worldwide, royalty-free copyright license to reproduce, prepare derivative works of, publicly display, publicly perform, distribute and sublicense the Contribution of such Contributor, if any, and such derivative works, in source code and object code form.&#xA;&#xA;b) Subject to the terms of this Agreement, each Contributor hereby grants Recipient a non-exclusive, worldwide, royalty-free patent license under Licensed Patents to make, use, sell, offer to sell, import and otherwise transfer the Contribution of such Contributor, if any, in source code and object code form. This patent license shall apply to the combination of the Contribution and the Program if, at the time the Contribution is added by the Contributor, such addition of the Contribution causes such combination to be covered by the Licensed Patents. The patent license shall not apply to any other combinations which include the Contribution. No hardware per se is licensed hereunder.&#xA;&#xA;c) Recipient understands that although each Contributor grants the licenses to its Contributions set forth herein, no assurances are provided by any Contributor that the Program does not infringe the patent or other intellectual property rights of any other entity. Each Contributor disclaims any liability to Recipient for claims brought by any other entity based on infringement of intellectual property rights or otherwise. As a condition to exercising the rights and licenses granted hereunder, each Recipient hereby assumes sole responsibility to secure any other intellectual property rights needed, if any. For example, if a third party patent license is required to allow Recipient to distribute the Program, it is Recipient’s responsibility to acquire that license before distributing the Program.&#xA;&#xA;d) Each Contributor represents that to its knowledge it has sufficient copyright rights in its Contribution, if any, to grant the copyright license set forth in this Agreement.&#xA;&#xA;3. REQUIREMENTS&#xA;&#xA;A Contributor may choose to distribute the Program in object code form under its own license agreement, provided that:&#xA;&#xA;    a) it complies with the terms and conditions of this Agreement; and&#xA;&#xA;    b) its license agreement:&#xA;&#xA;    i) effectively disclaims on behalf of all Contributors all warranties and conditions, express and implied, including warranties or conditions of title and non-infringement, and implied warranties or conditions of merchantability and fitness for a particular purpose;&#xA;&#xA;    ii) effectively excludes on behalf of all Contributors all liability for damages, including direct, indirect, special, incidental and consequential damages, such as lost profits;&#xA;&#xA;    iii) states that any provisions which differ from this Agreement are offered by that Contributor alone and not by any other party; and&#xA;&#xA;    iv) states that source code for the Program is available from such Contributor, and informs licensees how to obtain it in a reasonable manner on or through a medium customarily used for software exchange.&#xA;&#xA;When the Program is made available in source code form:&#xA;&#xA;    a) it must be made available under this Agreement; and&#xA;&#xA;    b) a copy of this Agreement must be included with each copy of the Program.&#xA;&#xA;Contributors may not remove or alter any copyright notices contained within the Program.&#xA;&#xA;Each Contributor must identify itself as the originator of its Contribution, if any, in a manner that reasonably allows subsequent Recipients to identify the originator of the Contribution.&#xA;&#xA;4. COMMERCIAL DISTRIBUTION&#xA;&#xA;Commercial distributors of software may accept certain responsibilities with respect to end users, business partners and the like. While this license is intended to facilitate the commercial use of the Program, the Contributor who includes the Program in a commercial product offering should do so in a manner which does not create potential liability for other Contributors. Therefore, if a Contributor includes the Program in a commercial product offering, such Contributor (&quot;Commercial Contributor&quot;) hereby agrees to defend and indemnify every other Contributor (&quot;Indemnified Contributor&quot;) against any losses, damages and costs (collectively &quot;Losses&quot;) arising from claims, lawsuits and other legal actions brought by a third party against the Indemnified Contributor to the extent caused by the acts or omissions of such Commercial Contributor in connection with its distribution of the Program in a commercial product offering. The obligations in this section do not apply to any claims or Losses relating to any actual or alleged intellectual property infringement. In order to qualify, an Indemnified Contributor must: a) promptly notify the Commercial Contributor in writing of such claim, and b) allow the Commercial Contributor to control, and cooperate with the Commercial Contributor in, the defense and any related settlement negotiations. The Indemnified Contributor may participate in any such claim at its own expense.&#xA;&#xA;For example, a Contributor might include the Program in a commercial product offering, Product X. That Contributor is then a Commercial Contributor. If that Commercial Contributor then makes performance claims, or offers warranties related to Product X, those performance claims and warranties are such Commercial Contributor’s responsibility alone. Under this section, the Commercial Contributor would have to defend claims against the other Contributors related to those performance claims and warranties, and if a court requires any other Contributor to pay any damages as a result, the Commercial Contributor must pay those damages.&#xA;&#xA;5. NO WARRANTY&#xA;&#xA;EXCEPT AS EXPRESSLY SET FORTH IN THIS AGREEMENT, THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is solely responsible for determining the appropriateness of using and distributing the Program and assumes all risks associated with its exercise of rights under this Agreement , including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and unavailability or interruption of operations.&#xA;&#xA;6. DISCLAIMER OF LIABILITY&#xA;&#xA;EXCEPT AS EXPRESSLY SET FORTH IN THIS AGREEMENT, NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.&#xA;&#xA;7. GENERAL&#xA;&#xA;If any provision of this Agreement is invalid or unenforceable under applicable law, it shall not affect the validity or enforceability of the remainder of the terms of this Agreement, and without further action by the parties hereto, such provision shall be reformed to the minimum extent necessary to make such provision valid and enforceable.&#xA;&#xA;If Recipient institutes patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Program itself (excluding combinations of the Program with other software or hardware) infringes such Recipient’s patent(s), then such Recipient’s rights granted under Section 2(b) shall terminate as of the date such litigation is filed.&#xA;&#xA;All Recipient’s rights under this Agreement shall terminate if it fails to comply with any of the material terms or conditions of this Agreement and does not cure such failure in a reasonable period of time after becoming aware of such noncompliance. If all Recipient’s rights under this Agreement terminate, Recipient agrees to cease use and distribution of the Program as soon as reasonably practicable. However, Recipient’s obligations under this Agreement and any licenses granted by Recipient relating to the Program shall continue and survive.&#xA;&#xA;Everyone is permitted to copy and distribute copies of this Agreement, but in order to avoid inconsistency the Agreement is copyrighted and may only be modified in the following manner. The Agreement Steward reserves the right to publish new versions (including revisions) of this Agreement from time to time. No one other than the Agreement Steward has the right to modify this Agreement. The Eclipse Foundation is the initial Agreement Steward. The Eclipse Foundation may assign the responsibility to serve as the Agreement Steward to a suitable separate entity. Each new version of the Agreement will be given a distinguishing version number. The Program (including Contributions) may always be distributed subject to the version of the Agreement under which it was received. In addition, after a new version of the Agreement is published, Contributor may elect to distribute the Program (including its Contributions) under the new version. Except as expressly stated in Sections 2(a) and 2(b) above, Recipient receives no rights or licenses to the intellectual property of any Contributor under this Agreement, whether expressly, by implication, estoppel or otherwise. All rights in the Program not expressly granted under this Agreement are reserved.&#xA;&#xA;This Agreement is governed by the laws of the State of New York and the intellectual property laws of the United States of America. No party to this Agreement will bring a legal action under this Agreement more than one year after the cause of action arose. Each party waives its rights to a jury trial in any resulting litigation.&#xA;&#xA;COPYRIGHT 20016 BRAINWY SOFTWARE LTDA-ME
+        </license>
+      </licenses>
+      <copyright>
+        Copyright by Brainwy Software LTDA-ME
+      </copyright>
+    </unit>
+    <unit id='org.brainwy.liclipsetext.feature.feature.jar' version='2.5.0.202502081502'>
+      <properties size='7'>
+        <property name='org.eclipse.equinox.p2.name' value='LiClipseText Feature'/>
+        <property name='org.eclipse.equinox.p2.description' value='LiClipseText&#xA;&#xA;LiClipseText provides a lightweight editor which can be used to deal with multiple languages.&#xA;&#xA;It was initially available only as a part of LiClipse itself and is now available as a separate&#xA;Open Source based component, which provides an easy way to create an editor or use existing TextMate bundles&#xA;(it also ships with support for several languages by default).&#xA;&#xA;LiClipse itself (which is its commercial counterpart) bundles LiClipseText and provides additional features.'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Brainwy Software Ltda'/>
+        <property name='maven-groupId' value='org.brainwy.liclipsetext'/>
+        <property name='maven-artifactId' value='org.brainwy.liclipsetext.feature'/>
+        <property name='maven-version' value='2.5.0-SNAPSHOT'/>
+        <property name='maven-type' value='eclipse-feature'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.feature.feature.jar' version='2.5.0.202502081502'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
+        <provided namespace='org.eclipse.update.feature' name='org.brainwy.liclipsetext.feature' version='2.5.0.202502081502'/>
+      </provides>
+      <filter>
+        (org.eclipse.update.install.features=true)
+      </filter>
+      <artifacts size='1'>
+        <artifact classifier='org.eclipse.update.feature' id='org.brainwy.liclipsetext.feature' version='2.5.0.202502081502'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='zipped'>
+            true
+          </instruction>
+        </instructions>
+      </touchpointData>
+      <licenses size='1'>
+        <license uri='' url=''>
+          Eclipse Public License - v 1.0&#xA;&#xA;THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS ECLIPSE PUBLIC LICENSE (&quot;AGREEMENT&quot;). ANY USE, REPRODUCTION OR DISTRIBUTION OF THE PROGRAM CONSTITUTES RECIPIENT’S ACCEPTANCE OF THIS AGREEMENT.&#xA;&#xA;1. DEFINITIONS&#xA;&#xA;&quot;Contribution&quot; means:&#xA;&#xA;    a) in the case of the initial Contributor, the initial code and documentation distributed under this Agreement, and&#xA;    b) in the case of each subsequent Contributor:&#xA;&#xA;    i)changes to the Program, and&#xA;&#xA;    ii)additions to the Program;&#xA;&#xA;    where such changes and/or additions to the Program originate from and are distributed by that particular Contributor. A Contribution &apos;originates&apos; from a Contributor if it was added to the Program by such Contributor itself or anyone acting on such Contributor’s behalf. Contributions do not include additions to the Program which: (i) are separate modules of software distributed in conjunction with the Program under their own license agreement, and (ii) are not derivative works of the Program.&#xA;&#xA;&quot;Contributor&quot; means any person or entity that distributes the Program.&#xA;&#xA;&quot;Licensed Patents &quot; mean patent claims licensable by a Contributor which are necessarily infringed by the use or sale of its Contribution alone or when combined with the Program.&#xA;&#xA;&quot;Program&quot; means the Contributions distributed in accordance with this Agreement.&#xA;&#xA;&quot;Recipient&quot; means anyone who receives the Program under this Agreement, including all Contributors.&#xA;&#xA;2. GRANT OF RIGHTS&#xA;&#xA;a) Subject to the terms of this Agreement, each Contributor hereby grants Recipient a non-exclusive, worldwide, royalty-free copyright license to reproduce, prepare derivative works of, publicly display, publicly perform, distribute and sublicense the Contribution of such Contributor, if any, and such derivative works, in source code and object code form.&#xA;&#xA;b) Subject to the terms of this Agreement, each Contributor hereby grants Recipient a non-exclusive, worldwide, royalty-free patent license under Licensed Patents to make, use, sell, offer to sell, import and otherwise transfer the Contribution of such Contributor, if any, in source code and object code form. This patent license shall apply to the combination of the Contribution and the Program if, at the time the Contribution is added by the Contributor, such addition of the Contribution causes such combination to be covered by the Licensed Patents. The patent license shall not apply to any other combinations which include the Contribution. No hardware per se is licensed hereunder.&#xA;&#xA;c) Recipient understands that although each Contributor grants the licenses to its Contributions set forth herein, no assurances are provided by any Contributor that the Program does not infringe the patent or other intellectual property rights of any other entity. Each Contributor disclaims any liability to Recipient for claims brought by any other entity based on infringement of intellectual property rights or otherwise. As a condition to exercising the rights and licenses granted hereunder, each Recipient hereby assumes sole responsibility to secure any other intellectual property rights needed, if any. For example, if a third party patent license is required to allow Recipient to distribute the Program, it is Recipient’s responsibility to acquire that license before distributing the Program.&#xA;&#xA;d) Each Contributor represents that to its knowledge it has sufficient copyright rights in its Contribution, if any, to grant the copyright license set forth in this Agreement.&#xA;&#xA;3. REQUIREMENTS&#xA;&#xA;A Contributor may choose to distribute the Program in object code form under its own license agreement, provided that:&#xA;&#xA;    a) it complies with the terms and conditions of this Agreement; and&#xA;&#xA;    b) its license agreement:&#xA;&#xA;    i) effectively disclaims on behalf of all Contributors all warranties and conditions, express and implied, including warranties or conditions of title and non-infringement, and implied warranties or conditions of merchantability and fitness for a particular purpose;&#xA;&#xA;    ii) effectively excludes on behalf of all Contributors all liability for damages, including direct, indirect, special, incidental and consequential damages, such as lost profits;&#xA;&#xA;    iii) states that any provisions which differ from this Agreement are offered by that Contributor alone and not by any other party; and&#xA;&#xA;    iv) states that source code for the Program is available from such Contributor, and informs licensees how to obtain it in a reasonable manner on or through a medium customarily used for software exchange.&#xA;&#xA;When the Program is made available in source code form:&#xA;&#xA;    a) it must be made available under this Agreement; and&#xA;&#xA;    b) a copy of this Agreement must be included with each copy of the Program.&#xA;&#xA;Contributors may not remove or alter any copyright notices contained within the Program.&#xA;&#xA;Each Contributor must identify itself as the originator of its Contribution, if any, in a manner that reasonably allows subsequent Recipients to identify the originator of the Contribution.&#xA;&#xA;4. COMMERCIAL DISTRIBUTION&#xA;&#xA;Commercial distributors of software may accept certain responsibilities with respect to end users, business partners and the like. While this license is intended to facilitate the commercial use of the Program, the Contributor who includes the Program in a commercial product offering should do so in a manner which does not create potential liability for other Contributors. Therefore, if a Contributor includes the Program in a commercial product offering, such Contributor (&quot;Commercial Contributor&quot;) hereby agrees to defend and indemnify every other Contributor (&quot;Indemnified Contributor&quot;) against any losses, damages and costs (collectively &quot;Losses&quot;) arising from claims, lawsuits and other legal actions brought by a third party against the Indemnified Contributor to the extent caused by the acts or omissions of such Commercial Contributor in connection with its distribution of the Program in a commercial product offering. The obligations in this section do not apply to any claims or Losses relating to any actual or alleged intellectual property infringement. In order to qualify, an Indemnified Contributor must: a) promptly notify the Commercial Contributor in writing of such claim, and b) allow the Commercial Contributor to control, and cooperate with the Commercial Contributor in, the defense and any related settlement negotiations. The Indemnified Contributor may participate in any such claim at its own expense.&#xA;&#xA;For example, a Contributor might include the Program in a commercial product offering, Product X. That Contributor is then a Commercial Contributor. If that Commercial Contributor then makes performance claims, or offers warranties related to Product X, those performance claims and warranties are such Commercial Contributor’s responsibility alone. Under this section, the Commercial Contributor would have to defend claims against the other Contributors related to those performance claims and warranties, and if a court requires any other Contributor to pay any damages as a result, the Commercial Contributor must pay those damages.&#xA;&#xA;5. NO WARRANTY&#xA;&#xA;EXCEPT AS EXPRESSLY SET FORTH IN THIS AGREEMENT, THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is solely responsible for determining the appropriateness of using and distributing the Program and assumes all risks associated with its exercise of rights under this Agreement , including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and unavailability or interruption of operations.&#xA;&#xA;6. DISCLAIMER OF LIABILITY&#xA;&#xA;EXCEPT AS EXPRESSLY SET FORTH IN THIS AGREEMENT, NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.&#xA;&#xA;7. GENERAL&#xA;&#xA;If any provision of this Agreement is invalid or unenforceable under applicable law, it shall not affect the validity or enforceability of the remainder of the terms of this Agreement, and without further action by the parties hereto, such provision shall be reformed to the minimum extent necessary to make such provision valid and enforceable.&#xA;&#xA;If Recipient institutes patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Program itself (excluding combinations of the Program with other software or hardware) infringes such Recipient’s patent(s), then such Recipient’s rights granted under Section 2(b) shall terminate as of the date such litigation is filed.&#xA;&#xA;All Recipient’s rights under this Agreement shall terminate if it fails to comply with any of the material terms or conditions of this Agreement and does not cure such failure in a reasonable period of time after becoming aware of such noncompliance. If all Recipient’s rights under this Agreement terminate, Recipient agrees to cease use and distribution of the Program as soon as reasonably practicable. However, Recipient’s obligations under this Agreement and any licenses granted by Recipient relating to the Program shall continue and survive.&#xA;&#xA;Everyone is permitted to copy and distribute copies of this Agreement, but in order to avoid inconsistency the Agreement is copyrighted and may only be modified in the following manner. The Agreement Steward reserves the right to publish new versions (including revisions) of this Agreement from time to time. No one other than the Agreement Steward has the right to modify this Agreement. The Eclipse Foundation is the initial Agreement Steward. The Eclipse Foundation may assign the responsibility to serve as the Agreement Steward to a suitable separate entity. Each new version of the Agreement will be given a distinguishing version number. The Program (including Contributions) may always be distributed subject to the version of the Agreement under which it was received. In addition, after a new version of the Agreement is published, Contributor may elect to distribute the Program (including its Contributions) under the new version. Except as expressly stated in Sections 2(a) and 2(b) above, Recipient receives no rights or licenses to the intellectual property of any Contributor under this Agreement, whether expressly, by implication, estoppel or otherwise. All rights in the Program not expressly granted under this Agreement are reserved.&#xA;&#xA;This Agreement is governed by the laws of the State of New York and the intellectual property laws of the United States of America. No party to this Agreement will bring a legal action under this Agreement more than one year after the cause of action arose. Each party waives its rights to a jury trial in any resulting litigation.&#xA;&#xA;COPYRIGHT 20016 BRAINWY SOFTWARE LTDA-ME
+        </license>
+      </licenses>
+      <copyright>
+        Copyright by Brainwy Software LTDA-ME
+      </copyright>
+    </unit>
+    <unit id='org.mard.dt.editing.ui' version='0.7.0.20261014-1314' generation='2'>
+      <update id='org.mard.dt.editing.ui' range='[0.0.0,0.7.0.20261014-1314)' severity='0'/>
+      <properties size='9'>
+        <property name='df_LT.pluginName' value='Disable Editing plugin for 1C:EDT - UI module'/>
+        <property name='df_LT.vendor' value='Dmitriy Marmyshev'/>
+        <property name='org.eclipse.equinox.p2.name' value='%pluginName'/>
+        <property name='org.eclipse.equinox.p2.provider' value='%vendor'/>
+        <property name='org.eclipse.equinox.p2.bundle.localization' value='plugin'/>
+        <property name='maven-groupId' value='org.mard.dt.editing'/>
+        <property name='maven-artifactId' value='org.mard.dt.editing.ui'/>
+        <property name='maven-version' value='0.7.0-SNAPSHOT'/>
+        <property name='maven-type' value='eclipse-plugin'/>
+      </properties>
+      <provides size='5'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.ui' version='0.7.0.20261014-1314'/>
+        <provided namespace='osgi.bundle' name='org.mard.dt.editing.ui' version='0.7.0.20261014-1314'/>
+        <provided namespace='osgi.identity' name='org.mard.dt.editing.ui' version='0.7.0.20261014-1314'>
+          <properties size='1'>
+            <property name='type' value='osgi.bundle'/>
+          </properties>
+        </provided>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
+      </provides>
+      <requires size='15'>
+        <required namespace='osgi.bundle' name='org.eclipse.ui' range='[3.0.0,4.0.0)'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='[3.10.0,4.0.0)'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='[3.10.0,4.0.0)'/>
+        <required namespace='osgi.bundle' name='org.eclipse.emf.ecore' range='[2.18.0,3.0.0)'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.forms' range='[3.11.300,4.0.0)'/>
+        <required namespace='osgi.bundle' name='org.eclipse.jface.notifications' range='[0.7.0,0.8.0)'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.ide' range='[3.18.500,4.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.v8.dt.core.platform' range='[11.0.0,14.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.v8.dt.ui.editor' range='[7.0.0,8.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.wiring' range='[2.0.0,3.0.0)'/>
+        <required namespace='java.package' name='com._1c.g5.wiring.binder' range='[1.1.0,2.0.0)'/>
+        <required namespace='java.package' name='com.google.inject' range='[1.3.0,6.0.0)'/>
+        <required namespace='java.package' name='org.mard.dt.editing' range='[0.6.0,0.7.0)'/>
+        <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=25))'>
+          <description>
+            org.mard.dt.editing.ui
+          </description>
+        </requiredProperties>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.ui.source' range='[0.7.0.20261014-1314,0.7.0.20261014-1314]' optional='true'>
+          <filter>
+            (org.eclipse.update.install.sources=true)
+          </filter>
+        </required>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.mard.dt.editing.ui' version='0.7.0.20261014-1314'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.mard.dt.editing.ui;singleton:=true&#xA;Bundle-Version: 0.7.0.20261014-1314
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.eclipse.license.feature.group' version='2.0.2.v20181016-2210' singleton='false'>
+      <update id='org.eclipse.license.feature.group' range='[0.0.0,2.0.2.v20181016-2210)' severity='0'/>
+      <properties size='6'>
+        <property name='org.eclipse.equinox.p2.description' value='%description'/>
+        <property name='org.eclipse.equinox.p2.type.group' value='true'/>
+        <property name='maven-groupId' value='org.eclipse.license'/>
+        <property name='maven-artifactId' value='org.eclipse.license'/>
+        <property name='maven-version' value='2.0.2-SNAPSHOT'/>
+        <property name='df_LT.license' value='Eclipse Foundation Software User Agreement&#xA;&#xA;November 22, 2017&#xA;&#xA;Usage Of Content&#xA;&#xA;THE ECLIPSE FOUNDATION MAKES AVAILABLE SOFTWARE, DOCUMENTATION, INFORMATION&#xA;AND/OR OTHER MATERIALS FOR OPEN SOURCE PROJECTS (COLLECTIVELY &quot;CONTENT&quot;). USE OF&#xA;THE CONTENT IS GOVERNED BY THE TERMS AND CONDITIONS OF THIS AGREEMENT AND/OR THE&#xA;TERMS AND CONDITIONS OF LICENSE AGREEMENTS OR NOTICES INDICATED OR REFERENCED&#xA;BELOW. BY USING THE CONTENT, YOU AGREE THAT YOUR USE OF THE CONTENT IS GOVERNED&#xA;BY THIS AGREEMENT AND/OR THE TERMS AND CONDITIONS OF ANY APPLICABLE LICENSE&#xA;AGREEMENTS OR NOTICES INDICATED OR REFERENCED BELOW. IF YOU DO NOT AGREE TO THE&#xA;TERMS AND CONDITIONS OF THIS AGREEMENT AND THE TERMS AND CONDITIONS OF ANY&#xA;APPLICABLE LICENSE AGREEMENTS OR NOTICES INDICATED OR REFERENCED BELOW, THEN YOU&#xA;MAY NOT USE THE CONTENT.&#xA;&#xA;Applicable Licenses&#xA;&#xA;Unless otherwise indicated, all Content made available by the Eclipse Foundation&#xA;is provided to you under the terms and conditions of the Eclipse Public License&#xA;Version 2.0 (&quot;EPL&quot;). A copy of the EPL is provided with this Content and is also&#xA;available at http://www.eclipse.org/legal/epl-2.0. For purposes of the EPL,&#xA;&quot;Program&quot; will mean the Content.&#xA;&#xA;Content includes, but is not limited to, source code, object code, documentation&#xA;and other files maintained in the Eclipse Foundation source code repository&#xA;(&quot;Repository&quot;) in software modules (&quot;Modules&quot;) and made available as&#xA;downloadable archives (&quot;Downloads&quot;).&#xA;&#xA;-   Content may be structured and packaged into modules to facilitate&#xA;delivering, extending, and upgrading the Content. Typical modules may&#xA;include plug-ins (&quot;Plug-ins&quot;), plug-in fragments (&quot;Fragments&quot;), and&#xA;features (&quot;Features&quot;).&#xA;-   Each Plug-in or Fragment may be packaged as a sub-directory or JAR&#xA;(Java™ ARchive) in a directory named &quot;plugins&quot;.&#xA;-   A Feature is a bundle of one or more Plug-ins and/or Fragments and&#xA;associated material. Each Feature may be packaged as a sub-directory in a&#xA;directory named &quot;features&quot;. Within a Feature, files named &quot;feature.xml&quot; may&#xA;contain a list of the names and version numbers of the Plug-ins and/or&#xA;Fragments associated with that Feature.&#xA;-   Features may also include other Features (&quot;Included Features&quot;). Within a&#xA;Feature, files named &quot;feature.xml&quot; may contain a list of the names and&#xA;version numbers of Included Features.&#xA;&#xA;The terms and conditions governing Plug-ins and Fragments should be contained in&#xA;files named &quot;about.html&quot; (&quot;Abouts&quot;). The terms and conditions governing Features&#xA;and Included Features should be contained in files named &quot;license.html&quot;&#xA;(&quot;Feature Licenses&quot;). Abouts and Feature Licenses may be located in any&#xA;directory of a Download or Module including, but not limited to the following&#xA;locations:&#xA;&#xA;-   The top-level (root) directory&#xA;-   Plug-in and Fragment directories&#xA;-   Inside Plug-ins and Fragments packaged as JARs&#xA;-   Sub-directories of the directory named &quot;src&quot; of certain Plug-ins&#xA;-   Feature directories&#xA;&#xA;Note: if a Feature made available by the Eclipse Foundation is installed using&#xA;the Provisioning Technology (as defined below), you must agree to a license&#xA;(&quot;Feature Update License&quot;) during the installation process. If the Feature&#xA;contains Included Features, the Feature Update License should either provide you&#xA;with the terms and conditions governing the Included Features or inform you&#xA;where you can locate them. Feature Update Licenses may be found in the &quot;license&quot;&#xA;property of files named &quot;feature.properties&quot; found within a Feature. Such&#xA;Abouts, Feature Licenses, and Feature Update Licenses contain the terms and&#xA;conditions (or references to such terms and conditions) that govern your use of&#xA;the associated Content in that directory.&#xA;&#xA;THE ABOUTS, FEATURE LICENSES, AND FEATURE UPDATE LICENSES MAY REFER TO THE EPL&#xA;OR OTHER LICENSE AGREEMENTS, NOTICES OR TERMS AND CONDITIONS. SOME OF THESE&#xA;OTHER LICENSE AGREEMENTS MAY INCLUDE (BUT ARE NOT LIMITED TO):&#xA;&#xA;-   Eclipse Public License Version 1.0 (available at&#xA;http://www.eclipse.org/legal/epl-v10.html)&#xA;-   Eclipse Distribution License Version 1.0 (available at&#xA;http://www.eclipse.org/licenses/edl-v1.0.html)&#xA;-   Common Public License Version 1.0 (available at&#xA;http://www.eclipse.org/legal/cpl-v10.html)&#xA;-   Apache Software License 1.1 (available at&#xA;http://www.apache.org/licenses/LICENSE)&#xA;-   Apache Software License 2.0 (available at&#xA;http://www.apache.org/licenses/LICENSE-2.0)&#xA;-   Mozilla Public License Version 1.1 (available at&#xA;http://www.mozilla.org/MPL/MPL-1.1.html)&#xA;&#xA;IT IS YOUR OBLIGATION TO READ AND ACCEPT ALL SUCH TERMS AND CONDITIONS PRIOR TO&#xA;USE OF THE CONTENT. If no About, Feature License, or Feature Update License is&#xA;provided, please contact the Eclipse Foundation to determine what terms and&#xA;conditions govern that particular Content.&#xA;&#xA;Use of Provisioning Technology&#xA;&#xA;The Eclipse Foundation makes available provisioning software, examples of which&#xA;include, but are not limited to, p2 and the Eclipse Update Manager&#xA;(&quot;Provisioning Technology&quot;) for the purpose of allowing users to install&#xA;software, documentation, information and/or other materials (collectively&#xA;&quot;Installable Software&quot;). This capability is provided with the intent of allowing&#xA;such users to install, extend and update Eclipse-based products. Information&#xA;about packaging Installable Software is available at&#xA;http://eclipse.org/equinox/p2/repository_packaging.html (&quot;Specification&quot;).&#xA;&#xA;You may use Provisioning Technology to allow other parties to install&#xA;Installable Software. You shall be responsible for enabling the applicable&#xA;license agreements relating to the Installable Software to be presented to, and&#xA;accepted by, the users of the Provisioning Technology in accordance with the&#xA;Specification. By using Provisioning Technology in such a manner and making it&#xA;available in accordance with the Specification, you further acknowledge your&#xA;agreement to, and the acquisition of all necessary rights to permit the&#xA;following:&#xA;&#xA;1.  A series of actions may occur (&quot;Provisioning Process&quot;) in which a user may&#xA;execute the Provisioning Technology on a machine (&quot;Target Machine&quot;) with the&#xA;intent of installing, extending or updating the functionality of an&#xA;Eclipse-based product.&#xA;2.  During the Provisioning Process, the Provisioning Technology may cause third&#xA;party Installable Software or a portion thereof to be accessed and copied to&#xA;the Target Machine.&#xA;3.  Pursuant to the Specification, you will provide to the user the terms and&#xA;conditions that govern the use of the Installable Software (&quot;Installable&#xA;Software Agreement&quot;) and such Installable Software Agreement shall be&#xA;accessed from the Target Machine in accordance with the Specification. Such&#xA;Installable Software Agreement must inform the user of the terms and&#xA;conditions that govern the Installable Software and must solicit acceptance&#xA;by the end user in the manner prescribed in such Installable&#xA;Software Agreement. Upon such indication of agreement by the user, the&#xA;provisioning Technology will complete installation of the&#xA;Installable Software.&#xA;&#xA;Cryptography&#xA;&#xA;Content may contain encryption software. The country in which you are currently&#xA;may have restrictions on the import, possession, and use, and/or re-export to&#xA;another country, of encryption software. BEFORE using any encryption software,&#xA;please check the country&apos;s laws, regulations and policies concerning the import,&#xA;possession, or use, and re-export of encryption software, to see if this is&#xA;permitted.&#xA;&#xA;Java and all Java-based trademarks are trademarks of Oracle Corporation in the&#xA;United States, other countries, or both.'/>
+      </properties>
+      <provides size='2'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.license.feature.group' version='2.0.2.v20181016-2210'/>
+        <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.license.feature.jar' range='[2.0.2.v20181016-2210,2.0.2.v20181016-2210]'>
+          <filter>
+            (org.eclipse.update.install.features=true)
+          </filter>
+        </required>
+      </requires>
+      <licenses size='1'>
+        <license uri='%25licenseURL' url='%25licenseURL'>
+          %license
+        </license>
+      </licenses>
+      <copyright>
+        %copyright
+      </copyright>
+    </unit>
+    <unit id='org.eclipse.license.feature.jar' version='2.0.2.v20181016-2210'>
+      <properties size='5'>
+        <property name='org.eclipse.equinox.p2.description' value='%description'/>
+        <property name='df_LT.license' value='Eclipse Foundation Software User Agreement&#xA;&#xA;November 22, 2017&#xA;&#xA;Usage Of Content&#xA;&#xA;THE ECLIPSE FOUNDATION MAKES AVAILABLE SOFTWARE, DOCUMENTATION, INFORMATION&#xA;AND/OR OTHER MATERIALS FOR OPEN SOURCE PROJECTS (COLLECTIVELY &quot;CONTENT&quot;). USE OF&#xA;THE CONTENT IS GOVERNED BY THE TERMS AND CONDITIONS OF THIS AGREEMENT AND/OR THE&#xA;TERMS AND CONDITIONS OF LICENSE AGREEMENTS OR NOTICES INDICATED OR REFERENCED&#xA;BELOW. BY USING THE CONTENT, YOU AGREE THAT YOUR USE OF THE CONTENT IS GOVERNED&#xA;BY THIS AGREEMENT AND/OR THE TERMS AND CONDITIONS OF ANY APPLICABLE LICENSE&#xA;AGREEMENTS OR NOTICES INDICATED OR REFERENCED BELOW. IF YOU DO NOT AGREE TO THE&#xA;TERMS AND CONDITIONS OF THIS AGREEMENT AND THE TERMS AND CONDITIONS OF ANY&#xA;APPLICABLE LICENSE AGREEMENTS OR NOTICES INDICATED OR REFERENCED BELOW, THEN YOU&#xA;MAY NOT USE THE CONTENT.&#xA;&#xA;Applicable Licenses&#xA;&#xA;Unless otherwise indicated, all Content made available by the Eclipse Foundation&#xA;is provided to you under the terms and conditions of the Eclipse Public License&#xA;Version 2.0 (&quot;EPL&quot;). A copy of the EPL is provided with this Content and is also&#xA;available at http://www.eclipse.org/legal/epl-2.0. For purposes of the EPL,&#xA;&quot;Program&quot; will mean the Content.&#xA;&#xA;Content includes, but is not limited to, source code, object code, documentation&#xA;and other files maintained in the Eclipse Foundation source code repository&#xA;(&quot;Repository&quot;) in software modules (&quot;Modules&quot;) and made available as&#xA;downloadable archives (&quot;Downloads&quot;).&#xA;&#xA;-   Content may be structured and packaged into modules to facilitate&#xA;delivering, extending, and upgrading the Content. Typical modules may&#xA;include plug-ins (&quot;Plug-ins&quot;), plug-in fragments (&quot;Fragments&quot;), and&#xA;features (&quot;Features&quot;).&#xA;-   Each Plug-in or Fragment may be packaged as a sub-directory or JAR&#xA;(Java™ ARchive) in a directory named &quot;plugins&quot;.&#xA;-   A Feature is a bundle of one or more Plug-ins and/or Fragments and&#xA;associated material. Each Feature may be packaged as a sub-directory in a&#xA;directory named &quot;features&quot;. Within a Feature, files named &quot;feature.xml&quot; may&#xA;contain a list of the names and version numbers of the Plug-ins and/or&#xA;Fragments associated with that Feature.&#xA;-   Features may also include other Features (&quot;Included Features&quot;). Within a&#xA;Feature, files named &quot;feature.xml&quot; may contain a list of the names and&#xA;version numbers of Included Features.&#xA;&#xA;The terms and conditions governing Plug-ins and Fragments should be contained in&#xA;files named &quot;about.html&quot; (&quot;Abouts&quot;). The terms and conditions governing Features&#xA;and Included Features should be contained in files named &quot;license.html&quot;&#xA;(&quot;Feature Licenses&quot;). Abouts and Feature Licenses may be located in any&#xA;directory of a Download or Module including, but not limited to the following&#xA;locations:&#xA;&#xA;-   The top-level (root) directory&#xA;-   Plug-in and Fragment directories&#xA;-   Inside Plug-ins and Fragments packaged as JARs&#xA;-   Sub-directories of the directory named &quot;src&quot; of certain Plug-ins&#xA;-   Feature directories&#xA;&#xA;Note: if a Feature made available by the Eclipse Foundation is installed using&#xA;the Provisioning Technology (as defined below), you must agree to a license&#xA;(&quot;Feature Update License&quot;) during the installation process. If the Feature&#xA;contains Included Features, the Feature Update License should either provide you&#xA;with the terms and conditions governing the Included Features or inform you&#xA;where you can locate them. Feature Update Licenses may be found in the &quot;license&quot;&#xA;property of files named &quot;feature.properties&quot; found within a Feature. Such&#xA;Abouts, Feature Licenses, and Feature Update Licenses contain the terms and&#xA;conditions (or references to such terms and conditions) that govern your use of&#xA;the associated Content in that directory.&#xA;&#xA;THE ABOUTS, FEATURE LICENSES, AND FEATURE UPDATE LICENSES MAY REFER TO THE EPL&#xA;OR OTHER LICENSE AGREEMENTS, NOTICES OR TERMS AND CONDITIONS. SOME OF THESE&#xA;OTHER LICENSE AGREEMENTS MAY INCLUDE (BUT ARE NOT LIMITED TO):&#xA;&#xA;-   Eclipse Public License Version 1.0 (available at&#xA;http://www.eclipse.org/legal/epl-v10.html)&#xA;-   Eclipse Distribution License Version 1.0 (available at&#xA;http://www.eclipse.org/licenses/edl-v1.0.html)&#xA;-   Common Public License Version 1.0 (available at&#xA;http://www.eclipse.org/legal/cpl-v10.html)&#xA;-   Apache Software License 1.1 (available at&#xA;http://www.apache.org/licenses/LICENSE)&#xA;-   Apache Software License 2.0 (available at&#xA;http://www.apache.org/licenses/LICENSE-2.0)&#xA;-   Mozilla Public License Version 1.1 (available at&#xA;http://www.mozilla.org/MPL/MPL-1.1.html)&#xA;&#xA;IT IS YOUR OBLIGATION TO READ AND ACCEPT ALL SUCH TERMS AND CONDITIONS PRIOR TO&#xA;USE OF THE CONTENT. If no About, Feature License, or Feature Update License is&#xA;provided, please contact the Eclipse Foundation to determine what terms and&#xA;conditions govern that particular Content.&#xA;&#xA;Use of Provisioning Technology&#xA;&#xA;The Eclipse Foundation makes available provisioning software, examples of which&#xA;include, but are not limited to, p2 and the Eclipse Update Manager&#xA;(&quot;Provisioning Technology&quot;) for the purpose of allowing users to install&#xA;software, documentation, information and/or other materials (collectively&#xA;&quot;Installable Software&quot;). This capability is provided with the intent of allowing&#xA;such users to install, extend and update Eclipse-based products. Information&#xA;about packaging Installable Software is available at&#xA;http://eclipse.org/equinox/p2/repository_packaging.html (&quot;Specification&quot;).&#xA;&#xA;You may use Provisioning Technology to allow other parties to install&#xA;Installable Software. You shall be responsible for enabling the applicable&#xA;license agreements relating to the Installable Software to be presented to, and&#xA;accepted by, the users of the Provisioning Technology in accordance with the&#xA;Specification. By using Provisioning Technology in such a manner and making it&#xA;available in accordance with the Specification, you further acknowledge your&#xA;agreement to, and the acquisition of all necessary rights to permit the&#xA;following:&#xA;&#xA;1.  A series of actions may occur (&quot;Provisioning Process&quot;) in which a user may&#xA;execute the Provisioning Technology on a machine (&quot;Target Machine&quot;) with the&#xA;intent of installing, extending or updating the functionality of an&#xA;Eclipse-based product.&#xA;2.  During the Provisioning Process, the Provisioning Technology may cause third&#xA;party Installable Software or a portion thereof to be accessed and copied to&#xA;the Target Machine.&#xA;3.  Pursuant to the Specification, you will provide to the user the terms and&#xA;conditions that govern the use of the Installable Software (&quot;Installable&#xA;Software Agreement&quot;) and such Installable Software Agreement shall be&#xA;accessed from the Target Machine in accordance with the Specification. Such&#xA;Installable Software Agreement must inform the user of the terms and&#xA;conditions that govern the Installable Software and must solicit acceptance&#xA;by the end user in the manner prescribed in such Installable&#xA;Software Agreement. Upon such indication of agreement by the user, the&#xA;provisioning Technology will complete installation of the&#xA;Installable Software.&#xA;&#xA;Cryptography&#xA;&#xA;Content may contain encryption software. The country in which you are currently&#xA;may have restrictions on the import, possession, and use, and/or re-export to&#xA;another country, of encryption software. BEFORE using any encryption software,&#xA;please check the country&apos;s laws, regulations and policies concerning the import,&#xA;possession, or use, and re-export of encryption software, to see if this is&#xA;permitted.&#xA;&#xA;Java and all Java-based trademarks are trademarks of Oracle Corporation in the&#xA;United States, other countries, or both.'/>
+        <property name='maven-groupId' value='org.eclipse.license'/>
+        <property name='maven-artifactId' value='org.eclipse.license'/>
+        <property name='maven-version' value='2.0.2-SNAPSHOT'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.license.feature.jar' version='2.0.2.v20181016-2210'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
+        <provided namespace='org.eclipse.update.feature' name='org.eclipse.license' version='2.0.2.v20181016-2210'/>
+      </provides>
+      <filter>
+        (org.eclipse.update.install.features=true)
+      </filter>
+      <artifacts size='1'>
+        <artifact classifier='org.eclipse.update.feature' id='org.eclipse.license' version='2.0.2.v20181016-2210'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='zipped'>
+            true
+          </instruction>
+        </instructions>
+      </touchpointData>
+      <licenses size='1'>
+        <license uri='%25licenseURL' url='%25licenseURL'>
+          %license
+        </license>
+      </licenses>
+      <copyright>
+        %copyright
+      </copyright>
+    </unit>
+    <unit id='org.mard.dt.editing.feature.feature.group' version='0.7.0.20261014-1314' singleton='false'>
+      <update id='org.mard.dt.editing.feature.feature.group' range='[0.0.0,0.7.0.20261014-1314)' severity='0'/>
+      <properties size='12'>
+        <property name='org.eclipse.equinox.p2.name' value='%featureName'/>
+        <property name='org.eclipse.equinox.p2.description' value='%description'/>
+        <property name='org.eclipse.equinox.p2.provider' value='%vendor'/>
+        <property name='org.eclipse.equinox.p2.type.group' value='true'/>
+        <property name='maven-groupId' value='org.mard.dt.editing.group'/>
+        <property name='maven-artifactId' value='org.mard.dt.editing.feature'/>
+        <property name='maven-version' value='0.7.0-SNAPSHOT'/>
+        <property name='maven-type' value='eclipse-feature'/>
+        <property name='df_LT.license' value='Eclipse Foundation Software User Agreement&#xA;&#xA;November 22, 2017&#xA;&#xA;Usage Of Content&#xA;&#xA;THE ECLIPSE FOUNDATION MAKES AVAILABLE SOFTWARE, DOCUMENTATION, INFORMATION&#xA;AND/OR OTHER MATERIALS FOR OPEN SOURCE PROJECTS (COLLECTIVELY &quot;CONTENT&quot;). USE OF&#xA;THE CONTENT IS GOVERNED BY THE TERMS AND CONDITIONS OF THIS AGREEMENT AND/OR THE&#xA;TERMS AND CONDITIONS OF LICENSE AGREEMENTS OR NOTICES INDICATED OR REFERENCED&#xA;BELOW. BY USING THE CONTENT, YOU AGREE THAT YOUR USE OF THE CONTENT IS GOVERNED&#xA;BY THIS AGREEMENT AND/OR THE TERMS AND CONDITIONS OF ANY APPLICABLE LICENSE&#xA;AGREEMENTS OR NOTICES INDICATED OR REFERENCED BELOW. IF YOU DO NOT AGREE TO THE&#xA;TERMS AND CONDITIONS OF THIS AGREEMENT AND THE TERMS AND CONDITIONS OF ANY&#xA;APPLICABLE LICENSE AGREEMENTS OR NOTICES INDICATED OR REFERENCED BELOW, THEN YOU&#xA;MAY NOT USE THE CONTENT.&#xA;&#xA;Applicable Licenses&#xA;&#xA;Unless otherwise indicated, all Content made available by the Eclipse Foundation&#xA;is provided to you under the terms and conditions of the Eclipse Public License&#xA;Version 2.0 (&quot;EPL&quot;). A copy of the EPL is provided with this Content and is also&#xA;available at http://www.eclipse.org/legal/epl-2.0. For purposes of the EPL,&#xA;&quot;Program&quot; will mean the Content.&#xA;&#xA;Content includes, but is not limited to, source code, object code, documentation&#xA;and other files maintained in the Eclipse Foundation source code repository&#xA;(&quot;Repository&quot;) in software modules (&quot;Modules&quot;) and made available as&#xA;downloadable archives (&quot;Downloads&quot;).&#xA;&#xA;-   Content may be structured and packaged into modules to facilitate&#xA;delivering, extending, and upgrading the Content. Typical modules may&#xA;include plug-ins (&quot;Plug-ins&quot;), plug-in fragments (&quot;Fragments&quot;), and&#xA;features (&quot;Features&quot;).&#xA;-   Each Plug-in or Fragment may be packaged as a sub-directory or JAR&#xA;(Java™ ARchive) in a directory named &quot;plugins&quot;.&#xA;-   A Feature is a bundle of one or more Plug-ins and/or Fragments and&#xA;associated material. Each Feature may be packaged as a sub-directory in a&#xA;directory named &quot;features&quot;. Within a Feature, files named &quot;feature.xml&quot; may&#xA;contain a list of the names and version numbers of the Plug-ins and/or&#xA;Fragments associated with that Feature.&#xA;-   Features may also include other Features (&quot;Included Features&quot;). Within a&#xA;Feature, files named &quot;feature.xml&quot; may contain a list of the names and&#xA;version numbers of Included Features.&#xA;&#xA;The terms and conditions governing Plug-ins and Fragments should be contained in&#xA;files named &quot;about.html&quot; (&quot;Abouts&quot;). The terms and conditions governing Features&#xA;and Included Features should be contained in files named &quot;license.html&quot;&#xA;(&quot;Feature Licenses&quot;). Abouts and Feature Licenses may be located in any&#xA;directory of a Download or Module including, but not limited to the following&#xA;locations:&#xA;&#xA;-   The top-level (root) directory&#xA;-   Plug-in and Fragment directories&#xA;-   Inside Plug-ins and Fragments packaged as JARs&#xA;-   Sub-directories of the directory named &quot;src&quot; of certain Plug-ins&#xA;-   Feature directories&#xA;&#xA;Note: if a Feature made available by the Eclipse Foundation is installed using&#xA;the Provisioning Technology (as defined below), you must agree to a license&#xA;(&quot;Feature Update License&quot;) during the installation process. If the Feature&#xA;contains Included Features, the Feature Update License should either provide you&#xA;with the terms and conditions governing the Included Features or inform you&#xA;where you can locate them. Feature Update Licenses may be found in the &quot;license&quot;&#xA;property of files named &quot;feature.properties&quot; found within a Feature. Such&#xA;Abouts, Feature Licenses, and Feature Update Licenses contain the terms and&#xA;conditions (or references to such terms and conditions) that govern your use of&#xA;the associated Content in that directory.&#xA;&#xA;THE ABOUTS, FEATURE LICENSES, AND FEATURE UPDATE LICENSES MAY REFER TO THE EPL&#xA;OR OTHER LICENSE AGREEMENTS, NOTICES OR TERMS AND CONDITIONS. SOME OF THESE&#xA;OTHER LICENSE AGREEMENTS MAY INCLUDE (BUT ARE NOT LIMITED TO):&#xA;&#xA;-   Eclipse Public License Version 1.0 (available at&#xA;http://www.eclipse.org/legal/epl-v10.html)&#xA;-   Eclipse Distribution License Version 1.0 (available at&#xA;http://www.eclipse.org/licenses/edl-v1.0.html)&#xA;-   Common Public License Version 1.0 (available at&#xA;http://www.eclipse.org/legal/cpl-v10.html)&#xA;-   Apache Software License 1.1 (available at&#xA;http://www.apache.org/licenses/LICENSE)&#xA;-   Apache Software License 2.0 (available at&#xA;http://www.apache.org/licenses/LICENSE-2.0)&#xA;-   Mozilla Public License Version 1.1 (available at&#xA;http://www.mozilla.org/MPL/MPL-1.1.html)&#xA;&#xA;IT IS YOUR OBLIGATION TO READ AND ACCEPT ALL SUCH TERMS AND CONDITIONS PRIOR TO&#xA;USE OF THE CONTENT. If no About, Feature License, or Feature Update License is&#xA;provided, please contact the Eclipse Foundation to determine what terms and&#xA;conditions govern that particular Content.&#xA;&#xA;Use of Provisioning Technology&#xA;&#xA;The Eclipse Foundation makes available provisioning software, examples of which&#xA;include, but are not limited to, p2 and the Eclipse Update Manager&#xA;(&quot;Provisioning Technology&quot;) for the purpose of allowing users to install&#xA;software, documentation, information and/or other materials (collectively&#xA;&quot;Installable Software&quot;). This capability is provided with the intent of allowing&#xA;such users to install, extend and update Eclipse-based products. Information&#xA;about packaging Installable Software is available at&#xA;http://eclipse.org/equinox/p2/repository_packaging.html (&quot;Specification&quot;).&#xA;&#xA;You may use Provisioning Technology to allow other parties to install&#xA;Installable Software. You shall be responsible for enabling the applicable&#xA;license agreements relating to the Installable Software to be presented to, and&#xA;accepted by, the users of the Provisioning Technology in accordance with the&#xA;Specification. By using Provisioning Technology in such a manner and making it&#xA;available in accordance with the Specification, you further acknowledge your&#xA;agreement to, and the acquisition of all necessary rights to permit the&#xA;following:&#xA;&#xA;1.  A series of actions may occur (&quot;Provisioning Process&quot;) in which a user may&#xA;execute the Provisioning Technology on a machine (&quot;Target Machine&quot;) with the&#xA;intent of installing, extending or updating the functionality of an&#xA;Eclipse-based product.&#xA;2.  During the Provisioning Process, the Provisioning Technology may cause third&#xA;party Installable Software or a portion thereof to be accessed and copied to&#xA;the Target Machine.&#xA;3.  Pursuant to the Specification, you will provide to the user the terms and&#xA;conditions that govern the use of the Installable Software (&quot;Installable&#xA;Software Agreement&quot;) and such Installable Software Agreement shall be&#xA;accessed from the Target Machine in accordance with the Specification. Such&#xA;Installable Software Agreement must inform the user of the terms and&#xA;conditions that govern the Installable Software and must solicit acceptance&#xA;by the end user in the manner prescribed in such Installable&#xA;Software Agreement. Upon such indication of agreement by the user, the&#xA;provisioning Technology will complete installation of the&#xA;Installable Software.&#xA;&#xA;Cryptography&#xA;&#xA;Content may contain encryption software. The country in which you are currently&#xA;may have restrictions on the import, possession, and use, and/or re-export to&#xA;another country, of encryption software. BEFORE using any encryption software,&#xA;please check the country&apos;s laws, regulations and policies concerning the import,&#xA;possession, or use, and re-export of encryption software, to see if this is&#xA;permitted.&#xA;&#xA;Java and all Java-based trademarks are trademarks of Oracle Corporation in the&#xA;United States, other countries, or both.'/>
+        <property name='df_LT.featureName' value='Disable Editing plugin for 1C:EDT'/>
+        <property name='df_LT.vendor' value='Dmitriy Marmyshev'/>
+        <property name='df_LT.description' value='1C:EDT Editing plugin allows to disable editing in UI editors via settings.'/>
+      </properties>
+      <provides size='2'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.group' version='0.7.0.20261014-1314'/>
+        <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
+      </provides>
+      <requires size='5'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.feature.feature.group' range='[2.5.0.202502081502,2.5.0.202502081502]' optional='true'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing' range='[0.7.0.20261014-1314,0.7.0.20261014-1314]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.yaml.snakeyaml' range='[1.27.0,1.27.0]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.ui' range='[0.7.0.20261014-1314,0.7.0.20261014-1314]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.jar' range='[0.7.0.20261014-1314,0.7.0.20261014-1314]'>
+          <filter>
+            (org.eclipse.update.install.features=true)
+          </filter>
+        </required>
+      </requires>
+      <licenses size='1'>
+        <license uri='%25licenseURL' url='%25licenseURL'>
+          %license
+        </license>
+      </licenses>
+    </unit>
+    <unit id='org.brainwy.liclipsetext.shared_ui' version='2.5.0.202502081502' generation='2'>
+      <update id='org.brainwy.liclipsetext.shared_ui' range='[0.0.0,2.5.0.202502081502)' severity='0'/>
+      <properties size='5'>
+        <property name='org.eclipse.equinox.p2.name' value='LiClipseText Shared UI'/>
+        <property name='maven-groupId' value='org.brainwy.liclipsetext'/>
+        <property name='maven-artifactId' value='org.brainwy.liclipsetext.shared_ui'/>
+        <property name='maven-version' value='2.5.0-SNAPSHOT'/>
+        <property name='maven-type' value='eclipse-plugin'/>
+      </properties>
+      <provides size='24'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.shared_ui' version='2.5.0.202502081502'/>
+        <provided namespace='osgi.bundle' name='org.brainwy.liclipsetext.shared_ui' version='2.5.0.202502081502'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.actions' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.bindings' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.bundle' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.content_assist' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.dialogs' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.editor' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.editor_input' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.field_editors' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.mark_occurrences' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.outline' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.proposals' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.quick_outline' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.swt' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.templates' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.tooltips' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.tooltips.presenter' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.tree' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.utils' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_ui.word_boundaries' version='0.0.0'/>
+        <provided namespace='osgi.identity' name='org.brainwy.liclipsetext.shared_ui' version='2.5.0.202502081502'>
+          <properties size='1'>
+            <property name='type' value='osgi.bundle'/>
+          </properties>
+        </provided>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='21'>
+        <required namespace='osgi.bundle' name='org.brainwy.liclipsetext.shared_core' range='[2.5.0,2.5.1)'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.workbench.texteditor' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.jface.text' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.editors' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.ide' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.workbench' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.views' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.console' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.e4.ui.services' range='0.0.0' optional='true' greedy='false'/>
+        <required namespace='osgi.bundle' name='org.eclipse.e4.ui.css.swt.theme' range='0.0.0' optional='true' greedy='false'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.filesystem' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.debug.core' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.debug.ui' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ltk.core.refactoring' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ltk.ui.refactoring' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.forms' range='0.0.0'/>
+        <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=17))'>
+          <description>
+            org.brainwy.liclipsetext.shared_ui
+          </description>
+        </requiredProperties>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.shared_ui.source' range='[2.5.0.202502081502,2.5.0.202502081502]' optional='true'>
+          <filter>
+            (org.eclipse.update.install.sources=true)
+          </filter>
+        </required>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.brainwy.liclipsetext.shared_ui' version='2.5.0.202502081502'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.brainwy.liclipsetext.shared_ui;singleton:=true&#xA;Bundle-Version: 2.5.0.202502081502
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.brainwy.liclipsetext.editor' version='2.5.0.202502081502' generation='2'>
+      <update id='org.brainwy.liclipsetext.editor' range='[0.0.0,2.5.0.202502081502)' severity='0'/>
+      <properties size='5'>
+        <property name='org.eclipse.equinox.p2.name' value='LiClipseText Editor'/>
+        <property name='maven-groupId' value='org.brainwy.liclipsetext'/>
+        <property name='maven-artifactId' value='org.brainwy.liclipsetext.editor'/>
+        <property name='maven-version' value='2.5.0-SNAPSHOT'/>
+        <property name='maven-type' value='eclipse-test-plugin'/>
+      </properties>
+      <provides size='49'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.editor' version='2.5.0.202502081502'/>
+        <provided namespace='osgi.bundle' name='org.brainwy.liclipsetext.editor' version='2.5.0.202502081502'/>
+        <provided namespace='java.package' name='com.eclipsesource.json' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.autoedit' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.common' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.common.completions' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.common.mark_occurrences' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.common.partitioning' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.common.partitioning.reader' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.common.partitioning.rules' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.common.partitioning.tokens' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.compare' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.config' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.content_assist' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.error_handling' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.handlers' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.handlers.comment' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.handlers.extensions' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.images' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.languages' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.languages.auto_edit' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.languages.comment' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.languages.indent' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.languages.launch' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.languages.navigation' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.languages.outline' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.languages.tmbundle' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.languages.tmbundle.parsing' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.launch' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.markers' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.menu' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.navigation' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.outline' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.parsing' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.partitioning' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.preferences' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.quick_outline' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.regexp' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.rules' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.scopes' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.spelling' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.templates' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.templates.resolvers' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.tmbundle' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.views.languages' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.editor.views.partitioning' version='0.0.0'/>
+        <provided namespace='osgi.identity' name='org.brainwy.liclipsetext.editor' version='2.5.0.202502081502'>
+          <properties size='1'>
+            <property name='type' value='osgi.bundle'/>
+          </properties>
+        </provided>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='27'>
+        <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.jface.text' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.editors' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.junit' range='4.0.0' optional='true' greedy='false'/>
+        <required namespace='osgi.bundle' name='org.brainwy.liclipsetext.shared_core' range='[2.5.0,2.5.1)'/>
+        <required namespace='osgi.bundle' name='org.brainwy.liclipsetext.shared_ui' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.workbench.texteditor' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.views' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.e4.ui.services' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.e4.ui.css.swt.theme' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.ide' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.compare' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.debug.core' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.debug.ui' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.variables' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.console' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.filesystem' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.e4.core.commands' range='0.0.0' optional='true' greedy='false'/>
+        <required namespace='osgi.bundle' name='com.ibm.icu' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.expressions' range='3.5.100'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.genericeditor' range='1.0.0' optional='true' greedy='false'/>
+        <required namespace='osgi.bundle' name='com.google.gson' range='2.2.4'/>
+        <required namespace='osgi.bundle' name='org.jcodings' range='1.0.18'/>
+        <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=17))'>
+          <description>
+            org.brainwy.liclipsetext.editor
+          </description>
+        </requiredProperties>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.editor.source' range='[2.5.0.202502081502,2.5.0.202502081502]' optional='true'>
+          <filter>
+            (org.eclipse.update.install.sources=true)
+          </filter>
+        </required>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.brainwy.liclipsetext.editor' version='2.5.0.202502081502'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.brainwy.liclipsetext.editor;singleton:=true&#xA;Bundle-Version: 2.5.0.202502081502
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='org.brainwy.liclipsetext.shared_core' version='2.5.0.202502081502' singleton='false' generation='2'>
+      <update id='org.brainwy.liclipsetext.shared_core' range='[0.0.0,2.5.0.202502081502)' severity='0'/>
+      <properties size='6'>
+        <property name='org.eclipse.equinox.p2.name' value='LiClipseText Shared Core'/>
+        <property name='org.eclipse.equinox.p2.provider' value='Brainwy Software Ltda'/>
+        <property name='maven-groupId' value='org.brainwy.liclipsetext'/>
+        <property name='maven-artifactId' value='org.brainwy.liclipsetext.shared_core'/>
+        <property name='maven-version' value='2.5.0-SNAPSHOT'/>
+        <property name='maven-type' value='eclipse-plugin'/>
+      </properties>
+      <provides size='49'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.shared_core' version='2.5.0.202502081502'/>
+        <provided namespace='osgi.bundle' name='org.brainwy.liclipsetext.shared_core' version='2.5.0.202502081502'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.actions' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.auto_edit' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.bundle' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.cache' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.callbacks' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.document' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.editor' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.io' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.locator' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.log' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.lru_space_cache' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.model' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.net' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.out_of_memory' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.parsing' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.partitioner' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.path_watch' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.preferences' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.process' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.resource_stubs' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.string' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.structure' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.testutils' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.threaded_objects_pool' version='0.0.0'/>
+        <provided namespace='java.package' name='org.brainwy.liclipsetext.shared_core.utils' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.composer' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.constructor' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.emitter' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.error' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.events' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.extensions.compactnotation' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.external.biz.base64Coder' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.external.com.google.gdata.util.common.base' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.introspector' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.nodes' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.parser' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.reader' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.representer' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.resolver' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.scanner' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.serializer' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.tokens' version='0.0.0'/>
+        <provided namespace='java.package' name='org.yaml.snakeyaml.util' version='0.0.0'/>
+        <provided namespace='osgi.identity' name='org.brainwy.liclipsetext.shared_core' version='2.5.0.202502081502'>
+          <properties size='1'>
+            <property name='type' value='osgi.bundle'/>
+          </properties>
+        </provided>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='9'>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.jface.text' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.junit' range='4.0.0' optional='true' greedy='false'/>
+        <required namespace='osgi.bundle' name='org.eclipse.jface' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.filebuffers' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.ui.workbench' range='0.0.0'/>
+        <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=17))'>
+          <description>
+            org.brainwy.liclipsetext.shared_core
+          </description>
+        </requiredProperties>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.shared_core.source' range='[2.5.0.202502081502,2.5.0.202502081502]' optional='true'>
+          <filter>
+            (org.eclipse.update.install.sources=true)
+          </filter>
+        </required>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.brainwy.liclipsetext.shared_core' version='2.5.0.202502081502'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.brainwy.liclipsetext.shared_core&#xA;Bundle-Version: 2.5.0.202502081502
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='a.jre.javase' version='25.0.0' singleton='false'>
+      <provides size='270'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='a.jre.javase' version='25.0.0'/>
+        <provided namespace='java.package' name='java.applet' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.image' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.crypto.dsig.dom' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.stream' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.table' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.desktop' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.imageio.plugins.jpeg' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.lang.model.type' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.zip' version='0.0.0'/>
+        <provided namespace='java.package' name='java.security.cert' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.transform.dom' version='0.0.0'/>
+        <provided namespace='java.package' name='java.nio.file' version='0.0.0'/>
+        <provided namespace='java.package' name='org.w3c.dom.views' version='0.0.0'/>
+        <provided namespace='java.package' name='java.time' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.security.auth.callback' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.stream.util' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.lang.model.element' version='0.0.0'/>
+        <provided namespace='java.package' name='org.w3c.dom.bootstrap' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.nio.sctp' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.validation' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.dynalink.beans' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.imageio' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.text' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.net.httpserver' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.jdi.connect' version='0.0.0'/>
+        <provided namespace='java.package' name='org.w3c.dom.events' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.datatransfer' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.foreign' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.plaf' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.text.html' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.jdi.event' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.dynalink' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.plaf.metal' version='0.0.0'/>
+        <provided namespace='java.package' name='java.net.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.logging' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.colorchooser' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.dynalink.support' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.security.auth.x500' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.stream' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.jshell.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.classfile' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.lang.model' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.annotation' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.jfr' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.imageio.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.naming.directory' version='0.0.0'/>
+        <provided namespace='java.package' name='java.time.chrono' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.management.loading' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.security.auth' version='0.0.0'/>
+        <provided namespace='java.package' name='java.math' version='0.0.0'/>
+        <provided namespace='java.package' name='org.w3c.dom' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.transaction.xa' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.geom' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.transform.stax' version='0.0.0'/>
+        <provided namespace='java.package' name='org.w3c.dom.traversal' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.swing.interop' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt' version='0.0.0'/>
+        <provided namespace='java.package' name='java.text' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.management' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.undo' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.transform.stream' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.datatype' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.print' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.security.auth.login' version='0.0.0'/>
+        <provided namespace='java.package' name='org.w3c.dom.html' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.security.auth.login' version='0.0.0'/>
+        <provided namespace='java.package' name='java.rmi' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.jdi.connect.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='java.beans' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.sql' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.print.event' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.prefs' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.imageio.metadata' version='0.0.0'/>
+        <provided namespace='java.package' name='java.net' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.naming.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.imageio.plugins.bmp' version='0.0.0'/>
+        <provided namespace='java.package' name='sun.misc' version='0.0.0'/>
+        <provided namespace='java.package' name='java.time.format' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.concurrent' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.security.auth.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='java.rmi.server' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.sound.sampled' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.parsers' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.sql.rowset.serial' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.plaf.synth' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.plaf.basic' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.tree' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.function' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.net' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.dynalink.linker' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.image.renderable' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.nio.file' version='0.0.0'/>
+        <provided namespace='java.package' name='org.w3c.dom.ls' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.smartcardio' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.random' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.naming' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.dynalink.linker.support' version='0.0.0'/>
+        <provided namespace='java.package' name='java.rmi.dgc' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.xpath' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.annotation.processing' version='0.0.0'/>
+        <provided namespace='java.package' name='java.net.http' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.invoke' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.security.cert' version='0.0.0'/>
+        <provided namespace='java.package' name='org.w3c.dom.xpath' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.catalog' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.sound' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.nio' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.management' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.concurrent.atomic' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.rmi.ssl' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.event' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.management.openmbean' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.color' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.text.rtf' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.javadoc.doclet' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.crypto' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.print' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.plaf.multi' version='0.0.0'/>
+        <provided namespace='java.package' name='java.nio.channels.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.imageio.event' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.net.ssl' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.stream.events' version='0.0.0'/>
+        <provided namespace='java.package' name='java.rmi.registry' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.java.accessibility.util' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.print.attribute' version='0.0.0'/>
+        <provided namespace='java.package' name='java.nio.file.attribute' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.management.jfr' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.constant' version='0.0.0'/>
+        <provided namespace='java.package' name='java.nio' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.jdi.request' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.instrument' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.ref' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.regex' version='0.0.0'/>
+        <provided namespace='java.package' name='org.ietf.jgss' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.sound.midi.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.filechooser' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.crypto.dsig.spec' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.reflect' version='0.0.0'/>
+        <provided namespace='java.package' name='java.security' version='0.0.0'/>
+        <provided namespace='java.package' name='org.xml.sax.helpers' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.naming.ldap.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.jshell' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.tools.attach' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.print.attribute.standard' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.jshell.tool' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.tools.jconsole' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.classfile.attribute' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.security.jarsigner' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.security.auth' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.security.auth.kerberos' version='0.0.0'/>
+        <provided namespace='java.package' name='java.sql' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.crypto' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.classfile.constantpool' version='0.0.0'/>
+        <provided namespace='java.package' name='java.nio.channels' version='0.0.0'/>
+        <provided namespace='java.package' name='java.time.temporal' version='0.0.0'/>
+        <provided namespace='java.package' name='org.w3c.dom.stylesheets' version='0.0.0'/>
+        <provided namespace='java.package' name='java.nio.charset' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.sound.midi' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.net' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.imageio.stream' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.management.monitor' version='0.0.0'/>
+        <provided namespace='java.package' name='org.xml.sax' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.source.doctree' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.net.httpserver.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.dnd' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.jshell.execution' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.im' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.text.html.parser' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.transform' version='0.0.0'/>
+        <provided namespace='java.package' name='org.w3c.dom.css' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.crypto.dsig' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.tools.javac' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.jdi' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.security.jgss' version='0.0.0'/>
+        <provided namespace='java.package' name='java.nio.charset.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='java.text.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.management.timer' version='0.0.0'/>
+        <provided namespace='java.package' name='java.security.spec' version='0.0.0'/>
+        <provided namespace='java.package' name='java.nio.file.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.crypto.dsig.keyinfo' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.accessibility' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.namespace' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.source.tree' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.font' version='0.0.0'/>
+        <provided namespace='java.package' name='java.security.interfaces' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.tools.attach.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.management.relation' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.management.modelmbean' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.sound.sampled.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.transform.sax' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.management.remote.rmi' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.naming.event' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.concurrent.locks' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.nio.mapmode' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.plaf.nimbus' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.event' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.sql.rowset.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.border' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.jfr.consumer' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.management.remote' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.imageio.plugins.tiff' version='0.0.0'/>
+        <provided namespace='java.package' name='org.xml.sax.ext' version='0.0.0'/>
+        <provided namespace='java.package' name='sun.reflect' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.classfile.instruction' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.lang.model.util' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.security.auth.callback' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.runtime' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.security.sasl' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.security.auth.module' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.crypto.dom' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.naming.ldap' version='0.0.0'/>
+        <provided namespace='java.package' name='java.time.zone' version='0.0.0'/>
+        <provided namespace='java.package' name='netscape.javascript' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.im.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='java.beans.beancontext' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.management' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.tools' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.crypto.spec' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.script' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.module' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.source.util' version='0.0.0'/>
+        <provided namespace='java.package' name='jdk.management' version='0.0.0'/>
+        <provided namespace='java.package' name='java.io' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.sql.rowset' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.jar' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.crypto.interfaces' version='0.0.0'/>
+        <provided namespace='java.package' name='org.w3c.dom.ranges' version='0.0.0'/>
+        <provided namespace='osgi.ee' name='OSGi/Minimum' version='1.0.0'/>
+        <provided namespace='osgi.ee' name='OSGi/Minimum' version='1.1.0'/>
+        <provided namespace='osgi.ee' name='OSGi/Minimum' version='1.2.0'/>
+        <provided namespace='osgi.ee' name='JRE' version='1.0.0'/>
+        <provided namespace='osgi.ee' name='JRE' version='1.1.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='1.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='1.1.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='1.2.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='1.3.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='1.4.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='1.5.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='1.6.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='1.7.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='1.8.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='9.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='10.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='11.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='12.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='13.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='14.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='15.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='16.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='17.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='18.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='19.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='20.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='21.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='22.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='23.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='24.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE' version='25.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE/compact1' version='1.8.0'/>
+        <provided namespace='osgi.ee' name='JavaSE/compact1' version='25.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE/compact2' version='1.8.0'/>
+        <provided namespace='osgi.ee' name='JavaSE/compact2' version='25.0.0'/>
+        <provided namespace='osgi.ee' name='JavaSE/compact3' version='1.8.0'/>
+        <provided namespace='osgi.ee' name='JavaSE/compact3' version='25.0.0'/>
+      </provides>
+      <touchpoint id='org.eclipse.equinox.p2.native' version='1.0.0'/>
+    </unit>
+    <unit id='20261014-1314.org.mard.dt.editing.public' version='1.0.0.07C-cKB8U67737E535A1595A'>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='1C:EDT Plugins'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='20261014-1314.org.mard.dt.editing.public' version='1.0.0.07C-cKB8U67737E535A1595A'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.group' range='[0.7.0.20261014-1314,0.7.0.20261014-1314]'/>
+      </requires>
+    </unit>
+    <unit id='20261014-1314.Default' version='1.0.0.7D7C9CcKA---BkQIYoKQayIMMCA'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='Uncategorized'/>
+        <property name='org.eclipse.equinox.p2.description' value='Default category for otherwise uncategorized features'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='20261014-1314.Default' version='1.0.0.7D7C9CcKA---BkQIYoKQayIMMCA'/>
+      </provides>
+      <requires size='4'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.license.feature.group' range='[2.0.2.v20181016-2210,2.0.2.v20181016-2210]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.feature.feature.group' range='[2.5.0.202502081502,2.5.0.202502081502]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.jcodings' range='[1.0.63.v20250307-1000,1.0.63.v20250307-1000]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.joni' range='[2.2.6.v20250329-1000,2.2.6.v20250329-1000]'/>
+      </requires>
+    </unit>
+    <unit id='org.joni' version='2.2.6.v20250329-1000' singleton='false' generation='2'>
+      <update id='org.joni' range='[0.0.0,2.2.6.v20250329-1000)' severity='0'/>
+      <properties size='5'>
+        <property name='org.eclipse.equinox.p2.name' value='Bundle org.jruby.joni : joni'/>
+        <property name='maven-wrapped-groupId' value='org.jruby.joni'/>
+        <property name='maven-wrapped-artifactId' value='joni'/>
+        <property name='maven-wrapped-version' value='2.2.6'/>
+        <property name='maven-wrapped-classifier' value=''/>
+      </properties>
+      <provides size='10'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.joni' version='2.2.6.v20250329-1000'/>
+        <provided namespace='osgi.bundle' name='org.joni' version='2.2.6.v20250329-1000'/>
+        <provided namespace='java.package' name='org.joni' version='2.2.6'>
+          <properties size='1'>
+            <property name='java.package.directive.uses' value='org.jcodings,org.joni.ast,org.joni.constants' type='List'/>
+          </properties>
+        </provided>
+        <provided namespace='java.package' name='org.joni.ast' version='2.2.6'>
+          <properties size='1'>
+            <property name='java.package.directive.uses' value='org.jcodings,org.joni,org.joni.constants.internal' type='List'/>
+          </properties>
+        </provided>
+        <provided namespace='java.package' name='org.joni.bench' version='2.2.6'/>
+        <provided namespace='java.package' name='org.joni.constants' version='2.2.6'/>
+        <provided namespace='java.package' name='org.joni.constants.internal' version='2.2.6'/>
+        <provided namespace='java.package' name='org.joni.exception' version='2.2.6'>
+          <properties size='1'>
+            <property name='java.package.directive.uses' value='org.jcodings.exception' type='List'/>
+          </properties>
+        </provided>
+        <provided namespace='osgi.identity' name='org.joni' version='2.2.6.v20250329-1000'>
+          <properties size='1'>
+            <property name='type' value='osgi.bundle'/>
+          </properties>
+        </provided>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='13'>
+        <required namespace='java.package' name='java.io' range='0.0.0'/>
+        <required namespace='java.package' name='java.lang' range='0.0.0'/>
+        <required namespace='java.package' name='java.lang.ref' range='0.0.0'/>
+        <required namespace='java.package' name='java.nio.charset' range='0.0.0'/>
+        <required namespace='java.package' name='java.util' range='0.0.0'/>
+        <required namespace='java.package' name='org.jcodings' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.jcodings.constants' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.jcodings.exception' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.jcodings.specific' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.jcodings.unicode' range='[1.0.0,2.0.0)'/>
+        <required namespace='java.package' name='org.jcodings.util' range='[1.0.0,2.0.0)'/>
+        <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=1.8))'>
+          <description>
+            org.joni
+          </description>
+        </requiredProperties>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.joni.source' range='[2.2.6.v20250329-1000,2.2.6.v20250329-1000]' optional='true'>
+          <filter>
+            (org.eclipse.update.install.sources=true)
+          </filter>
+        </required>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.joni' version='2.2.6.v20250329-1000'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.joni&#xA;Bundle-Version: 2.2.6.v20250329-1000
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+  </units>
+</repository>
