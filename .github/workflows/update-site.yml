@@ -1,0 +1,84 @@
+name: update-site
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -Dtycho.localArtifacts=ignore -Dtycho.p2.httptransport.type=JavaUrl -Dmaven.repo.local=.m2/repository -f build/pom.xml -s build/settings.xml"
+  # historical versions seeded once from the upstream GitLab Pages site
+  SEED_VERSIONS: "0.6.0 0.5.0 0.4.0"
+
+jobs:
+  update-site:
+    runs-on: ubuntu-latest
+    container: maven:3.9-eclipse-temurin-25
+    steps:
+      - name: Install tools
+        run: apt-get update -qq && apt-get install -y -qq git curl unzip
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: .m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('build/pom.xml', '**/*.target') }}
+          restore-keys: ${{ runner.os }}-m2-
+
+      - name: Build p2 repository
+        run: mvn $MAVEN_CLI_OPTS clean package -P build,site
+
+      - name: Publish update site
+        run: |
+          set -eu
+          VER=$(sed -n 's/.*<version>\(.*\)<\/version>.*/\1/p' build/pom.xml | head -1 | sed 's/-SNAPSHOT//')
+          echo "Build version: ${VER}"
+          ZIP=$(find org.mard.dt.editing.repository/target -type f -name "repository-*-SNAPSHOT.zip")
+          cp README.md /tmp/README.md
+          cp build/update-site.sh /tmp/update-site.sh
+
+          # master builds publish to the version dir; any other ref publishes to
+          # its version dir too when the site has no such version yet (a new
+          # version claims its dir on first build), otherwise to a branch dir
+          # that stays out of the composite (script lists only N.N.N dirs)
+          if [ "$GITHUB_REF_NAME" = "master" ] || [ ! -d "update/$VER" ]; then
+            DIR=$VER
+          else
+            DIR=$(echo "$GITHUB_REF_NAME" | tr '/' '-')
+          fi
+          echo "Site dir: ${DIR}"
+
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git init -q .
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote remove origin 2>/dev/null || true
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+            git fetch -q origin gh-pages
+            git switch gh-pages
+          else
+            git switch --orphan gh-pages
+          fi
+
+          # keep build outputs out of the site branch
+          printf '.m2/\n**/target/\n' > .gitignore
+
+          for V in $SEED_VERSIONS; do
+            if [ ! -d "update/$V" ]; then
+              curl -fsSL -o "/tmp/repo-$V.zip" "https://marmyshev.gitlab.io/edt-editing/$V/repo.zip"
+              bash /tmp/update-site.sh . "$V" "/tmp/repo-$V.zip"
+            fi
+          done
+          bash /tmp/update-site.sh . "$DIR" "$ZIP"
+
+          git add -A
+          git commit -m "Update site: ${DIR}" || echo "Nothing to commit"
+          git push origin gh-pages
+        env:
+          README_FILE: /tmp/README.md
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
