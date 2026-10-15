@@ -10,6 +10,7 @@ permissions:
 
 env:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -Dtycho.localArtifacts=ignore -Dtycho.p2.httptransport.type=JavaUrl -Dmaven.repo.local=.m2/repository -f build/pom.xml -s build/settings.xml"
+  MAVEN_OPTS: "-Djdk.xml.maxGeneralEntitySizeLimit=0 -Djdk.xml.totalEntitySizeLimit=0"
   # historical versions seeded once from the upstream GitLab Pages site
   SEED_VERSIONS: "0.6.0 0.5.0 0.4.0"
 
