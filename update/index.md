@@ -12,6 +12,7 @@ Download zip archive of P2-repository, then select menu: `Help -> Install New So
 Available versions:
 
 - [0.7.0 P2-ZIP](../0.7.0/repo.zip)
+- [0.6.1 P2-ZIP](../0.6.1/repo.zip)
 - [0.6.0 P2-ZIP](../0.6.0/repo.zip)
 - [0.5.0 P2-ZIP](../0.5.0/repo.zip)
 - [0.4.0 P2-ZIP](../0.4.0/repo.zip)
