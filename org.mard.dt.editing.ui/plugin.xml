@@ -126,6 +126,7 @@
                </visibleWhen>
                <command
                      commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -134,6 +135,7 @@
                </command>
                <command
                      commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -142,6 +144,7 @@
                </command>
                <command
                      commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -176,6 +179,7 @@
                </visibleWhen>
                <command
                      commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -184,6 +188,7 @@
                </command>
                <command
                      commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -192,6 +197,7 @@
                </command>
                <command
                      commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -226,6 +232,7 @@
                </visibleWhen>
                <command
                      commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -234,6 +241,7 @@
                </command>
                <command
                      commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -242,6 +250,7 @@
                </command>
                <command
                      commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -269,6 +278,7 @@
                </visibleWhen>
                <command
                      commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -277,6 +287,7 @@
                </command>
                <command
                      commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -285,6 +296,7 @@
                </command>
                <command
                      commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -319,6 +331,7 @@
                </visibleWhen>
                <command
                      commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -327,6 +340,7 @@
                </command>
                <command
                      commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
@@ -335,6 +349,7 @@
                </command>
                <command
                      commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
                      style="push">
                   <parameter
                         name="org.mard.dt.editing.ui.commands.param.target"
