@@ -104,6 +104,9 @@ public class EditingSettingsYamlUpdater
 
         String eol = content.contains("\r\n") ? "\r\n" : "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         String[] lines = content.split("\n", -1); //$NON-NLS-1$
+        // '\r' left on lines would double up with the joined eol ('\r\r\n' → blank lines)
+        for (int i = 0; i < lines.length; i++)
+            lines[i] = strip(lines[i]);
 
         boolean changed = false;
         for (String section : Arrays.asList(DISABLE, ENABLE))
@@ -280,6 +283,9 @@ public class EditingSettingsYamlUpdater
     {
         String eol = content.contains("\r\n") ? "\r\n" : "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         String[] all = content.split("\n", -1); //$NON-NLS-1$
+        // strip trailing '\r' so join with detected eol doesn't produce '\r\r\n'
+        for (int i = 0; i < all.length; i++)
+            all[i] = strip(all[i]);
         boolean trailingNewline = all.length > 0 && all[all.length - 1].isEmpty();
         String[] lines = trailingNewline ? Arrays.copyOf(all, all.length - 1) : all;
 
