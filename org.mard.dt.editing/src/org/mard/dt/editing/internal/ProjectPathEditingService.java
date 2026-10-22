@@ -73,6 +73,8 @@ import com._1c.g5.v8.dt.lifecycle.LifecyclePhase;
 import com._1c.g5.v8.dt.lifecycle.LifecycleService;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection;
+import com._1c.g5.v8.dt.metadata.mdclass.Column;
+import com._1c.g5.v8.dt.metadata.mdclass.EnumValue;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com._1c.g5.v8.dt.metadata.mdclass.Subsystem;
 import com.google.common.cache.Cache;
@@ -439,6 +441,18 @@ public class ProjectPathEditingService
             segments.addFirst(tabularSection.getName());
             container = tabularSection.eContainer();
         }
+        if (container instanceof EnumValue enumValue)
+        {
+            segments.addFirst("Value"); //$NON-NLS-1$
+            segments.addFirst(enumValue.getName());
+            container = enumValue.eContainer();
+        }
+        else if (container instanceof Column column)
+        {
+            segments.addFirst("Column"); //$NON-NLS-1$
+            segments.addFirst(column.getName());
+            container = column.eContainer();
+        }
 
         if (segments.isEmpty() || !(container instanceof IBmObject top) || !top.bmIsTop())
             return null;
@@ -457,7 +471,9 @@ public class ProjectPathEditingService
         String[] segments = fullname.trim().split("\\."); //$NON-NLS-1$
         // generator produces marker as LAST segment: Catalog.X.<name>.Attribute
         return segments.length >= 3 && ("Attribute".equals(segments[segments.length - 1]) //$NON-NLS-1$
-            || "TabularSection".equals(segments[segments.length - 1])); //$NON-NLS-1$
+            || "TabularSection".equals(segments[segments.length - 1]) //$NON-NLS-1$
+            || "Value".equals(segments[segments.length - 1]) //$NON-NLS-1$
+            || "Column".equals(segments[segments.length - 1])); //$NON-NLS-1$
     }
 
     private void addSubsystemPath(Set<IPath> paths, List<String> subsystems, IBmModel model,

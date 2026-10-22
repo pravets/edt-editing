@@ -517,6 +517,12 @@
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
                         </instanceof>
+<instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.EnumValue">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Column">
+                        </instanceof>
                      </or>
                   </iterate>
                </with>
