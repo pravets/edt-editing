@@ -29,6 +29,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.dnd.Clipboard;
@@ -45,7 +46,7 @@ import org.mard.dt.editing.IPathEditingService;
 import org.mard.dt.editing.internal.ui.Messages;
 import org.mard.dt.editing.internal.ui.UiPlugin;
 
-import com._1c.g5.v8.bm.core.IBmObject;
+import com._1c.g5.v8.dt.core.filesystem.IQualifiedNameFilePathConverter;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.metadata.mdclass.AbstractForm;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicForm;
@@ -78,11 +79,14 @@ public class EditingRestrictionsHandler
     @Inject
     private IResourceLookup resourceLookup;
 
+    @Inject
+    private IQualifiedNameFilePathConverter qualifiedNameFilePathConverter;
+
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
     {
         IStructuredSelection selection = HandlerUtil.getCurrentStructuredSelection(event);
-        if (selection.size() != 1 || !(selection.getFirstElement() instanceof IBmObject selected))
+        if (selection.size() != 1 || !(selection.getFirstElement() instanceof EObject selected))
             return null;
 
         String commandId = event.getCommand().getId();
@@ -119,17 +123,17 @@ public class EditingRestrictionsHandler
         return null;
     }
 
-    private void copy(ExecutionEvent event, IBmObject selected, String targetParam)
+    private void copy(ExecutionEvent event, EObject selected, String targetParam)
         throws CoreException, ExecutionException
     {
-        IBmObject target = resolveTarget(selected, targetParam);
+        EObject target = resolveTarget(selected, targetParam);
         if (target == null)
         {
             error(event, Messages.EditingRestrictionsHandler_Module_not_found, null);
             return;
         }
 
-        String fqn = target.bmGetFqn();
+        String fqn = getFqn(target);
         if (fqn == null || fqn.isBlank())
         {
             error(event, Messages.EditingRestrictionsHandler_Fqn_not_resolved, null);
@@ -148,18 +152,18 @@ public class EditingRestrictionsHandler
         }
     }
 
-    private void addToSettings(ExecutionEvent event, IProject project, IBmObject selected, String targetParam,
+    private void addToSettings(ExecutionEvent event, IProject project, EObject selected, String targetParam,
         boolean enable)
         throws CoreException, IOException, ExecutionException
     {
-        IBmObject target = resolveTarget(selected, targetParam);
+        EObject target = resolveTarget(selected, targetParam);
         if (target == null)
         {
             error(event, Messages.EditingRestrictionsHandler_Module_not_found, null);
             return;
         }
 
-        String fqn = target.bmGetFqn();
+        String fqn = getFqn(target);
         if (fqn == null || fqn.isBlank())
         {
             error(event, Messages.EditingRestrictionsHandler_Fqn_not_resolved, null);
@@ -216,27 +220,32 @@ public class EditingRestrictionsHandler
         }).schedule();
     }
 
-    private IBmObject resolveTarget(IBmObject selected, String targetParam)
+    private EObject resolveTarget(EObject selected, String targetParam)
     {
         if (targetParam == null || TARGET_SELF.equals(targetParam))
             return selected;
 
         return switch (targetParam)
         {
-            case TARGET_OBJECT_MODULE ->
-                selected instanceof Catalog catalog ? (IBmObject)catalog.getObjectModule() : null;
-            case TARGET_MANAGER_MODULE ->
-                selected instanceof Catalog catalog ? (IBmObject)catalog.getManagerModule() : null;
+            case TARGET_OBJECT_MODULE -> selected instanceof Catalog catalog ? catalog.getObjectModule() : null;
+            case TARGET_MANAGER_MODULE -> selected instanceof Catalog catalog ? catalog.getManagerModule() : null;
             case TARGET_FORM_MODULE -> {
                 if (selected instanceof AbstractForm form && form.getModule() != null)
-                    yield (IBmObject)form.getModule();
+                    yield form.getModule();
                 if (selected instanceof BasicForm basicForm && basicForm.getForm() != null
                     && basicForm.getForm().getModule() != null)
-                    yield (IBmObject)basicForm.getForm().getModule();
+                    yield basicForm.getForm().getModule();
                 yield null;
             }
             default -> null;
         };
+    }
+
+    private String getFqn(EObject target)
+    {
+        // BSL modules aren't attached to BM, so the FQN is derived from the resource URI like EDT does.
+        String path = EcoreUtil.getURI(target).trimFragment().toString();
+        return qualifiedNameFilePathConverter.getFqn(path).toString();
     }
 
     private boolean isDirtyEditor(ExecutionEvent event, IFile file)
