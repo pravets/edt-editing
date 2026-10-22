@@ -455,8 +455,9 @@ public class ProjectPathEditingService
         if (fullname == null)
             return false;
         String[] segments = fullname.trim().split("\\."); //$NON-NLS-1$
-        return segments.length >= 4 && ("Attribute".equals(segments[segments.length - 2]) //$NON-NLS-1$
-            || "TabularSection".equals(segments[segments.length - 2])); //$NON-NLS-1$
+        // generator produces marker as LAST segment: Catalog.X.<name>.Attribute
+        return segments.length >= 3 && ("Attribute".equals(segments[segments.length - 1]) //$NON-NLS-1$
+            || "TabularSection".equals(segments[segments.length - 1])); //$NON-NLS-1$
     }
 
     private void addSubsystemPath(Set<IPath> paths, List<String> subsystems, IBmModel model,
