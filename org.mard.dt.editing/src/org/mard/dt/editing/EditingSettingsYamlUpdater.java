@@ -329,14 +329,6 @@ public class EditingSettingsYamlUpdater
             at = block.lastItemIndex >= 0 ? block.lastItemIndex + 1 : block.keyIndex + 1;
         }
 
-        if (eol.equals("\r\n")) //$NON-NLS-1$
-        {
-            for (int i = 0; i < inserted.length; i++)
-            {
-                inserted[i] += '\r';
-            }
-        }
-
         List<String> result = new ArrayList<>(Arrays.asList(lines).subList(0, at));
         for (String line : inserted)
         {
@@ -347,10 +339,10 @@ public class EditingSettingsYamlUpdater
             result.add(lines[i]);
         }
 
-        StringBuilder sb = new StringBuilder(String.join("\n", result)); //$NON-NLS-1$
+        StringBuilder sb = new StringBuilder(String.join(eol, result));
         if (trailingNewline && !result.isEmpty())
         {
-            sb.append('\n');
+            sb.append(eol);
         }
         return sb.toString();
     }

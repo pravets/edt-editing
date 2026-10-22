@@ -61,6 +61,7 @@ import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
+import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.common.git.GitUtils;
 import com._1c.g5.v8.dt.core.filesystem.IProjectFileSystemSupport;
 import com._1c.g5.v8.dt.core.filesystem.IProjectFileSystemSupportProvider;
@@ -71,6 +72,7 @@ import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.lifecycle.LifecycleParticipant;
 import com._1c.g5.v8.dt.lifecycle.LifecyclePhase;
 import com._1c.g5.v8.dt.lifecycle.LifecycleService;
+import com._1c.g5.v8.dt.metadata.mdclass.BasicCommand;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection;
 import com._1c.g5.v8.dt.metadata.mdclass.Column;
@@ -179,6 +181,28 @@ public class ProjectPathEditingService
         if (project == null || eObject == null || eObject.eIsProxy())
             return true;
 
+        // BSL module code lives in a separate Module.bsl file, so the owner-based decision
+        // does not apply directly; check both the module file path and the owner path.
+        if (eObject instanceof Module module)
+        {
+            ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
+            IProjectFileSystemSupport fileSystemSupport =
+                fileSystemSupportProvider.getProjectFileSystemSupport(project);
+            IPath modulePath = fileSystemSupport != null ? fileSystemSupport.getPath(eObject) : null;
+            EObject owner = module.getOwner();
+            IPath ownerPath = fileSystemSupport != null && owner != null && !owner.eIsProxy()
+                ? fileSystemSupport.getPath(owner)
+                : null;
+            boolean moduleDecision = modulePath != null ? canEdit(cache, modulePath) : true;
+            boolean ownerDecision = ownerPath != null ? canEdit(cache, ownerPath) : true;
+            boolean result = moduleDecision && ownerDecision;
+            if (DEBUG_EDITING)
+                CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
+                    "canEdit module: modulePath={0}, ownerPath={1}, result={2}", //$NON-NLS-1$
+                    modulePath, ownerPath, result)));
+            return result;
+        }
+
         // Attributes and tabular sections share the owner's resource file, so they are checked
         // by their own 1C full name first; otherwise the owner's decision applies.
         String subObjectFqn = getObjectFullName(eObject);
@@ -189,6 +213,10 @@ public class ProjectPathEditingService
             if (cache.getEnableFullnames().contains(subObjectFqn))
             {
                 result = true;
+            }
+            else if (cache.getDisableFullnames().contains(subObjectFqn))
+            {
+                result = false;
             }
             else
             {
@@ -413,7 +441,22 @@ public class ProjectPathEditingService
                 // BSL modules are not BM top objects, resolve their paths from the FQN directly.
                 List<IPath> modulePaths =
                     qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(fullname));
-                if (modulePaths != null)
+                if (modulePaths == null || modulePaths.isEmpty())
+                {
+                    // Form modules (<form FQN>.Module) have no direct FQN-to-path mapping;
+                    // resolve the form path and use the sibling Module.bsl file.
+                    if (fullname.endsWith(".Module")) //$NON-NLS-1$
+                    {
+                        List<IPath> basePaths = qualifiedNameFilePathConverter.getAllPossibleFilePaths(
+                            QualifiedName.create(fullname.substring(0, fullname.length() - ".Module".length()))); //$NON-NLS-1$
+                        if (basePaths != null)
+                        {
+                            basePaths.stream().filter(Objects::nonNull).map(ProjectPathEditingService::moduleFilePath)
+                                .forEach(paths::add);
+                        }
+                    }
+                }
+                else
                 {
                     modulePaths.stream().filter(Objects::nonNull).forEach(paths::add);
                 }
@@ -428,6 +471,18 @@ public class ProjectPathEditingService
             return null;
 
         LinkedList<String> segments = new LinkedList<>();
+        EObject container = collectSegments(object, segments);
+
+        if (segments.isEmpty() || !(container instanceof IBmObject top) || !top.bmIsTop())
+            return null;
+
+        return buildFullName(top.bmGetFqn(), segments);
+    }
+
+    // Walks the sub-object chain (features, tabular sections, enum values, columns, commands)
+    // and collects the FQN suffix segments; returns the outermost container.
+    static EObject collectSegments(EObject object, LinkedList<String> segments)
+    {
         EObject container = object;
         while (container instanceof BasicFeature feature)
         {
@@ -453,18 +508,32 @@ public class ProjectPathEditingService
             segments.addFirst(column.getName());
             container = column.eContainer();
         }
+        else if (container instanceof BasicCommand command && !(container instanceof IBmObject top && top.bmIsTop()))
+        {
+            segments.addFirst("Command"); //$NON-NLS-1$
+            segments.addFirst(command.getName());
+            container = command.eContainer();
+        }
+        return container;
+    }
 
-        if (segments.isEmpty() || !(container instanceof IBmObject top) || !top.bmIsTop())
-            return null;
-
-        String baseFqn = top.bmGetFqn();
-        if (baseFqn == null || baseFqn.isBlank())
+    public static String buildFullName(String baseFqn, List<String> segments)
+    {
+        if (baseFqn == null || baseFqn.isBlank() || segments.isEmpty())
             return null;
 
         return baseFqn + "." + String.join(".", segments); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    private static boolean isSubObjectFqn(String fullname)
+    // Form module code file is the sibling Module.bsl of the form file.
+    public static IPath moduleFilePath(IPath basePath)
+    {
+        if (basePath == null)
+            return null;
+        return basePath.removeLastSegments(1).append("Module.bsl"); //$NON-NLS-1$
+    }
+
+    public static boolean isSubObjectFqn(String fullname)
     {
         if (fullname == null)
             return false;
@@ -473,7 +542,8 @@ public class ProjectPathEditingService
         return segments.length >= 3 && ("Attribute".equals(segments[segments.length - 1]) //$NON-NLS-1$
             || "TabularSection".equals(segments[segments.length - 1]) //$NON-NLS-1$
             || "Value".equals(segments[segments.length - 1]) //$NON-NLS-1$
-            || "Column".equals(segments[segments.length - 1])); //$NON-NLS-1$
+            || "Column".equals(segments[segments.length - 1]) //$NON-NLS-1$
+            || "Command".equals(segments[segments.length - 1])); //$NON-NLS-1$
     }
 
     private void addSubsystemPath(Set<IPath> paths, List<String> subsystems, IBmModel model,
@@ -582,13 +652,18 @@ public class ProjectPathEditingService
         EditingSettings settings = loadEditingSettings(project);
         if (settings == null)
         {
-            return new ProjectCache(disable, enable, true, Set.of());
+            return new ProjectCache(disable, enable, true, Set.of(), Set.of());
         }
 
         Set<String> enableFullnames = new HashSet<>();
         if (settings.getEnable() != null && settings.getEnable().getFullname() != null)
             settings.getEnable().getFullname().stream().filter(ProjectPathEditingService::isSubObjectFqn)
                 .forEach(enableFullnames::add);
+
+        Set<String> disableFullnames = new HashSet<>();
+        if (settings.getDisable() != null && settings.getDisable().getFullname() != null)
+            settings.getDisable().getFullname().stream().filter(ProjectPathEditingService::isSubObjectFqn)
+                .forEach(disableFullnames::add);
 
         if (settings.getDisable() != null)
             addAllPath(project, settings.getDisable(), disable);
@@ -608,7 +683,7 @@ public class ProjectPathEditingService
         }
 
         boolean canEditInMerge = settings.getEnable() != null && settings.getEnable().isMerge();
-        return new ProjectCache(disable, enable, canEditInMerge, enableFullnames);
+        return new ProjectCache(disable, enable, canEditInMerge, enableFullnames, disableFullnames);
     }
 
     private EditingSettings loadEditingSettings(IProject project)
@@ -632,8 +707,10 @@ public class ProjectPathEditingService
 
         private final Set<String> enableFullnames;
 
+        private final Set<String> disableFullnames;
+
         public ProjectCache(Set<IPath> disable, Set<IPath> enable, boolean canEditInMerge,
-            Set<String> enableFullnames)
+            Set<String> enableFullnames, Set<String> disableFullnames)
         {
             if (disable == null || disable.isEmpty())
             {
@@ -656,6 +733,9 @@ public class ProjectPathEditingService
             this.enableFullnames = enableFullnames == null || enableFullnames.isEmpty()
                 ? Set.of()
                 : Set.copyOf(enableFullnames);
+            this.disableFullnames = disableFullnames == null || disableFullnames.isEmpty()
+                ? Set.of()
+                : Set.copyOf(disableFullnames);
 
         }
 
@@ -682,6 +762,11 @@ public class ProjectPathEditingService
         public Set<String> getEnableFullnames()
         {
             return enableFullnames;
+        }
+
+        public Set<String> getDisableFullnames()
+        {
+            return disableFullnames;
         }
 
     }
