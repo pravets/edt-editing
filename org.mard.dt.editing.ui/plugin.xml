@@ -40,26 +40,29 @@
       <command
             id="org.mard.dt.editing.ui.commands.copyFqn"
             name="%command.copyFqn.name">
-         <parameter
+         <commandParameter
                id="org.mard.dt.editing.ui.commands.param.target"
-               name="Target">
-         </parameter>
+               name="Target"
+               optional="true">
+         </commandParameter>
       </command>
       <command
             id="org.mard.dt.editing.ui.commands.addDisable"
             name="%command.addDisable.name">
-         <parameter
+         <commandParameter
                id="org.mard.dt.editing.ui.commands.param.target"
-               name="Target">
-         </parameter>
+               name="Target"
+               optional="true">
+         </commandParameter>
       </command>
       <command
             id="org.mard.dt.editing.ui.commands.addEnable"
             name="%command.addEnable.name">
-         <parameter
+         <commandParameter
                id="org.mard.dt.editing.ui.commands.param.target"
-               name="Target">
-         </parameter>
+               name="Target"
+               optional="true">
+         </commandParameter>
       </command>
    </extension>
    <extension
