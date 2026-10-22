@@ -112,9 +112,7 @@
                         </instanceof>
                         <not>
                            <or>
-                              <instanceof
-                                    value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
-                              </instanceof>
+
                               <instanceof
                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
                               </instanceof>
