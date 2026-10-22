@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <?metadataRepository version='1.2.0'?>
-<repository name='Disable Editing plugin 20261022-1018' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1'>
+<repository name='Disable Editing plugin 20261022-1029' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1'>
   <properties size='1'>
-    <property name='p2.timestamp' value='1792664323496'/>
+    <property name='p2.timestamp' value='1792664982134'/>
   </properties>
   <units size='17'>
-    <unit id='org.mard.dt.editing.feature.feature.group' version='0.6.1.20261022-1018' singleton='false'>
-      <update id='org.mard.dt.editing.feature.feature.group' range='[0.0.0,0.6.1.20261022-1018)' severity='0'/>
+    <unit id='org.mard.dt.editing.feature.feature.group' version='0.6.1.20261022-1029' singleton='false'>
+      <update id='org.mard.dt.editing.feature.feature.group' range='[0.0.0,0.6.1.20261022-1029)' severity='0'/>
       <properties size='12'>
         <property name='org.eclipse.equinox.p2.name' value='%featureName'/>
         <property name='org.eclipse.equinox.p2.description' value='%description'/>
@@ -22,15 +22,15 @@
         <property name='df_LT.description' value='1C:EDT Editing plugin allows to disable editing in UI editors via settings.'/>
       </properties>
       <provides size='2'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.group' version='0.6.1.20261022-1018'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.group' version='0.6.1.20261022-1029'/>
         <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
       </provides>
       <requires size='5'>
         <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.feature.feature.group' range='[2.5.0.202502081502,2.5.0.202502081502]' optional='true'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing' range='[0.6.1.20261022-1018,0.6.1.20261022-1018]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing' range='[0.6.1.20261022-1029,0.6.1.20261022-1029]'/>
         <required namespace='org.eclipse.equinox.p2.iu' name='org.yaml.snakeyaml' range='[1.27.0,1.27.0]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.ui' range='[0.6.1.20261022-1018,0.6.1.20261022-1018]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.jar' range='[0.6.1.20261022-1018,0.6.1.20261022-1018]'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.ui' range='[0.6.1.20261022-1029,0.6.1.20261022-1029]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.jar' range='[0.6.1.20261022-1029,0.6.1.20261022-1029]'>
           <filter>
             (org.eclipse.update.install.features=true)
           </filter>
@@ -98,6 +98,19 @@
           </instruction>
         </instructions>
       </touchpointData>
+    </unit>
+    <unit id='20261022-1029.org.mard.dt.editing.public' version='1.0.0.07A1cKB8U67737E53771537K'>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='1C:EDT Plugins'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='20261022-1029.org.mard.dt.editing.public' version='1.0.0.07A1cKB8U67737E53771537K'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.group' range='[0.6.1.20261022-1029,0.6.1.20261022-1029]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
     </unit>
     <unit id='org.brainwy.liclipsetext.feature.feature.group' version='2.5.0.202502081502' singleton='false'>
       <update id='org.brainwy.liclipsetext.feature.feature.group' range='[0.0.0,2.5.0.202502081502)' severity='0'/>
@@ -279,20 +292,7 @@
         Copyright by Brainwy Software LTDA-ME
       </copyright>
     </unit>
-    <unit id='20261022-1018.org.mard.dt.editing.public' version='1.0.0.07A1cKB8U67737E53771535I'>
-      <properties size='2'>
-        <property name='org.eclipse.equinox.p2.name' value='1C:EDT Plugins'/>
-        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
-      </properties>
-      <provides size='1'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='20261022-1018.org.mard.dt.editing.public' version='1.0.0.07A1cKB8U67737E53771535I'/>
-      </provides>
-      <requires size='1'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.group' range='[0.6.1.20261022-1018,0.6.1.20261022-1018]'/>
-      </requires>
-      <touchpoint id='null' version='0.0.0'/>
-    </unit>
-    <unit id='org.mard.dt.editing.feature.feature.jar' version='0.6.1.20261022-1018'>
+    <unit id='org.mard.dt.editing.feature.feature.jar' version='0.6.1.20261022-1029'>
       <properties size='11'>
         <property name='org.eclipse.equinox.p2.name' value='%featureName'/>
         <property name='org.eclipse.equinox.p2.description' value='%description'/>
@@ -307,15 +307,15 @@
         <property name='maven-type' value='eclipse-feature'/>
       </properties>
       <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.jar' version='0.6.1.20261022-1018'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.jar' version='0.6.1.20261022-1029'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
-        <provided namespace='org.eclipse.update.feature' name='org.mard.dt.editing.feature' version='0.6.1.20261022-1018'/>
+        <provided namespace='org.eclipse.update.feature' name='org.mard.dt.editing.feature' version='0.6.1.20261022-1029'/>
       </provides>
       <filter>
         (org.eclipse.update.install.features=true)
       </filter>
       <artifacts size='1'>
-        <artifact classifier='org.eclipse.update.feature' id='org.mard.dt.editing.feature' version='0.6.1.20261022-1018'/>
+        <artifact classifier='org.eclipse.update.feature' id='org.mard.dt.editing.feature' version='0.6.1.20261022-1029'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
@@ -331,8 +331,8 @@
         </license>
       </licenses>
     </unit>
-    <unit id='org.mard.dt.editing' version='0.6.1.20261022-1018' generation='2'>
-      <update id='org.mard.dt.editing' range='[0.0.0,0.6.1.20261022-1018)' severity='0'/>
+    <unit id='org.mard.dt.editing' version='0.6.1.20261022-1029' generation='2'>
+      <update id='org.mard.dt.editing' range='[0.0.0,0.6.1.20261022-1029)' severity='0'/>
       <properties size='9'>
         <property name='df_LT.pluginName' value='Disable Editing plugin for 1C:EDT'/>
         <property name='df_LT.vendor' value='Dmitriy Marmyshev'/>
@@ -345,10 +345,10 @@
         <property name='maven-type' value='eclipse-plugin'/>
       </properties>
       <provides size='6'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing' version='0.6.1.20261022-1018'/>
-        <provided namespace='osgi.bundle' name='org.mard.dt.editing' version='0.6.1.20261022-1018'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing' version='0.6.1.20261022-1029'/>
+        <provided namespace='osgi.bundle' name='org.mard.dt.editing' version='0.6.1.20261022-1029'/>
         <provided namespace='java.package' name='org.mard.dt.editing' version='0.6.1'/>
-        <provided namespace='osgi.identity' name='org.mard.dt.editing' version='0.6.1.20261022-1018'>
+        <provided namespace='osgi.identity' name='org.mard.dt.editing' version='0.6.1.20261022-1029'>
           <properties size='1'>
             <property name='type' value='osgi.bundle'/>
           </properties>
@@ -372,8 +372,8 @@
         <required namespace='java.package' name='com._1c.g5.v8.dt.lifecycle' range='[3.0.0,4.0.0)'/>
         <required namespace='java.package' name='com._1c.g5.v8.dt.metadata.mdclass' range='[8.0.0,13.0.0)'/>
         <required namespace='java.package' name='com.google.common.cache' range='[32.1.0,33.0.0)'/>
-        <required namespace='java.package' name='com.google.inject' range='[1.4.0,2.0.0)'/>
-        <required namespace='java.package' name='com.google.inject.binder' range='[1.4.0,2.0.0)'/>
+        <required namespace='java.package' name='com.google.inject' range='[1.4.0,8.0.0)'/>
+        <required namespace='java.package' name='com.google.inject.binder' range='[1.4.0,8.0.0)'/>
         <required namespace='java.package' name='org.yaml.snakeyaml' range='[1.15.0,2.0.0)'/>
         <required namespace='java.package' name='org.yaml.snakeyaml.constructor' range='[1.15.0,2.0.0)'/>
         <required namespace='java.package' name='org.yaml.snakeyaml.introspector' range='[1.15.0,2.0.0)'/>
@@ -384,13 +384,13 @@
         </requiredProperties>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.mard.dt.editing' version='0.6.1.20261022-1018'/>
+        <artifact classifier='osgi.bundle' id='org.mard.dt.editing' version='0.6.1.20261022-1029'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.mard.dt.editing;singleton:=true&#xA;Bundle-Version: 0.6.1.20261022-1018
+            Bundle-SymbolicName: org.mard.dt.editing;singleton:=true&#xA;Bundle-Version: 0.6.1.20261022-1029
           </instruction>
         </instructions>
       </touchpointData>
@@ -433,25 +433,8 @@
         Copyright by Brainwy Software LTDA-ME
       </copyright>
     </unit>
-    <unit id='20261022-1018.Default' version='1.0.0.7D7C8ucLoE--BkQIYgKgWeIIoSk'>
-      <properties size='3'>
-        <property name='org.eclipse.equinox.p2.name' value='Uncategorized'/>
-        <property name='org.eclipse.equinox.p2.description' value='Default category for otherwise uncategorized features'/>
-        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
-      </properties>
-      <provides size='1'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='20261022-1018.Default' version='1.0.0.7D7C8ucLoE--BkQIYgKgWeIIoSk'/>
-      </provides>
-      <requires size='4'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.license.feature.group' range='[2.0.2.v20181016-2210,2.0.2.v20181016-2210]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.feature.feature.group' range='[2.5.0.202502081502,2.5.0.202502081502]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.joni' range='[2.2.1.v20230703-0749,2.2.1.v20230703-0749]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.jcodings' range='[1.0.58.v20230703-0749,1.0.58.v20230703-0749]'/>
-      </requires>
-      <touchpoint id='null' version='0.0.0'/>
-    </unit>
-    <unit id='org.mard.dt.editing.ui' version='0.6.1.20261022-1018' generation='2'>
-      <update id='org.mard.dt.editing.ui' range='[0.0.0,0.6.1.20261022-1018)' severity='0'/>
+    <unit id='org.mard.dt.editing.ui' version='0.6.1.20261022-1029' generation='2'>
+      <update id='org.mard.dt.editing.ui' range='[0.0.0,0.6.1.20261022-1029)' severity='0'/>
       <properties size='9'>
         <property name='df_LT.pluginName' value='Disable Editing plugin for 1C:EDT - UI module'/>
         <property name='df_LT.vendor' value='Dmitriy Marmyshev'/>
@@ -464,9 +447,9 @@
         <property name='maven-type' value='eclipse-plugin'/>
       </properties>
       <provides size='5'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.ui' version='0.6.1.20261022-1018'/>
-        <provided namespace='osgi.bundle' name='org.mard.dt.editing.ui' version='0.6.1.20261022-1018'/>
-        <provided namespace='osgi.identity' name='org.mard.dt.editing.ui' version='0.6.1.20261022-1018'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.ui' version='0.6.1.20261022-1029'/>
+        <provided namespace='osgi.bundle' name='org.mard.dt.editing.ui' version='0.6.1.20261022-1029'/>
+        <provided namespace='osgi.identity' name='org.mard.dt.editing.ui' version='0.6.1.20261022-1029'>
           <properties size='1'>
             <property name='type' value='osgi.bundle'/>
           </properties>
@@ -489,7 +472,7 @@
         <required namespace='java.package' name='com._1c.g5.v8.dt.ui.editor' range='[7.0.0,8.0.0)'/>
         <required namespace='java.package' name='com._1c.g5.wiring' range='[2.0.0,3.0.0)'/>
         <required namespace='java.package' name='com._1c.g5.wiring.binder' range='[1.1.0,2.0.0)'/>
-        <required namespace='java.package' name='com.google.inject' range='[1.3.0,6.0.0)'/>
+        <required namespace='java.package' name='com.google.inject' range='[1.3.0,8.0.0)'/>
         <required namespace='java.package' name='org.mard.dt.editing' range='[0.6.0,0.7.0)'/>
         <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=17))'>
           <description>
@@ -498,13 +481,13 @@
         </requiredProperties>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.mard.dt.editing.ui' version='0.6.1.20261022-1018'/>
+        <artifact classifier='osgi.bundle' id='org.mard.dt.editing.ui' version='0.6.1.20261022-1029'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.mard.dt.editing.ui;singleton:=true&#xA;Bundle-Version: 0.6.1.20261022-1018
+            Bundle-SymbolicName: org.mard.dt.editing.ui;singleton:=true&#xA;Bundle-Version: 0.6.1.20261022-1029
           </instruction>
         </instructions>
       </touchpointData>
@@ -975,9 +958,9 @@
         <provided namespace='java.package' name='java.awt.desktop' version='0.0.0'/>
         <provided namespace='java.package' name='javax.imageio.plugins.jpeg' version='0.0.0'/>
         <provided namespace='java.package' name='javax.lang.model.type' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.xml.transform.dom' version='0.0.0'/>
-        <provided namespace='java.package' name='java.security.cert' version='0.0.0'/>
         <provided namespace='java.package' name='java.util.zip' version='0.0.0'/>
+        <provided namespace='java.package' name='java.security.cert' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.transform.dom' version='0.0.0'/>
         <provided namespace='java.package' name='java.nio.file' version='0.0.0'/>
         <provided namespace='java.package' name='org.w3c.dom.views' version='0.0.0'/>
         <provided namespace='java.package' name='java.time' version='0.0.0'/>
@@ -1050,8 +1033,8 @@
         <provided namespace='java.package' name='javax.security.auth.spi' version='0.0.0'/>
         <provided namespace='java.package' name='java.rmi.server' version='0.0.0'/>
         <provided namespace='java.package' name='javax.sound.sampled' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.xml.parsers' version='0.0.0'/>
         <provided namespace='java.package' name='javax.sql.rowset.serial' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.parsers' version='0.0.0'/>
         <provided namespace='java.package' name='javax.swing.plaf.synth' version='0.0.0'/>
         <provided namespace='java.package' name='javax.swing.plaf.basic' version='0.0.0'/>
         <provided namespace='java.package' name='javax.swing.tree' version='0.0.0'/>
@@ -1099,8 +1082,8 @@
         <provided namespace='java.package' name='java.lang.constant' version='0.0.0'/>
         <provided namespace='java.package' name='java.nio' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.jdi.request' version='0.0.0'/>
-        <provided namespace='java.package' name='java.lang.instrument' version='0.0.0'/>
         <provided namespace='java.package' name='java.lang.ref' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.instrument' version='0.0.0'/>
         <provided namespace='java.package' name='java.util.regex' version='0.0.0'/>
         <provided namespace='java.package' name='org.ietf.jgss' version='0.0.0'/>
         <provided namespace='java.package' name='javax.sound.midi.spi' version='0.0.0'/>
@@ -1109,9 +1092,9 @@
         <provided namespace='java.package' name='java.lang.reflect' version='0.0.0'/>
         <provided namespace='java.package' name='java.security' version='0.0.0'/>
         <provided namespace='java.package' name='org.xml.sax.helpers' version='0.0.0'/>
-        <provided namespace='java.package' name='com.sun.tools.attach' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.jshell' version='0.0.0'/>
         <provided namespace='java.package' name='javax.naming.ldap.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.tools.attach' version='0.0.0'/>
         <provided namespace='java.package' name='javax.print.attribute.standard' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.jshell.tool' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.tools.jconsole' version='0.0.0'/>
@@ -1153,8 +1136,8 @@
         <provided namespace='java.package' name='java.nio.file.spi' version='0.0.0'/>
         <provided namespace='java.package' name='javax.xml.crypto.dsig.keyinfo' version='0.0.0'/>
         <provided namespace='java.package' name='javax.accessibility' version='0.0.0'/>
-        <provided namespace='java.package' name='com.sun.source.tree' version='0.0.0'/>
         <provided namespace='java.package' name='javax.xml.namespace' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.source.tree' version='0.0.0'/>
         <provided namespace='java.package' name='java.awt.font' version='0.0.0'/>
         <provided namespace='java.package' name='java.security.interfaces' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.tools.attach.spi' version='0.0.0'/>
@@ -1238,6 +1221,23 @@
         <provided namespace='osgi.ee' name='JavaSE/compact3' version='25.0.0'/>
       </provides>
       <touchpoint id='org.eclipse.equinox.p2.native' version='1.0.0'/>
+    </unit>
+    <unit id='20261022-1029.Default' version='1.0.0.7D7C8ucLoE--BkQIYgKgWeIIoSk'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='Uncategorized'/>
+        <property name='org.eclipse.equinox.p2.description' value='Default category for otherwise uncategorized features'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='20261022-1029.Default' version='1.0.0.7D7C8ucLoE--BkQIYgKgWeIIoSk'/>
+      </provides>
+      <requires size='4'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.license.feature.group' range='[2.0.2.v20181016-2210,2.0.2.v20181016-2210]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.feature.feature.group' range='[2.5.0.202502081502,2.5.0.202502081502]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.joni' range='[2.2.1.v20230703-0749,2.2.1.v20230703-0749]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.jcodings' range='[1.0.58.v20230703-0749,1.0.58.v20230703-0749]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
     </unit>
   </units>
 </repository>
