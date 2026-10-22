@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -47,6 +48,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.mard.dt.editing.EditingSettings;
 import org.mard.dt.editing.EditingSettingsContent;
 import org.mard.dt.editing.EditingSettingsYamlReader;
@@ -59,6 +61,7 @@ import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.common.git.GitUtils;
 import com._1c.g5.v8.dt.core.filesystem.IProjectFileSystemSupport;
 import com._1c.g5.v8.dt.core.filesystem.IProjectFileSystemSupportProvider;
+import com._1c.g5.v8.dt.core.filesystem.IQualifiedNameFilePathConverter;
 import com._1c.g5.v8.dt.core.lifecycle.ProjectContext;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
@@ -86,16 +89,19 @@ public class ProjectPathEditingService
 
     private final IBmModelManager modelManager;
 
+    private final IQualifiedNameFilePathConverter qualifiedNameFilePathConverter;
+
     private final Map<IProject, ProjectCache> projects = new ConcurrentHashMap<>();
 
     private final IResourceChangeListener resourceListener = new ResourceChangeListener();
 
     @Inject
     public ProjectPathEditingService(IProjectFileSystemSupportProvider fileSystemSupportProvider,
-        IBmModelManager modelManager)
+        IBmModelManager modelManager, IQualifiedNameFilePathConverter qualifiedNameFilePathConverter)
     {
         this.fileSystemSupportProvider = fileSystemSupportProvider;
         this.modelManager = modelManager;
+        this.qualifiedNameFilePathConverter = qualifiedNameFilePathConverter;
     }
 
     @Override
@@ -360,6 +366,16 @@ public class ProjectPathEditingService
                 if (path != null)
                 {
                     paths.add(path);
+                }
+            }
+            else
+            {
+                // BSL modules are not BM top objects, resolve their paths from the FQN directly.
+                List<IPath> modulePaths =
+                    qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(fullname));
+                if (modulePaths != null)
+                {
+                    modulePaths.stream().filter(Objects::nonNull).forEach(paths::add);
                 }
             }
         }
