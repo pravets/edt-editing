@@ -227,14 +227,14 @@ public class EditingRestrictionsHandler
 
         return switch (targetParam)
         {
-            case TARGET_OBJECT_MODULE -> selected instanceof Catalog catalog ? catalog.getObjectModule() : null;
-            case TARGET_MANAGER_MODULE -> selected instanceof Catalog catalog ? catalog.getManagerModule() : null;
+            case TARGET_OBJECT_MODULE -> selected instanceof Catalog catalog ? (EObject)catalog.getObjectModule() : null;
+            case TARGET_MANAGER_MODULE -> selected instanceof Catalog catalog ? (EObject)catalog.getManagerModule() : null;
             case TARGET_FORM_MODULE -> {
                 if (selected instanceof AbstractForm form && form.getModule() != null)
-                    yield form.getModule();
+                    yield (EObject)form.getModule();
                 if (selected instanceof BasicForm basicForm && basicForm.getForm() != null
                     && basicForm.getForm().getModule() != null)
-                    yield basicForm.getForm().getModule();
+                    yield (EObject)basicForm.getForm().getModule();
                 yield null;
             }
             default -> null;
