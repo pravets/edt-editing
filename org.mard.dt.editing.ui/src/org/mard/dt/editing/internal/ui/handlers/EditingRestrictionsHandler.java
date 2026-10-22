@@ -29,7 +29,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.dnd.Clipboard;
@@ -243,9 +242,11 @@ public class EditingRestrictionsHandler
 
     private String getFqn(EObject target)
     {
-        // BSL modules aren't attached to BM, so the FQN is derived from the resource URI like EDT does.
-        String path = EcoreUtil.getURI(target).trimFragment().toString();
-        return qualifiedNameFilePathConverter.getFqn(path).toString();
+        IFile file = resourceLookup.getPlatformResource(target);
+        if (file == null)
+            return null;
+        // BSL modules aren't attached to BM, so the FQN is derived from the resource file like EDT does.
+        return qualifiedNameFilePathConverter.getFqn(file).toString();
     }
 
     private boolean isDirtyEditor(ExecutionEvent event, IFile file)
