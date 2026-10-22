@@ -33,6 +33,7 @@ final public class Messages
     public static String ProjectEditorSection_Disable_settings_created;
     public static String ProjectEditorSection_Disable_with_subsystems;
     public static String ProjectEditorSection_Open_settings;
+    public static String ProjectEditorSection_SortSettings;
     public static String ProjectEditorSection_Project_has_disable_editing_settings;
     public static String ProjectEditorSection_Project_has_no_settings_to_disable_editing;
     public static String ProjectEditorSection_Settings_file__0__to_disable__objects_created;

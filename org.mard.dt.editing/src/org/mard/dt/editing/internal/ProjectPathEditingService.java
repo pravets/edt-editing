@@ -14,6 +14,7 @@ package org.mard.dt.editing.internal;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SUBSYSTEM;
 
+import java.text.MessageFormat;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -99,6 +100,8 @@ public class ProjectPathEditingService
 
     private final IResourceChangeListener resourceListener = new ResourceChangeListener();
 
+    private static final boolean DEBUG_EDITING = Boolean.getBoolean("org.mard.dt.editing.debug"); //$NON-NLS-1$
+
     @Inject
     public ProjectPathEditingService(IProjectFileSystemSupportProvider fileSystemSupportProvider,
         IBmModelManager modelManager, IQualifiedNameFilePathConverter qualifiedNameFilePathConverter)
@@ -180,18 +183,23 @@ public class ProjectPathEditingService
         if (subObjectFqn != null)
         {
             ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
+            boolean result;
             if (cache.getEnableFullnames().contains(subObjectFqn))
-                return true;
-
-            IProjectFileSystemSupport fileSystemSupport =
-                fileSystemSupportProvider.getProjectFileSystemSupport(project);
-            if (fileSystemSupport != null)
             {
-                IPath path = fileSystemSupport.getPath(eObject);
-                if (path != null)
-                    return canEdit(cache, path);
+                result = true;
             }
-            return true;
+            else
+            {
+                IProjectFileSystemSupport fileSystemSupport =
+                    fileSystemSupportProvider.getProjectFileSystemSupport(project);
+                IPath path = fileSystemSupport != null ? fileSystemSupport.getPath(eObject) : null;
+                result = path != null ? canEdit(cache, path) : true;
+            }
+            if (DEBUG_EDITING)
+                CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
+                    "canEdit sub-object: type={0}, fqn={1}, result={2}, enableFullnames={3}", //$NON-NLS-1$
+                    eObject.eClass().getName(), subObjectFqn, result, cache.getEnableFullnames())));
+            return result;
         }
 
         URI uri = EcoreUtil.getURI(eObject);

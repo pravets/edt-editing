@@ -64,8 +64,7 @@ public class EditingSettingsYamlUpdater
      *             structure is not supported, or arguments are wrong.
      */
     public static String appendFullname(String content, String section, String fqn)
-    {
-        if (!DISABLE.equals(section) && !ENABLE.equals(section))
+    {        if (!DISABLE.equals(section) && !ENABLE.equals(section))
             throw new IllegalArgumentException("Unknown section: " + section); //$NON-NLS-1$
 
         if (fqn == null || fqn.isBlank())
@@ -81,6 +80,161 @@ public class EditingSettingsYamlUpdater
         }
 
         return insert(content, section, fqn);
+    }
+
+    private static final String PATH = "path"; //$NON-NLS-1$
+
+    /**
+     * Sorts the block list items of the {@code fullname} and {@code path} lists in the
+     * {@code disable} and {@code enable} sections alphabetically, case-insensitive. Everything
+     * else in the document (comments, unknown fields, section order, line endings) is preserved
+     * byte-identically.
+     *
+     * @param content the current file content, may be {@code null} or blank.
+     * @return the sorted content, or the same content instance if it is already sorted.
+     * @throws IllegalArgumentException if the content is not valid YAML or a list is not a
+     *             mapping list supported for sorting.
+     */
+    public static String sortSettings(String content)
+    {
+        if (content == null || content.isBlank())
+            return content;
+
+        validateLists(content);
+
+        String eol = content.contains("\r\n") ? "\r\n" : "\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String[] lines = content.split("\n", -1); //$NON-NLS-1$
+
+        boolean changed = false;
+        for (String section : Arrays.asList(DISABLE, ENABLE))
+        {
+            for (String key : Arrays.asList(FULLNAME, PATH))
+            {
+                changed |= sortList(lines, section, key);
+            }
+        }
+
+        if (!changed)
+            return content;
+
+        return String.join(eol, lines);
+    }
+
+    private static void validateLists(String content)
+    {
+        Object root;
+        try
+        {
+            root = new Yaml().load(content);
+        }
+        catch (Exception e)
+        {
+            throw new IllegalArgumentException("Invalid YAML: " + e.getMessage(), e); //$NON-NLS-1$
+        }
+
+        if (!(root instanceof Map))
+            throw new IllegalArgumentException("YAML root is not a mapping"); //$NON-NLS-1$
+
+        for (String section : Arrays.asList(DISABLE, ENABLE))
+        {
+            Object sec = ((Map<?, ?>)root).get(section);
+            if (sec == null)
+                continue;
+
+            if (!(sec instanceof Map))
+                throw new IllegalArgumentException("Section \"" + section + "\" is not a mapping"); //$NON-NLS-1$ //$NON-NLS-2$
+
+            for (String key : Arrays.asList(FULLNAME, PATH))
+            {
+                Object list = ((Map<?, ?>)sec).get(key);
+                if (list != null && !(list instanceof List))
+                    throw new IllegalArgumentException("\"" + section + "." + key + "\" is not a list"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
+        }
+    }
+
+    private static boolean sortList(String[] lines, String section, String key)
+    {
+        int sectionIndex = -1;
+        for (int i = 0; i < lines.length; i++)
+        {
+            Matcher matcher = SECTION_LINE.matcher(strip(lines[i]));
+            if (matcher.matches() && key != null && matcher.group(1).equals(section))
+            {
+                sectionIndex = i;
+                break;
+            }
+        }
+        if (sectionIndex < 0)
+            return false;
+
+        int keyIndex = -1;
+        for (int i = sectionIndex + 1; i < lines.length; i++)
+        {
+            String line = strip(lines[i]);
+            if (line.isBlank() || COMMENT_OR_BLANK.matcher(line).matches())
+                continue;
+            if (SECTION_LINE.matcher(line).matches())
+                break;
+            if (!line.startsWith(" ") && !line.startsWith("\t")) //$NON-NLS-1$ //$NON-NLS-2$
+                break;
+
+            Matcher keyMatcher = KEY_LINE.matcher(line);
+            if (keyMatcher.matches() && keyMatcher.group(2).equals(key))
+            {
+                if (!keyMatcher.group(3).isEmpty())
+                    throw new IllegalArgumentException( //$NON-NLS-1$
+                        "\"" + section + "." + key + "\" is not a block list"); //$NON-NLS-1$ //$NON-NLS-2$
+                keyIndex = i;
+                break;
+            }
+        }
+        if (keyIndex < 0)
+            return false;
+
+        List<Integer> itemIndexes = new ArrayList<>();
+        for (int i = keyIndex + 1; i < lines.length; i++)
+        {
+            String line = strip(lines[i]);
+            if (ITEM_LINE.matcher(line).matches())
+            {
+                itemIndexes.add(i);
+            }
+            else if (line.isBlank() || COMMENT_OR_BLANK.matcher(line).matches())
+            {
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (itemIndexes.size() < 2)
+            return false;
+
+        List<String> items = new ArrayList<>();
+        for (int index : itemIndexes)
+        {
+            items.add(strip(lines[index]));
+        }
+
+        List<String> sorted = new ArrayList<>(items);
+        sorted.sort((a, b) -> itemScalar(a).compareToIgnoreCase(itemScalar(b)));
+        if (items.equals(sorted))
+            return false;
+
+        for (int i = 0; i < itemIndexes.size(); i++)
+        {
+            lines[itemIndexes.get(i)] = sorted.get(i);
+        }
+        return true;
+    }
+
+    private static String itemScalar(String itemLine)
+    {
+        int index = itemLine.indexOf("- "); //$NON-NLS-1$
+        return index < 0 ? itemLine : itemLine.substring(index + 2);
     }
 
     private static boolean validate(String content, String section, String fqn)

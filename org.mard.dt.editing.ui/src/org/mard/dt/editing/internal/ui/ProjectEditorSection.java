@@ -12,10 +12,14 @@
  *******************************************************************************/
 package org.mard.dt.editing.internal.ui;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
@@ -44,10 +48,12 @@ import org.eclipse.ui.forms.widgets.ScrolledPageBook;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
+import org.mard.dt.editing.EditingSettingsYamlUpdater;
 import org.mard.dt.editing.IPathEditingService;
 
 import com._1c.g5.v8.dt.ui.editor.IProjectEditor;
 import com._1c.g5.v8.dt.ui.editor.IProjectEditorSection;
+import com.google.inject.Inject;
 
 /**
  * The section for Project editor that allows to open or create new settings for disable editing.
@@ -69,6 +75,9 @@ public class ProjectEditorSection
     private IFile file;
 
     private ScrolledPageBook pageBook;
+
+    @Inject
+    private IPathEditingService pathEditingService;
 
     @Override
     public void createContent(IProjectEditor editor, IFormPage page, FormToolkit toolkit, Composite parent,
@@ -113,6 +122,10 @@ public class ProjectEditorSection
         Button openSettingsButton =
             toolkit.createButton(existingSettingsPage, Messages.ProjectEditorSection_Open_settings, SWT.PUSH);
         openSettingsButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::openSettings));
+
+        Button sortSettingsButton =
+            toolkit.createButton(existingSettingsPage, Messages.ProjectEditorSection_SortSettings, SWT.PUSH);
+        sortSettingsButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(this::sortSettings));
 
         GridDataFactory.fillDefaults().grab(true, true).minSize(100, 200).applyTo(existingSettingsPage);
         GridLayoutFactory.fillDefaults().numColumns(1).applyTo(existingSettingsPage);
@@ -194,6 +207,44 @@ public class ProjectEditorSection
     private void openSettings(SelectionEvent event)
     {
         openFile(event.display);
+    }
+
+    private void sortSettings(SelectionEvent event)
+    {
+        if (file == null || !file.isAccessible())
+        {
+            return;
+        }
+
+        Display display = event.display;
+        IProject project = editor.getProject();
+
+        Job.create(Messages.ProjectEditorSection_SortSettings, monitor -> {
+            try
+            {
+                String content = new String(file.getContents().readAllBytes(), StandardCharsets.UTF_8);
+                String sorted = EditingSettingsYamlUpdater.sortSettings(content);
+                if (sorted == content)
+                {
+                    return; // already sorted, nothing to change
+                }
+                file.setContents(new ByteArrayInputStream(sorted.getBytes(StandardCharsets.UTF_8)),
+                    IResource.FORCE, monitor);
+                pathEditingService.invalidate(project);
+            }
+            catch (Exception e)
+            {
+                UiPlugin.logError(e);
+                if (!display.isDisposed())
+                {
+                    display.asyncExec(() -> NotificationPopup.forDisplay(display)
+                        .fadeIn(true)
+                        .title(Messages.ProjectEditorSection_SortSettings, true)
+                        .text(e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getClass().getSimpleName())
+                        .open());
+                }
+            }
+        }).schedule();
     }
 
     private void createSettings(SelectionEvent event)
