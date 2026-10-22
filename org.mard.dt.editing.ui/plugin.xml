@@ -106,7 +106,24 @@
                   <iterate
                         ifEmpty="false"
                         operator="and">
-                     
+                     <and>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.MdObject">
+                        </instanceof>
+                        <not>
+                           <or>
+                              <instanceof
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
+                              </instanceof>
+                              <instanceof
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
+                              </instanceof>
+                              <instanceof
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                              </instanceof>
+                           </or>
+                        </not>
+                     </and>
                   </iterate>
                </with>
             </visibleWhen>
@@ -205,7 +222,7 @@
                             <test
                                  args="objectModule"
                                  forcePluginActivation="true"
-                                 property="com._1c.g5.v8.dt.md.ui.isAvailable">
+                                 property="org.mard.dt.editing.ui.hasModule">
                            </test>
                         </and>
                      </iterate>
@@ -273,7 +290,7 @@
                             <test
                                  args="managerModule"
                                  forcePluginActivation="true"
-                                 property="com._1c.g5.v8.dt.md.ui.isAvailable">
+                                 property="org.mard.dt.editing.ui.hasModule">
                            </test>
                         </and>
                      </iterate>
@@ -341,7 +358,7 @@
                           <test
                                 args="recordSetModule"
                                 forcePluginActivation="true"
-                                property="com._1c.g5.v8.dt.md.ui.isAvailable">
+                                property="org.mard.dt.editing.ui.hasModule">
                           </test>
                        </and>
                     </iterate>
@@ -440,7 +457,7 @@
                            <test
                                  args="module"
                                  forcePluginActivation="true"
-                                 property="com._1c.g5.v8.dt.md.ui.isAvailable">
+                                 property="org.mard.dt.editing.ui.hasModule">
                            </test>
                         </and>
                      </iterate>
@@ -528,4 +545,14 @@
       </menuContribution>
    </extension>
 
+  <extension
+        point="org.eclipse.core.expressions.propertyTesters">
+     <propertyTester
+           class="org.mard.dt.editing.internal.ui.HasModulePropertyTester"
+           id="org.mard.dt.editing.ui.hasModuleTester"
+           namespace="org.mard.dt.editing.ui"
+           properties="hasModule"
+           type="java.lang.Object">
+     </propertyTester>
+  </extension>
 </plugin>
