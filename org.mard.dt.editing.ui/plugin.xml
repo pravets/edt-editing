@@ -377,6 +377,48 @@
                    style="push">
              </command>
           </menu>
+         <menu
+               label="%menu.restrictions.label">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <or>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                        </instanceof>
+                     </or>
+                  </iterate>
+               </with>
+            </visibleWhen>
+            <command
+                  commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                  label="%command.copyFqn.name"
+                  style="push">
+               <parameter
+                     name="org.mard.dt.editing.ui.commands.param.target"
+                     value="self">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.mard.dt.editing.ui.commands.addEnable"
+                  label="%command.addEnable.name"
+                  style="push">
+               <parameter
+                     name="org.mard.dt.editing.ui.commands.param.target"
+                     value="self">
+               </parameter>
+            </command>
+         </menu>
       </menuContribution>
    </extension>
 

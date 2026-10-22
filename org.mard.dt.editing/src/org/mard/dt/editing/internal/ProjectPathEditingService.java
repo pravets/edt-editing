@@ -16,7 +16,9 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SUBSYSTE
 
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -68,6 +70,8 @@ import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.lifecycle.LifecycleParticipant;
 import com._1c.g5.v8.dt.lifecycle.LifecyclePhase;
 import com._1c.g5.v8.dt.lifecycle.LifecycleService;
+import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
+import com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com._1c.g5.v8.dt.metadata.mdclass.Subsystem;
 import com.google.common.cache.Cache;
@@ -169,6 +173,27 @@ public class ProjectPathEditingService
 
         if (project == null || eObject == null || eObject.eIsProxy())
             return true;
+
+        // Attributes and tabular sections share the owner's resource file, so they are checked
+        // by their own 1C full name first; otherwise the owner's decision applies.
+        String subObjectFqn = getObjectFullName(eObject);
+        if (subObjectFqn != null)
+        {
+            ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
+            if (cache.getEnableFullnames().contains(subObjectFqn))
+                return true;
+
+            IProjectFileSystemSupport fileSystemSupport =
+                fileSystemSupportProvider.getProjectFileSystemSupport(project);
+            if (fileSystemSupport != null)
+            {
+                IPath path = fileSystemSupport.getPath(eObject);
+                if (path != null)
+                    return canEdit(cache, path);
+            }
+            return true;
+        }
+
         URI uri = EcoreUtil.getURI(eObject);
         if (uri == null)
             return true;
@@ -358,6 +383,11 @@ public class ProjectPathEditingService
     {
         for (String fullname : fullnames)
         {
+            if (isSubObjectFqn(fullname))
+            {
+                // Sub-object rules are matched by full name, not by file path.
+                continue;
+            }
 
             IBmObject top = transaction.getTopObjectByFqn(fullname);
             if (top != null)
@@ -379,6 +409,46 @@ public class ProjectPathEditingService
                 }
             }
         }
+    }
+
+    @Override
+    public String getObjectFullName(EObject object)
+    {
+        if (object == null || object.eIsProxy())
+            return null;
+
+        LinkedList<String> segments = new LinkedList<>();
+        EObject container = object;
+        while (container instanceof BasicFeature feature)
+        {
+            segments.addFirst("Attribute"); //$NON-NLS-1$
+            segments.addFirst(feature.getName());
+            container = feature.eContainer();
+        }
+        while (container instanceof BasicTabularSection tabularSection)
+        {
+            segments.addFirst("TabularSection"); //$NON-NLS-1$
+            segments.addFirst(tabularSection.getName());
+            container = tabularSection.eContainer();
+        }
+
+        if (segments.isEmpty() || !(container instanceof IBmObject top) || !top.bmIsTop())
+            return null;
+
+        String baseFqn = top.bmGetFqn();
+        if (baseFqn == null || baseFqn.isBlank())
+            return null;
+
+        return baseFqn + "." + String.join(".", segments); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    private static boolean isSubObjectFqn(String fullname)
+    {
+        if (fullname == null)
+            return false;
+        String[] segments = fullname.trim().split("\\."); //$NON-NLS-1$
+        return segments.length >= 4 && ("Attribute".equals(segments[segments.length - 2]) //$NON-NLS-1$
+            || "TabularSection".equals(segments[segments.length - 2])); //$NON-NLS-1$
     }
 
     private void addSubsystemPath(Set<IPath> paths, List<String> subsystems, IBmModel model,
@@ -487,8 +557,13 @@ public class ProjectPathEditingService
         EditingSettings settings = loadEditingSettings(project);
         if (settings == null)
         {
-            return new ProjectCache(disable, enable, true);
+            return new ProjectCache(disable, enable, true, Set.of());
         }
+
+        Set<String> enableFullnames = new HashSet<>();
+        if (settings.getEnable() != null && settings.getEnable().getFullname() != null)
+            settings.getEnable().getFullname().stream().filter(ProjectPathEditingService::isSubObjectFqn)
+                .forEach(enableFullnames::add);
 
         if (settings.getDisable() != null)
             addAllPath(project, settings.getDisable(), disable);
@@ -508,7 +583,7 @@ public class ProjectPathEditingService
         }
 
         boolean canEditInMerge = settings.getEnable() != null && settings.getEnable().isMerge();
-        return new ProjectCache(disable, enable, canEditInMerge);
+        return new ProjectCache(disable, enable, canEditInMerge, enableFullnames);
     }
 
     private EditingSettings loadEditingSettings(IProject project)
@@ -530,7 +605,10 @@ public class ProjectPathEditingService
 
         private final boolean canEditInMerge;
 
-        public ProjectCache(Set<IPath> disable, Set<IPath> enable, boolean canEditInMerge)
+        private final Set<String> enableFullnames;
+
+        public ProjectCache(Set<IPath> disable, Set<IPath> enable, boolean canEditInMerge,
+            Set<String> enableFullnames)
         {
             if (disable == null || disable.isEmpty())
             {
@@ -550,6 +628,9 @@ public class ProjectPathEditingService
                 this.enable = Set.copyOf(enable);
             }
             this.canEditInMerge = canEditInMerge;
+            this.enableFullnames = enableFullnames == null || enableFullnames.isEmpty()
+                ? Set.of()
+                : Set.copyOf(enableFullnames);
 
         }
 
@@ -571,6 +652,11 @@ public class ProjectPathEditingService
         public boolean canEditInMerge()
         {
             return canEditInMerge;
+        }
+
+        public Set<String> getEnableFullnames()
+        {
+            return enableFullnames;
         }
 
     }

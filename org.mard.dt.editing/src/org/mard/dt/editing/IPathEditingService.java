@@ -64,4 +64,14 @@ public interface IPathEditingService
      */
     void invalidate(IProject project);
 
+    /**
+     * Returns the 1C full name of the attribute or tabular section object, e.g.
+     * {@code Catalog.Products.Attribute.Barcode} or {@code Catalog.Products.TabularSection.Goods}, or {@code null}
+     * if the object is not a sub-object with a computable full name.
+     *
+     * @param object the EMF object, cannot be {@code null}.
+     * @return the full name or {@code null}
+     */
+    String getObjectFullName(EObject object);
+
 }

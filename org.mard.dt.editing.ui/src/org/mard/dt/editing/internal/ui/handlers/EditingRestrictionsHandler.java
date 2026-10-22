@@ -257,6 +257,10 @@ public class EditingRestrictionsHandler
 
     private String getFqn(EObject target)
     {
+        String subObjectFqn = pathEditingService.getObjectFullName(target);
+        if (subObjectFqn != null)
+            return subObjectFqn;
+
         IFile file = resourceLookup.getPlatformResource(target);
         if (file == null)
             return null;
