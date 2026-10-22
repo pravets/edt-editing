@@ -106,19 +106,12 @@
                   <iterate
                         ifEmpty="false"
                         operator="and">
-                     <or>
-                        <instanceof
-                              value="com._1c.g5.v8.dt.metadata.mdclass.Catalog">
-                        </instanceof>
-                        <instanceof
-                              value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
-                        </instanceof>
-                     </or>
+                     
                   </iterate>
                </with>
             </visibleWhen>
             <menu
-                  label="%menu.catalog.label">
+                  label="%menu.mdObject.label">
                <visibleWhen
                      checkEnabled="false">
                   <with
@@ -129,10 +122,25 @@
                      <iterate
                            ifEmpty="false"
                            operator="and">
-                        <instanceof
-                              value="com._1c.g5.v8.dt.metadata.mdclass.Catalog">
-                        </instanceof>
-                     </iterate>
+                        <and>
+                         <instanceof
+                               value="com._1c.g5.v8.dt.metadata.mdclass.MdObject">
+                         </instanceof>
+                         <not>
+                            <or>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
+                               </instanceof>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
+                               </instanceof>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                               </instanceof>
+                            </or>
+                         </not>
+                      </and>
+                      </iterate>
                   </with>
                </visibleWhen>
                <command
@@ -176,10 +184,25 @@
                            ifEmpty="false"
                            operator="and">
                         <and>
-                           <instanceof
-                                 value="com._1c.g5.v8.dt.metadata.mdclass.Catalog">
-                           </instanceof>
-                           <test
+                           <and>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.MdObject">
+                               </instanceof>
+                               <not>
+                            <or>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
+                               </instanceof>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
+                               </instanceof>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                               </instanceof>
+                            </or>
+                         </not>
+                            </and>
+                            <test
                                  args="objectModule"
                                  forcePluginActivation="true"
                                  property="com._1c.g5.v8.dt.md.ui.isAvailable">
@@ -229,10 +252,25 @@
                            ifEmpty="false"
                            operator="and">
                         <and>
-                           <instanceof
-                                 value="com._1c.g5.v8.dt.metadata.mdclass.Catalog">
-                           </instanceof>
-                           <test
+                           <and>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.MdObject">
+                               </instanceof>
+                               <not>
+                            <or>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
+                               </instanceof>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
+                               </instanceof>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                               </instanceof>
+                            </or>
+                         </not>
+                            </and>
+                            <test
                                  args="managerModule"
                                  forcePluginActivation="true"
                                  property="com._1c.g5.v8.dt.md.ui.isAvailable">
@@ -269,6 +307,74 @@
                   </parameter>
                </command>
             </menu>
+           <menu
+                 label="%menu.recordSetModule.label">
+              <visibleWhen
+                    checkEnabled="false">
+                 <with
+                       variable="selection">
+                    <count
+                          value="1">
+                    </count>
+                    <iterate
+                          ifEmpty="false"
+                          operator="and">
+                       <and>
+                          <and>
+                             <instanceof
+                                   value="com._1c.g5.v8.dt.metadata.mdclass.MdObject">
+                             </instanceof>
+                             <not>
+                                <or>
+                                   <instanceof
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
+                                   </instanceof>
+                                   <instanceof
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
+                                   </instanceof>
+                                   <instanceof
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                                   </instanceof>
+                                </or>
+                             </not>
+                          </and>
+                          <test
+                                args="recordSetModule"
+                                forcePluginActivation="true"
+                                property="com._1c.g5.v8.dt.md.ui.isAvailable">
+                          </test>
+                       </and>
+                    </iterate>
+                 </with>
+              </visibleWhen>
+              <command
+                    commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                    label="%command.copyFqn.name"
+                    style="push">
+                 <parameter
+                       name="org.mard.dt.editing.ui.commands.param.target"
+                       value="recordSetModule">
+                 </parameter>
+              </command>
+              <command
+                    commandId="org.mard.dt.editing.ui.commands.addDisable"
+                    label="%command.addDisable.name"
+                    style="push">
+                 <parameter
+                       name="org.mard.dt.editing.ui.commands.param.target"
+                       value="recordSetModule">
+                 </parameter>
+              </command>
+              <command
+                    commandId="org.mard.dt.editing.ui.commands.addEnable"
+                    label="%command.addEnable.name"
+                    style="push">
+                 <parameter
+                       name="org.mard.dt.editing.ui.commands.param.target"
+                       value="recordSetModule">
+                 </parameter>
+              </command>
+           </menu>
             <menu
                   label="%menu.form.label">
                <visibleWhen

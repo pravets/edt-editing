@@ -49,7 +49,6 @@ import com._1c.g5.v8.dt.core.filesystem.IQualifiedNameFilePathConverter;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.metadata.mdclass.AbstractForm;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicForm;
-import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
 import com.google.inject.Inject;
 
 /**
@@ -74,6 +73,8 @@ public class EditingRestrictionsHandler
     private static final String TARGET_OBJECT_MODULE = "objectModule"; //$NON-NLS-1$
 
     private static final String TARGET_MANAGER_MODULE = "managerModule"; //$NON-NLS-1$
+
+    private static final String TARGET_RECORD_SET_MODULE = "recordSetModule"; //$NON-NLS-1$
 
     private static final String TARGET_FORM_MODULE = "formModule"; //$NON-NLS-1$
 
@@ -241,8 +242,11 @@ public class EditingRestrictionsHandler
 
         return switch (targetParam)
         {
-            case TARGET_OBJECT_MODULE -> selected instanceof Catalog catalog ? (EObject)catalog.getObjectModule() : null;
-            case TARGET_MANAGER_MODULE -> selected instanceof Catalog catalog ? (EObject)catalog.getManagerModule() : null;
+            // Module features exist on different md classes (BasicDbObject, registers, etc.),
+            // so resolve them reflectively to support every metadata type.
+            case TARGET_OBJECT_MODULE -> module(selected, TARGET_OBJECT_MODULE);
+            case TARGET_MANAGER_MODULE -> module(selected, TARGET_MANAGER_MODULE);
+            case TARGET_RECORD_SET_MODULE -> module(selected, TARGET_RECORD_SET_MODULE);
             case TARGET_FORM_MODULE -> {
                 if (selected instanceof AbstractForm form && form.getModule() != null)
                     yield (EObject)form.getModule();
@@ -253,6 +257,12 @@ public class EditingRestrictionsHandler
             }
             default -> null;
         };
+    }
+
+    private EObject module(EObject object, String feature)
+    {
+        var structuralFeature = object.eClass().getEStructuralFeature(feature);
+        return structuralFeature == null ? null : (EObject)object.eGet(structuralFeature);
     }
 
     private String getFqn(EObject target)
