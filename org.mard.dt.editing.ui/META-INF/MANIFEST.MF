@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.mard.dt.editing.ui;singleton:=true
-Bundle-Version: 0.6.2.qualifier
+Bundle-Version: 0.6.1.qualifier
 Bundle-Activator: org.mard.dt.editing.internal.ui.UiPlugin
 Bundle-Vendor: %vendor
 Bundle-Localization: plugin
