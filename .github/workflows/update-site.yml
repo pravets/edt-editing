@@ -42,15 +42,8 @@ jobs:
           cp README.md /tmp/README.md
           cp build/update-site.sh /tmp/update-site.sh
 
-          # master builds publish to the version dir; any other ref publishes to
-          # its version dir too when the site has no such version yet (a new
-          # version claims its dir on first build), otherwise to a branch dir
-          # that stays out of the composite (script lists only N.N.N dirs)
-          if [ "$GITHUB_REF_NAME" = "master" ] || [ ! -d "update/$VER" ]; then
-            DIR=$VER
-          else
-            DIR=$(echo "$GITHUB_REF_NAME" | tr '/' '-')
-          fi
+          # publish to the version dir so branch builds keep the site fresh
+          DIR=$VER
           echo "Site dir: ${DIR}"
 
           git config --global --add safe.directory "$GITHUB_WORKSPACE"

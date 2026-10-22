@@ -64,6 +64,10 @@
                optional="true">
          </commandParameter>
       </command>
+      <command
+            id="org.mard.dt.editing.ui.commands.refreshRestrictions"
+            name="%command.refreshRestrictions.name">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -78,6 +82,10 @@
       <handler
             class="org.mard.dt.editing.internal.ui.ExecutableExtensionFactory:org.mard.dt.editing.internal.ui.handlers.EditingRestrictionsHandler"
             commandId="org.mard.dt.editing.ui.commands.addEnable">
+      </handler>
+      <handler
+            class="org.mard.dt.editing.internal.ui.ExecutableExtensionFactory:org.mard.dt.editing.internal.ui.handlers.EditingRestrictionsHandler"
+            commandId="org.mard.dt.editing.ui.commands.refreshRestrictions">
       </handler>
    </extension>
    <extension
@@ -359,8 +367,16 @@
                         value="formModule">
                   </parameter>
                </command>
-            </menu>
-         </menu>
+             </menu>
+             <separator
+                   name="org.mard.dt.editing.ui.separator.refresh">
+             </separator>
+             <command
+                   commandId="org.mard.dt.editing.ui.commands.refreshRestrictions"
+                   label="%command.refreshRestrictions.name"
+                   style="push">
+             </command>
+          </menu>
       </menuContribution>
    </extension>
 

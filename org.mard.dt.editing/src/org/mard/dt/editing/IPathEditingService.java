@@ -57,4 +57,11 @@ public interface IPathEditingService
      */
     boolean canEditInMerge(IProject project);
 
+    /**
+     * Drops cached editing rules of the project; rules are re-read from the settings file on next check.
+     *
+     * @param project the project, cannot be {@code null}.
+     */
+    void invalidate(IProject project);
+
 }

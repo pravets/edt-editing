@@ -149,6 +149,15 @@ public class ProjectPathEditingService
     }
 
     @Override
+    public void invalidate(IProject project)
+    {
+        if (project != null)
+        {
+            dispose(project);
+        }
+    }
+
+    @Override
     public boolean canEdit(IProject project, EObject eObject)
     {
 

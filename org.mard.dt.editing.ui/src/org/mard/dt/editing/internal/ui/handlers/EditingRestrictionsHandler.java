@@ -67,6 +67,8 @@ public class EditingRestrictionsHandler
 
     private static final String COMMAND_ENABLE = "addEnable"; //$NON-NLS-1$
 
+    private static final String COMMAND_REFRESH = "refreshRestrictions"; //$NON-NLS-1$
+
     private static final String TARGET_SELF = "self"; //$NON-NLS-1$
 
     private static final String TARGET_OBJECT_MODULE = "objectModule"; //$NON-NLS-1$
@@ -77,6 +79,9 @@ public class EditingRestrictionsHandler
 
     @Inject
     private IResourceLookup resourceLookup;
+
+    @Inject
+    private IPathEditingService pathEditingService;
 
     @Inject
     private IQualifiedNameFilePathConverter qualifiedNameFilePathConverter;
@@ -103,6 +108,11 @@ public class EditingRestrictionsHandler
             if (commandId.endsWith(COMMAND_COPY))
             {
                 copy(event, selected, targetParam);
+            }
+            else if (commandId.endsWith(COMMAND_REFRESH))
+            {
+                // Drop the cached rules so the next check re-reads editing.yml.
+                pathEditingService.invalidate(project);
             }
             else
             {
