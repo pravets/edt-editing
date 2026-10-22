@@ -222,7 +222,12 @@ public class EditingRestrictionsHandler
     private EObject resolveTarget(EObject selected, String targetParam)
     {
         if (targetParam == null || TARGET_SELF.equals(targetParam))
+        {
+            // Navigator form nodes live in the parent catalog BM resource, the form model itself is in Form.form.
+            if (selected instanceof BasicForm basicForm && basicForm.getForm() != null)
+                return basicForm.getForm();
             return selected;
+        }
 
         return switch (targetParam)
         {
