@@ -282,6 +282,28 @@ public class ProjectPathEditingService
 
         ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
 
+        if (!cache.getEnablePatterns().isEmpty())
+        {
+            QualifiedName fqn = qualifiedNameFilePathConverter.getFqn(path);
+            if (fqn != null)
+            {
+                String fqnText = fqn.toString();
+                String strippedFqn = stripMarkers(fqnText);
+                for (String pattern : cache.getEnablePatterns())
+                {
+                    if (fqnText.equals(pattern) || (strippedFqn != null
+                        && (strippedFqn.equals(pattern) || strippedFqn.startsWith(pattern + ".")))) //$NON-NLS-1$
+                    {
+                        if (DEBUG_EDITING)
+                            CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
+                                "canEdit path: fqn={0}, pattern={1}, result=true", //$NON-NLS-1$
+                                fqnText, pattern)));
+                        return true;
+                    }
+                }
+            }
+        }
+
         return canEdit(cache, path);
     }
 
@@ -623,6 +645,33 @@ public class ProjectPathEditingService
         return basePath.removeLastSegments(1).append("Module.bsl"); //$NON-NLS-1$
     }
 
+    private static final Set<String> SUB_OBJECT_MARKERS =
+        Set.of("Attribute", "TabularSection", "Value", "Column", "Command", "Table", "Cube", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+            "DimensionTable", "Function", "Field", "Dimension", "Resource", "Template"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+
+    /**
+     * Removes sub-object marker segments (Attribute, Template, Command, ...) from a full name, so that our
+     * "name.Marker" convention and the canonical BM "Marker.name" order compare equal.
+     *
+     * @param fullname the full name, may be {@code null}
+     * @return the marker-less full name, or {@code null}
+     */
+    public static String stripMarkers(String fullname)
+    {
+        if (fullname == null)
+            return null;
+        StringBuilder result = new StringBuilder();
+        for (String segment : fullname.trim().split("\\.")) //$NON-NLS-1$
+        {
+            if (SUB_OBJECT_MARKERS.contains(segment))
+                continue;
+            if (result.length() > 0)
+                result.append('.');
+            result.append(segment);
+        }
+        return result.toString();
+    }
+
     public static boolean isSubObjectFqn(String fullname)
     {
         if (fullname == null)
@@ -756,16 +805,29 @@ public class ProjectPathEditingService
         Set<IPath> disable = new ConcurrentSkipListSet<>(comparator);
         Set<IPath> enable = new ConcurrentSkipListSet<>(comparator);
 
+        Set<String> enablePatterns = new HashSet<>();
+
         EditingSettings settings = loadEditingSettings(project);
         if (settings == null)
         {
-            return new ProjectCache(disable, enable, true, Set.of(), Set.of());
+            return new ProjectCache(disable, enable, true, Set.of(), Set.of(), Set.of());
         }
 
         Set<String> enableFullnames = new HashSet<>();
         if (settings.getEnable() != null && settings.getEnable().getFullname() != null)
+        {
             settings.getEnable().getFullname().stream().filter(ProjectPathEditingService::isSubObjectFqn)
                 .forEach(enableFullnames::add);
+            // Allow editing of files that live under an enabled full name (templates, commands,
+            // forms of a disabled owner): getFqn(path) uses the canonical marker-before-name order.
+            settings.getEnable().getFullname().stream().filter(fqn -> fqn != null && !fqn.isBlank()).forEach(fqn -> {
+                String trimmed = fqn.trim();
+                enablePatterns.add(trimmed);
+                String normalized = stripMarkers(trimmed);
+                if (normalized != null)
+                    enablePatterns.add(normalized);
+            });
+        }
 
         Set<String> disableFullnames = new HashSet<>();
         if (settings.getDisable() != null && settings.getDisable().getFullname() != null)
@@ -790,7 +852,7 @@ public class ProjectPathEditingService
         }
 
         boolean canEditInMerge = settings.getEnable() != null && settings.getEnable().isMerge();
-        return new ProjectCache(disable, enable, canEditInMerge, enableFullnames, disableFullnames);
+        return new ProjectCache(disable, enable, canEditInMerge, enableFullnames, disableFullnames, enablePatterns);
     }
 
     private EditingSettings loadEditingSettings(IProject project)
@@ -816,8 +878,10 @@ public class ProjectPathEditingService
 
         private final Set<String> disableFullnames;
 
+        private final Set<String> enablePatterns;
+
         public ProjectCache(Set<IPath> disable, Set<IPath> enable, boolean canEditInMerge,
-            Set<String> enableFullnames, Set<String> disableFullnames)
+            Set<String> enableFullnames, Set<String> disableFullnames, Set<String> enablePatterns)
         {
             if (disable == null || disable.isEmpty())
             {
@@ -843,6 +907,9 @@ public class ProjectPathEditingService
             this.disableFullnames = disableFullnames == null || disableFullnames.isEmpty()
                 ? Set.of()
                 : Set.copyOf(disableFullnames);
+            this.enablePatterns = enablePatterns == null || enablePatterns.isEmpty()
+                ? Set.of()
+                : Set.copyOf(enablePatterns);
 
         }
 
@@ -874,6 +941,11 @@ public class ProjectPathEditingService
         public Set<String> getDisableFullnames()
         {
             return disableFullnames;
+        }
+
+        public Set<String> getEnablePatterns()
+        {
+            return enablePatterns;
         }
 
     }

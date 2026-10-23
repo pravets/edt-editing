@@ -56,6 +56,22 @@ public class ProjectPathEditingServiceHelpersTest
     }
 
     @Test
+    public void testStripMarkers()
+    {
+        assertEquals("ExternalDataSource.S.C.T",
+            ProjectPathEditingService.stripMarkers("ExternalDataSource.S.Cube.C.T.Template"));
+        assertEquals("ExternalDataSource.S.C.T",
+            ProjectPathEditingService.stripMarkers("ExternalDataSource.S.Cube.C.Template.T"));
+        assertEquals("Catalog.Products.Barcode",
+            ProjectPathEditingService.stripMarkers("Catalog.Products.Barcode.Attribute"));
+        assertEquals("Catalog.Products.Goods.Name",
+            ProjectPathEditingService.stripMarkers("Catalog.Products.Goods.TabularSection.Name.Attribute"));
+        assertEquals("Catalog.Products",
+            ProjectPathEditingService.stripMarkers("Catalog.Products"));
+        assertNull(ProjectPathEditingService.stripMarkers(null));
+    }
+
+    @Test
     public void testIsSubObjectFqnNonSubObjects()
     {
         assertFalse(ProjectPathEditingService.isSubObjectFqn("Catalog.Products"));
