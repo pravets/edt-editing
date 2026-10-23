@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.EObject;
+import org.mard.dt.editing.EditCallKind;
 import org.mard.dt.editing.EditingCallContext;
 import org.mard.dt.editing.IPathEditingService;
 
@@ -54,7 +55,15 @@ public class PathSettingsEditingSupportProvider
     @Override
     public boolean canDelete(EObject object, EditingMode mode)
     {
-        return true;
+        if (mode != EditingMode.DIRECT)
+            return true;
+
+        IProject project = resourceLookup.getProject(object);
+        if (project == null)
+            return true;
+
+        // Deletion is a structural operation: an enabled child of a disabled owner must not be deletable.
+        return editingService.canEdit(project, object, EditCallKind.STRUCTURAL);
     }
 
     @Override
@@ -77,7 +86,7 @@ public class PathSettingsEditingSupportProvider
         if (project == null)
             return true;
 
-        boolean canEdit = editingService.canEdit(project, eObject, !isStructuralCall());
+        boolean canEdit = editingService.canEdit(project, eObject, callKind());
         debugCall(eObject, mode, canEdit);
         if (!canEdit && editingService.canEditInMerge(project) && isCallFromMerge())
         {
@@ -86,14 +95,14 @@ public class PathSettingsEditingSupportProvider
         return canEdit;
     }
 
-    /** Creation of new objects is a structural operation, it must not be allowed by an enabled child. */
-    private boolean isStructuralCall()
+    /** Detects the kind of the check by the calling stack of EDT. */
+    private static EditCallKind callKind()
     {
         List<String> frames = StackWalker.getInstance().walk(s -> s.skip(1).limit(8) //$NON-NLS-1$
             .map(StackFrame::getClassName)
             .collect(Collectors.toList()));
 
-        return EditingCallContext.isStructuralCall(frames);
+        return EditingCallContext.classify(frames);
     }
 
     private static final boolean DEBUG_EDITING = Boolean.getBoolean("org.mard.dt.editing.debug"); //$NON-NLS-1$

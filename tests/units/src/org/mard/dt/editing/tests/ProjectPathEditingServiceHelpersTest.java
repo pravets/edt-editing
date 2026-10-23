@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
+import org.mard.dt.editing.EditCallKind;
 import org.mard.dt.editing.EditingCallContext;
 import org.mard.dt.editing.internal.ProjectPathEditingService;
 
@@ -141,4 +142,24 @@ public class ProjectPathEditingServiceHelpersTest
         assertFalse(EditingCallContext.isStructuralCall(Arrays.asList(
             "com._1c.g5.v8.dt.navigator.ui.actions.OpenEditorAction")));
         assertFalse(EditingCallContext.isStructuralCall(Arrays.asList()));
-    }}
+    }
+
+    @Test
+    public void testClassifyCallKind()
+    {
+        assertEquals(EditCallKind.STRUCTURAL, EditingCallContext.classify(Arrays.asList(
+            "com._1c.g5.v8.dt.ui.aef.actions.DtDeleteAction",
+            "com._1c.g5.v8.dt.ui.editor.aef.components.DtGranularEditorPageSectionComponent")));
+        assertEquals(EditCallKind.STRUCTURAL, EditingCallContext.classify(Arrays.asList(
+            "com._1c.g5.v8.dt.ui.aef.actions.DtWizardAction")));
+        assertEquals(EditCallKind.STRUCTURAL, EditingCallContext.classify(Arrays.asList(
+            "com._1c.g5.v8.dt.md.help.ui.editor.MdHelpContentEditor",
+            "com._1c.g5.v8.dt.html.ui.editor.HtmlMultiPageEditor")));
+        assertEquals(EditCallKind.CONTENT, EditingCallContext.classify(Arrays.asList(
+            "com._1c.g5.v8.dt.md.ui.aef.models.SelectionModelFactory",
+            "com._1c.g5.aef2.standard.definitions.models.AbstractFeatureFieldModelFactory")));
+        assertEquals(EditCallKind.OTHER, EditingCallContext.classify(Arrays.asList(
+            "com._1c.g5.v8.dt.internal.md.ui.AvailabilityPropertyTester")));
+        assertEquals(EditCallKind.OTHER, EditingCallContext.classify(Arrays.asList()));
+    }
+}

@@ -41,16 +41,17 @@ public interface IPathEditingService
     boolean canEdit(IProject project, EObject eObject);
 
     /**
-     * Can edit the eObject, optionally ignoring the rule that opens a top object when some of its children are enabled.
-     * Structural operations (creation of new objects) must pass {@code false} for {@code allowOpenByEnabledChildren},
-     * so that enabling a child does not allow to create other children of a disabled owner.
+     * Can edit the eObject, taking the kind of the check into account.
+     * Structural operations (creation, deletion, moving, sorting, editing of owner properties) must not be allowed
+     * by an enabled child of a disabled owner, so they ignore the rules that open a top object with enabled
+     * children and the exact match of an enabled sub object.
      *
      * @param project the project, cannot be {@code null}.
      * @param eObject the EMF object, cannot be {@code null}.
-     * @param allowOpenByEnabledChildren false for structural operations, like creation of new objects.
+     * @param kind the kind of the check.
      * @return true, if can edit
      */
-    boolean canEdit(IProject project, EObject eObject, boolean allowOpenByEnabledChildren);
+    boolean canEdit(IProject project, EObject eObject, EditCallKind kind);
 
     /**
      * Can edit the object by it's path.

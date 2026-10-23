@@ -54,6 +54,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.xtext.naming.QualifiedName;
+import org.mard.dt.editing.EditCallKind;
 import org.mard.dt.editing.EditingSettings;
 import org.mard.dt.editing.EditingSettingsContent;
 import org.mard.dt.editing.EditingSettingsYamlReader;
@@ -204,11 +205,11 @@ public class ProjectPathEditingService
     @Override
     public boolean canEdit(IProject project, EObject eObject)
     {
-        return canEdit(project, eObject, true);
+        return canEdit(project, eObject, EditCallKind.CONTENT);
     }
 
     @Override
-    public boolean canEdit(IProject project, EObject eObject, boolean allowOpenByEnabledChildren)
+    public boolean canEdit(IProject project, EObject eObject, EditCallKind kind)
     {
 
         if (project == null || eObject == null || eObject.eIsProxy())
@@ -243,7 +244,8 @@ public class ProjectPathEditingService
         {
             ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
             boolean result;
-            if (cache.getEnableFullnames().contains(subObjectFqn))
+            boolean structural = kind == EditCallKind.STRUCTURAL;
+            if (!structural && cache.getEnableFullnames().contains(subObjectFqn))
             {
                 result = true;
             }
@@ -251,7 +253,7 @@ public class ProjectPathEditingService
             {
                 result = false;
             }
-            else if (allowOpenByEnabledChildren && eObject instanceof IBmObject bmObject && bmObject.bmIsTop()
+            else if (kind == EditCallKind.CONTENT && eObject instanceof IBmObject bmObject && bmObject.bmIsTop()
                 && cache.getEnableFullnames().stream()
                     .anyMatch(fqn -> fqn.startsWith(subObjectFqn + "."))) //$NON-NLS-1$
             {

@@ -34,8 +34,36 @@ public final class EditingCallContext
      */
     public static boolean isStructuralCall(List<String> frames)
     {
-        return frames.stream().anyMatch(frame -> frame.contains("NewActionProvider") //$NON-NLS-1$
-            || frame.contains("md.ui.wizards")); //$NON-NLS-1$
+        return classify(frames) == EditCallKind.STRUCTURAL;
+    }
+
+    /**
+     * Detects the kind of the editing check by the calling stack of EDT.
+     *
+     * @param frames class names of the calling stack.
+     * @return the kind of the call.
+     */
+    public static EditCallKind classify(List<String> frames)
+    {
+        if (frames.stream().anyMatch(frame -> frame.contains("NewActionProvider") //$NON-NLS-1$
+            || frame.contains("md.ui.wizards") //$NON-NLS-1$
+            || frame.contains("DtWizardAction") //$NON-NLS-1$
+            || frame.contains("DtDeleteAction") //$NON-NLS-1$
+            || frame.contains("DtMoveUpAction") //$NON-NLS-1$
+            || frame.contains("DtMoveDownAction") //$NON-NLS-1$
+            || frame.contains("DtSortAction") //$NON-NLS-1$
+            || frame.contains("md.help.ui.editor") //$NON-NLS-1$
+            || frame.contains("html.ui.editor"))) //$NON-NLS-1$
+        {
+            return EditCallKind.STRUCTURAL;
+        }
+
+        if (frames.stream().anyMatch(frame -> frame.contains("aef2.standard.definitions"))) //$NON-NLS-1$
+        {
+            return EditCallKind.CONTENT;
+        }
+
+        return EditCallKind.OTHER;
     }
 
 }
