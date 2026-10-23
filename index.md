@@ -60,15 +60,55 @@ Set up rules to **Enable** as exceptions from disable rules:
 **Attantion!**  Disabled object will be skipped from project validation by 1C:EDT.
 
 
-## Copy FQN from configuration tree
+## Editing Restrictions in the configuration tree
 
-In the configuration tree context menu (single selection of a catalog or a catalog form) use the `Editing Restrictions` menu to:
+In the configuration tree context menu (single selection) use the `Editing Restrictions` menu to manage editing rules of the selected object:
 
-- copy the canonical FQN of the selected object, its object/manager module or the form's module to the clipboard;
-- add the FQN to `disable.fullname` in `<project>/.settings/editing.yml`;
-- add the FQN to `enable.fullname` in `<project>/.settings/editing.yml`.
+- `Copy FQN` - copy the canonical 1C full name of the selected object, its module or the form module to the clipboard;
+- `Add to disable.fullname` - append the FQN to `disable.fullname` in `<project>/.settings/editing.yml`;
+- `Add to enable.fullname` - append the FQN to `enable.fullname` in `<project>/.settings/editing.yml`;
+- `Refresh editing restrictions` - re-read the rules without restart (the file is not modified).
 
-The commands only append entries to the chosen list (an existing identical entry is a no-op) and preserve the rest of the file. Scope: catalogs and their forms only.
+The commands only append entries to the chosen list (an existing identical entry is a no-op) and preserve the rest of the file: comments, unknown fields, order, encoding and line endings.
+
+### Targets
+
+Submenus are shown only when the selected object really has the corresponding module:
+
+| Submenu | FQN example |
+|---------|-------------|
+| Object | `Catalog.Products` |
+| Object module | `Catalog.Products.ObjectModule` |
+| Manager module | `Catalog.Products.ManagerModule` |
+| Record set module | `InformationRegister.Products.RecordSetModule` |
+| Form | `Catalog.Products.Form.ItemForm.Form` |
+| Form module | `Catalog.Products.Form.ItemForm.Form.Module` |
+
+The `Object` submenu is available for any metadata object, the module submenus only for the objects that have such a module.
+
+### Sub-objects
+
+For attributes, tabular sections, enum values, journal columns, commands, templates and external data source objects (tables, cubes, dimension tables, functions, fields, dimensions, resources) a second `Editing Restrictions` menu offers only `Copy FQN` and `Add to enable.fullname`: such an element is enabled pointwise, the owner object stays locked.
+
+The FQN of a sub-object is built as the owner FQN plus the element name plus the type marker: `Catalog.Products.Barcode.Attribute`, `Catalog.Products.Goods.TabularSection`, `Enum.Statuses.New.Value`, `DocumentJournal.Orders.Quantity.Column`, `Task.Performer.Do.Command`, `Catalog.Products.Price.Template`, `ExternalDataSource.Source.Cube.Cube1.Field.Field`.
+
+### Semantics and limitations
+
+- `enable` rules win over `disable` rules; a configuration with `enable` only has no effect (there must be something to disable).
+- A rule with a type marker never unlocks the whole file: it applies to that element only.
+- Enabling a sub-object does not open the owner itself: its `Main` page, properties and help stay read-only.
+- Structural operations (create, delete, move, sort) require an enabled owner. The new object wizard checks the top owner object, so while a task or a cube is locked you cannot add a new attribute even into an enabled tabular section.
+- Deleting children of a disabled object is not allowed.
+- Disabled objects are skipped from project validation by 1C:EDT.
+
+### Other commands
+
+- `Sort settings` in the project properties (`Disable editing` section) sorts the `fullname` and `path` lists of the `disable` and `enable` sections case-insensitively, keeping the rest of the file untouched.
+- `Refresh editing restrictions` re-reads `<project>/.settings/editing.yml` without restart.
+
+### Debugging
+
+Start 1C:EDT with `-Dorg.mard.dt.editing.debug=true` (after `-vmargs` in `eclipse.ini`) to log unique editing decisions, or with `-Dorg.mard.dt.editing.debug.all=true` to log every check. The messages `canEdit call:`, `canEdit sub-object:`, `canEdit path:` in the workspace `.log` show the object, the applied rule and the result.
 
 
 ## Set up your project rules
@@ -190,6 +230,57 @@ Open metadata objects to check out disabling and enabling features!
 > Примечание! Этот плагин не  блокирует редактирование файлов через файловую систему!
 
 **Внимание!**  Заблокированные объекты будут исключены из проверки (валидации) по проекту в 1C:EDT.
+
+
+##  Запрет редактирования в дереве конфигурации
+
+В контекстном меню дерева конфигурации (одиночный выбор) используйте меню `Запрет редактирования`, чтобы управлять правилами редактирования выбранного объекта:
+
+- `Копировать FQN` - скопировать в буфер полное квалифицированное имя 1C выбранного объекта, его модуля или модуля его формы;
+- `Добавить в disable.fullname` - дописать FQN в `disable.fullname` файла `<проект>/.settings/editing.yml`;
+- `Добавить в enable.fullname` - дописать FQN в `enable.fullname` того же файла;
+- `Обновить правила запрета` - перечитать правила без перезапуска EDT (файл не изменяется).
+
+Команды только дописывают записи в выбранный список (повторная такая же запись - ничего не делает) и сохраняют остальное содержимое файла: комментарии, неизвестные поля, порядок, кодировку и переводы строк.
+
+### Цели
+
+Подменю показываются только если у объекта действительно есть соответствующий модуль:
+
+| Подменю | Пример FQN |
+|---------|-------------|
+| Объект | `Catalog.Products` |
+| Модуль объекта | `Catalog.Products.ObjectModule` |
+| Модуль менеджера | `Catalog.Products.ManagerModule` |
+| Модуль набора записей | `InformationRegister.Products.RecordSetModule` |
+| Форма | `Catalog.Products.Form.ItemForm.Form` |
+| Модуль формы | `Catalog.Products.Form.ItemForm.Form.Module` |
+
+Подменю `Объект` доступно для любого объекта метаданных, модульные подменю - только для тех объектов, у которых такой модуль есть.
+
+### Под-объекты
+
+Для реквизитов, табличных частей, значений перечислений, граф журнала документов, команд, макетов и объектов внешних источников данных (таблицы, кубы, таблицы измерений, функции, поля, измерения, ресурсы) в дереве появляется второе меню `Запрет редактирования` с пунктами только `Копировать FQN` и `Добавить в enable.fullname`: такой элемент разрешается точечно, владелец остается заблокированным.
+
+FQN под-объекта строится как FQN владельца + имя элемента + маркер типа: `Catalog.Products.Barcode.Attribute`, `Catalog.Products.Goods.TabularSection`, `Enum.Statuses.New.Value`, `DocumentJournal.Orders.Quantity.Column`, `Task.Performer.Do.Command`, `Catalog.Products.Price.Template`, `ExternalDataSource.Source.Cube.Cube1.Field.Field`.
+
+### Семантика и ограничения
+
+- Правила `enable` важнее правил `disable`; конфигурация только с `enable` не действует (блокировать должно быть что-то).
+- Правило с маркером типа никогда не разблокирует файл целиком - оно действует только на этот элемент.
+- Включение под-объекта не открывает самого владельца: его вкладка `Основное`, свойства и справка остаются только для чтения.
+- Структурные операции (создание, удаление, перемещение, сортировка) требуют разрешенного владельца. Мастер создания нового объекта проверяет верхний объект, поэтому пока задача или куб заблокированы, нельзя добавить новый реквизит даже в разрешенную табличную часть.
+- Удалять дочерние элементы заблокированного объекта нельзя.
+- Заблокированные объекты исключаются из проверки (валидации) по проекту в 1C:EDT.
+
+### Прочие команды
+
+- `Отсортировать настройки` в свойствах проекта (раздел `Запрет редактирования`) сортирует списки `fullname` и `path` секций `disable` и `enable` без учета регистра, не трогая остальное содержимое файла.
+- `Обновить правила запрета` перечитывает `<проект>/.settings/editing.yml` без перезапуска EDT.
+
+### Отладка
+
+Запустите 1C:EDT с ключом `-Dorg.mard.dt.editing.debug=true` (после `-vmargs` в `eclipse.ini`), чтобы в лог попадали уникальные решения о редактировании, или с `-Dorg.mard.dt.editing.debug.all=true` - чтобы логировалась каждая проверка. Сообщения `canEdit call:`, `canEdit sub-object:`, `canEdit path:` в файле `.log` рабочей области показывают объект, сработавшее правило и результат.
 
 
 ##  Настройка правил по проекту
