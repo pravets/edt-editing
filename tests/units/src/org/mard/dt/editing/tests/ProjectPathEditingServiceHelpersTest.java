@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
@@ -36,6 +37,36 @@ import org.mard.dt.editing.internal.ProjectPathEditingService;
  */
 public class ProjectPathEditingServiceHelpersTest
 {
+
+    @Test
+    public void testIsEnabledByAncestor()
+    {
+        Set<String> enabled = Set.of( //
+            "Task.ЗадачаИсполнителя.ТабличнаяЧасть.TabularSection", //$NON-NLS-1$
+            "Catalog.Products"); //$NON-NLS-1$
+
+        // an enabled tabular section opens its attributes
+        assertTrue(ProjectPathEditingService.isEnabledByAncestor(enabled, //
+            "Task.ЗадачаИсполнителя.ТабличнаяЧасть.TabularSection.Реквизит.Attribute")); //$NON-NLS-1$
+        // an enabled object opens its content
+        assertTrue(ProjectPathEditingService.isEnabledByAncestor(enabled, //
+            "Catalog.Products.Goods.TabularSection")); //$NON-NLS-1$
+        // unrelated objects stay disabled
+        assertFalse(ProjectPathEditingService.isEnabledByAncestor(enabled, //
+            "Task.ДругаяЗадача.Реквизит.Attribute")); //$NON-NLS-1$
+        assertFalse(ProjectPathEditingService.isEnabledByAncestor(enabled, //
+            "Catalog.ProductsExtra.Goods.TabularSection")); //$NON-NLS-1$
+        // the object itself is not an ancestor of itself
+        assertFalse(ProjectPathEditingService.isEnabledByAncestor(enabled, //
+            "Task.ЗадачаИсполнителя.ТабличнаяЧасть.TabularSection")); //$NON-NLS-1$
+        // empty cases
+        assertFalse(ProjectPathEditingService.isEnabledByAncestor(Set.of(), //$NON-NLS-1$
+            "Catalog.Products.Goods.TabularSection")); //$NON-NLS-1$
+        assertFalse(ProjectPathEditingService.isEnabledByAncestor(null, //$NON-NLS-1$
+            "Catalog.Products.Goods.TabularSection")); //$NON-NLS-1$
+        assertFalse(ProjectPathEditingService.isEnabledByAncestor(enabled, null)); //$NON-NLS-1$
+        assertFalse(ProjectPathEditingService.isEnabledByAncestor(enabled, " ")); //$NON-NLS-1$
+    }
 
     @Test
     public void testIsSubObjectFqnMarkers()

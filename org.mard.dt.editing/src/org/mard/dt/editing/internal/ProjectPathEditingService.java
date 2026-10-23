@@ -253,6 +253,12 @@ public class ProjectPathEditingService
             {
                 result = true;
             }
+            else if (!structural && isEnabledByAncestor(cache.getEnableFullnames(), subObjectFqn))
+            {
+                // An enabled container opens its own content, e.g. an enabled tabular section
+                // opens its attributes.
+                result = true;
+            }
             else if (cache.getDisableFullnames().contains(subObjectFqn))
             {
                 result = false;
@@ -767,6 +773,36 @@ public class ProjectPathEditingService
             result.append(segment);
         }
         return result.toString();
+    }
+
+    /**
+     * Checks whether one of the ancestors of the given full name is enabled. An enabled container opens
+     * its own content, e.g. an enabled tabular section opens its attributes.
+     *
+     * @param enableFullnames full names of the enabled objects.
+     * @param fullname full name of the checked object.
+     * @return true, if an ancestor of the object is enabled.
+     */
+    public static boolean isEnabledByAncestor(Set<String> enableFullnames, String fullname)
+    {
+        if (enableFullnames == null || enableFullnames.isEmpty() || fullname == null || fullname.isBlank())
+            return false;
+
+        String[] segments = fullname.trim().split("\\."); //$NON-NLS-1$
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < segments.length - 1; i++)
+        {
+            if (i > 0)
+            {
+                builder.append('.');
+            }
+            builder.append(segments[i]);
+            if (i >= 1 && enableFullnames.contains(builder.toString()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean isSubObjectFqn(String fullname)
