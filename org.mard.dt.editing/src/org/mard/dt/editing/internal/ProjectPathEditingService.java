@@ -201,8 +201,8 @@ public class ProjectPathEditingService
             IPath ownerPath = fileSystemSupport != null && owner != null && !owner.eIsProxy()
                 ? fileSystemSupport.getPath(owner)
                 : null;
-            boolean moduleDecision = modulePath != null ? canEdit(cache, modulePath) : true;
-            boolean ownerDecision = ownerPath != null ? canEdit(cache, ownerPath) : true;
+            boolean moduleDecision = modulePath != null ? canEditWithPatterns(project, cache, modulePath) : true;
+            boolean ownerDecision = ownerPath != null ? canEditWithPatterns(project, cache, ownerPath) : true;
             boolean result = moduleDecision && ownerDecision;
             if (DEBUG_EDITING)
                 CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
@@ -231,7 +231,7 @@ public class ProjectPathEditingService
                 IProjectFileSystemSupport fileSystemSupport =
                     fileSystemSupportProvider.getProjectFileSystemSupport(project);
                 IPath path = fileSystemSupport != null ? fileSystemSupport.getPath(eObject) : null;
-                result = path != null ? canEdit(cache, path) : true;
+                result = path != null ? canEditWithPatterns(project, cache, path) : true;
             }
             if (DEBUG_EDITING)
                 CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
@@ -261,7 +261,7 @@ public class ProjectPathEditingService
 
                     IPath path = fileSystemSupport.getPath(eObject);
                     if (path != null)
-                        return canEdit(cache, path);
+                        return canEditWithPatterns(project, cache, path);
                 }
                 return true;
             });
@@ -282,6 +282,16 @@ public class ProjectPathEditingService
 
         ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
 
+        return canEditWithPatterns(project, cache, path);
+    }
+
+    private boolean canEditWithPatterns(IProject project, ProjectCache cache, IPath path)
+    {
+
+        if (path == null)
+            return true;
+
+        boolean result = canEdit(cache, path);
         if (!cache.getEnablePatterns().isEmpty())
         {
             QualifiedName fqn = qualifiedNameFilePathConverter.getFqn(path);
@@ -294,17 +304,17 @@ public class ProjectPathEditingService
                     if (fqnText.equals(pattern) || (strippedFqn != null
                         && (strippedFqn.equals(pattern) || strippedFqn.startsWith(pattern + ".")))) //$NON-NLS-1$
                     {
-                        if (DEBUG_EDITING)
-                            CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
-                                "canEdit path: fqn={0}, pattern={1}, result=true", //$NON-NLS-1$
-                                fqnText, pattern)));
-                        return true;
+                        result = true;
+                        break;
                     }
                 }
             }
         }
 
-        return canEdit(cache, path);
+        if (DEBUG_EDITING)
+            CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
+                "canEdit path: path={0}, result={1}", path, result))); //$NON-NLS-1$
+        return result;
     }
 
     @Override
