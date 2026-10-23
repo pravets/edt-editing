@@ -14,8 +14,11 @@ package org.mard.dt.editing.internal;
 
 import java.lang.StackWalker.Option;
 import java.lang.StackWalker.StackFrame;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.EObject;
@@ -73,11 +76,35 @@ public class PathSettingsEditingSupportProvider
             return true;
 
         boolean canEdit = editingService.canEdit(project, eObject);
+        debugCall(eObject, mode, canEdit);
         if (!canEdit && editingService.canEditInMerge(project) && isCallFromMerge())
         {
             return true;
         }
         return canEdit;
+    }
+
+    private static final boolean DEBUG_EDITING = Boolean.getBoolean("org.mard.dt.editing.debug"); //$NON-NLS-1$
+
+    /** Log each distinct calling path once, so the log stays readable. */
+    private static final Set<String> LOGGED_CALLERS = Collections.synchronizedSet(new LinkedHashSet<>());
+
+    private static void debugCall(EObject eObject, EditingMode mode, boolean canEdit)
+    {
+        if (!DEBUG_EDITING)
+            return;
+
+        String frames = StackWalker.getInstance().walk(s -> s.skip(1).limit(8) //$NON-NLS-1$
+            .map(StackFrame::getClassName)
+            .collect(Collectors.joining(" <- "))); //$NON-NLS-1$
+
+        String key = eObject.eClass().getName() + "|" + mode + "|" + frames; //$NON-NLS-1$
+        if (LOGGED_CALLERS.add(key))
+        {
+            CorePlugin.log(CorePlugin.createWarningStatus(
+                "canEdit call: type=" + eObject.eClass().getName() + ", mode=" + mode //$NON-NLS-1$
+                    + ", result=" + canEdit + ", caller=" + frames)); //$NON-NLS-1$
+        }
     }
 
     private boolean isCallFromMerge()

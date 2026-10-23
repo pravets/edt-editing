@@ -17,7 +17,9 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SUBSYSTE
 import java.text.MessageFormat;
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -114,6 +116,23 @@ public class ProjectPathEditingService
 
     private static final boolean DEBUG_EDITING = Boolean.getBoolean("org.mard.dt.editing.debug"); //$NON-NLS-1$
 
+    /** Debug messages are logged once per unique decision to keep the log readable. */
+    private static final Set<String> LOGGED_DEBUG_KEYS = Collections.synchronizedSet(new LinkedHashSet<>());
+
+    private static final int MAX_DEBUG_KEYS = 500;
+
+    private static void debugLog(String key, String message)
+    {
+        if (!DEBUG_EDITING)
+            return;
+        if (LOGGED_DEBUG_KEYS.size() >= MAX_DEBUG_KEYS)
+            return;
+        if (LOGGED_DEBUG_KEYS.add(key))
+        {
+            CorePlugin.log(CorePlugin.createWarningStatus(message));
+        }
+    }
+
     @Inject
     public ProjectPathEditingService(IProjectFileSystemSupportProvider fileSystemSupportProvider,
         IBmModelManager modelManager, IQualifiedNameFilePathConverter qualifiedNameFilePathConverter)
@@ -205,10 +224,9 @@ public class ProjectPathEditingService
             boolean ownerDecision = ownerPath != null ? canEditWithPatterns(project, cache, ownerPath) : true;
             // An explicit rule for the module file itself wins over the owner's restriction.
             boolean result = isEnabledByPattern(cache, modulePath) || (moduleDecision && ownerDecision);
-            if (DEBUG_EDITING)
-                CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
-                    "canEdit module: modulePath={0}, ownerPath={1}, result={2}", //$NON-NLS-1$
-                    modulePath, ownerPath, result)));
+            debugLog("module|" + modulePath + "|" + ownerPath + "|" + result, //$NON-NLS-1$
+                MessageFormat.format("canEdit module: modulePath={0}, ownerPath={1}, result={2}", //$NON-NLS-1$
+                    modulePath, ownerPath, result));
             return result;
         }
 
@@ -242,10 +260,9 @@ public class ProjectPathEditingService
                 IPath path = fileSystemSupport != null ? fileSystemSupport.getPath(eObject) : null;
                 result = path != null ? canEditWithPatterns(project, cache, path) : true;
             }
-            if (DEBUG_EDITING)
-                CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
-                    "canEdit sub-object: type={0}, fqn={1}, result={2}, enableFullnames={3}", //$NON-NLS-1$
-                    eObject.eClass().getName(), subObjectFqn, result, cache.getEnableFullnames())));
+            debugLog("sub|" + eObject.eClass().getName() + "|" + subObjectFqn + "|" + result, //$NON-NLS-1$
+                MessageFormat.format("canEdit sub-object: type={0}, fqn={1}, result={2}, enableFullnames={3}", //$NON-NLS-1$
+                    eObject.eClass().getName(), subObjectFqn, result, cache.getEnableFullnames()));
             return result;
         }
 
@@ -358,9 +375,8 @@ public class ProjectPathEditingService
             }
         }
 
-        if (DEBUG_EDITING)
-            CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
-                "canEdit path: path={0}, result={1}", path, result))); //$NON-NLS-1$
+        debugLog("path|" + path + "|" + result, //$NON-NLS-1$
+            MessageFormat.format("canEdit path: path={0}, result={1}", path, result)); //$NON-NLS-1$
         return result;
     }
 
@@ -565,8 +581,8 @@ public class ProjectPathEditingService
 
             if (DEBUG_EDITING && paths.size() == before)
             {
-                CorePlugin.log(CorePlugin.createWarningStatus(
-                    "fullname resolved to no paths: " + fullname)); //$NON-NLS-1$
+                debugLog("nopath|" + fullname, //$NON-NLS-1$
+                    "fullname resolved to no paths: " + fullname); //$NON-NLS-1$
             }
         }
     }
