@@ -97,6 +97,7 @@ The FQN of a sub-object is built as the owner FQN plus the element name plus the
 - Enabling a sub-object does not open the owner itself: its `Main` page, properties and help stay read-only.
 - Structural operations (create, delete, move, sort) require an enabled owner. The new object wizard checks the top owner object, so while a task or a cube is locked you cannot add a new attribute even into an enabled tabular section.
 - Deleting children of a disabled object is not allowed.
+- Common attributes (`Общие реквизиты`) are separate global metadata objects with their own files (`src/CommonAttributes/<Name>/<Name>.mdo`) shared between owners. Enabling an object does not open the common attributes attached to it: enable them separately, by path `src/CommonAttributes` or by their own full name.
 - Disabled objects are skipped from project validation by 1C:EDT.
 
 ### Other commands
@@ -270,6 +271,7 @@ FQN под-объекта строится как FQN владельца + им�
 - Включение под-объекта не открывает самого владельца: его вкладка `Основное`, свойства и справка остаются только для чтения.
 - Структурные операции (создание, удаление, перемещение, сортировка) требуют разрешенного владельца. Мастер создания нового объекта проверяет верхний объект, поэтому пока задача или куб заблокированы, нельзя добавить новый реквизит даже в разрешенную табличную часть.
 - Удалять дочерние элементы заблокированного объекта нельзя.
+- Общие реквизиты - это отдельные глобальные объекты метаданных со своими файлами (`src/CommonAttributes/<Имя>/<Имя>.mdo`), общие для разных владельцев. Включение объекта не открывает подключенные к нему общие реквизиты: включать их нужно отдельно - по пути `src/CommonAttributes` или по их собственному полному имени.
 - Заблокированные объекты исключаются из проверки (валидации) по проекту в 1C:EDT.
 
 ### Прочие команды

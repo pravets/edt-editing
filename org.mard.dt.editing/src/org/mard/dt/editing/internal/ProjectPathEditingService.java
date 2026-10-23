@@ -776,6 +776,30 @@ public class ProjectPathEditingService
     }
 
     /**
+     * Collects the full names of the enabled objects. Both whole objects and their sub-objects are
+     * kept, because an enabled object opens its content.
+     *
+     * @param fullnames full names from the settings.
+     * @return set of the enabled full names.
+     */
+    public static Set<String> collectEnabledFullnames(List<String> fullnames)
+    {
+        Set<String> result = new HashSet<>();
+        if (fullnames == null)
+        {
+            return result;
+        }
+        for (String fullname : fullnames)
+        {
+            if (fullname != null && !fullname.isBlank())
+            {
+                result.add(fullname.trim());
+            }
+        }
+        return result;
+    }
+
+    /**
      * Checks whether one of the ancestors of the given full name is enabled. An enabled container opens
      * its own content, e.g. an enabled tabular section opens its attributes.
      *
@@ -949,8 +973,9 @@ public class ProjectPathEditingService
         Set<String> enableFullnames = new HashSet<>();
         if (settings.getEnable() != null && settings.getEnable().getFullname() != null)
         {
-            settings.getEnable().getFullname().stream().filter(ProjectPathEditingService::isSubObjectFqn)
-                .forEach(enableFullnames::add);
+            // All enabled full names are kept: an enabled object opens its content, an enabled
+            // sub-object opens its own content.
+            enableFullnames.addAll(collectEnabledFullnames(settings.getEnable().getFullname()));
             // Allow editing of files that live under an enabled full name (templates, commands,
             // forms of a disabled owner): getFqn(path) uses the canonical marker-before-name order.
             settings.getEnable().getFullname().stream().filter(fqn -> fqn != null && !fqn.isBlank()).forEach(fqn -> {

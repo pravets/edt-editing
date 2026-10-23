@@ -39,6 +39,23 @@ public class ProjectPathEditingServiceHelpersTest
 {
 
     @Test
+    public void testCollectEnabledFullnamesKeepsWholeObjects()
+    {
+        Set<String> enabled = ProjectPathEditingService.collectEnabledFullnames(Arrays.asList( //
+            "Catalog.Products", //$NON-NLS-1$
+            "Task.Задача.Реквизит.Attribute", //$NON-NLS-1$
+            "  ", //$NON-NLS-1$
+            null, //
+            " Catalog.Other ")); //$NON-NLS-1$
+
+        assertEquals(3, enabled.size()); //$NON-NLS-1$
+        assertTrue(enabled.contains("Catalog.Products")); //$NON-NLS-1$
+        assertTrue(enabled.contains("Task.Задача.Реквизит.Attribute")); //$NON-NLS-1$
+        assertTrue(enabled.contains("Catalog.Other")); //$NON-NLS-1$
+        assertTrue(ProjectPathEditingService.collectEnabledFullnames(null).isEmpty()); //$NON-NLS-1$
+    }
+
+    @Test
     public void testIsEnabledByAncestor()
     {
         Set<String> enabled = Set.of( //
