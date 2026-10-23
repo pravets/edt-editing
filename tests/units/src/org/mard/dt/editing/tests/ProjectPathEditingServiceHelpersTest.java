@@ -168,25 +168,12 @@ public class ProjectPathEditingServiceHelpersTest
     }
 
     @Test
-    public void testIsDirectChild()
+    public void testSubObjectFqnDoesNotCoverOwner()
     {
-        String cube = "ExternalDataSource.Source.Cube.Cube1";
-        String dimensionTable = "ExternalDataSource.Source.Cube.Cube1.DimensionTable.Dim";
-        // a field of a dimension table is a direct child of the dimension table only
-        assertTrue(ProjectPathEditingService.isDirectChild(dimensionTable,
+        // a rule for an enabled child does not enable its owner: the owner is decided by paths
+        assertTrue(ProjectPathEditingService.isSubObjectFqn(
             "ExternalDataSource.Source.Cube.Cube1.DimensionTable.Dim.MyField.Field"));
-        assertFalse(ProjectPathEditingService.isDirectChild(cube,
-            "ExternalDataSource.Source.Cube.Cube1.DimensionTable.Dim.MyField.Field"));
-        // a dimension table is a direct child of the cube
-        assertTrue(ProjectPathEditingService.isDirectChild(cube,
-            "ExternalDataSource.Source.Cube.Cube1.DimensionTable.Dim"));
-        // plain attributes
-        assertTrue(ProjectPathEditingService.isDirectChild("Catalog.Products",
-            "Catalog.Products.Barcode.Attribute"));
-        assertFalse(ProjectPathEditingService.isDirectChild("Catalog.Products",
-            "Catalog.Products.Goods.Name.Attribute"));
-        assertFalse(ProjectPathEditingService.isDirectChild("Catalog.Products", "Catalog.Other.Barcode.Attribute"));
-        assertFalse(ProjectPathEditingService.isDirectChild(null, "Catalog.Products.Barcode.Attribute"));
-        assertFalse(ProjectPathEditingService.isDirectChild("Catalog.Products", null));
+        assertFalse(ProjectPathEditingService.isSubObjectFqn("Catalog.Products"));
+        assertFalse(ProjectPathEditingService.isSubObjectFqn("Catalog.Products.Goods"));
     }
 }

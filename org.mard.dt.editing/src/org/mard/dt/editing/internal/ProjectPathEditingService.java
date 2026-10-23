@@ -253,14 +253,6 @@ public class ProjectPathEditingService
             {
                 result = false;
             }
-            else if (kind == EditCallKind.CONTENT && eObject instanceof IBmObject bmObject && bmObject.bmIsTop()
-                && cache.getEnableFullnames().stream()
-                    .anyMatch(fqn -> isDirectChild(subObjectFqn, fqn))) //$NON-NLS-1$
-            {
-                // A top object (cube, table, dimension table) must open for editing when one of
-                // its direct children is explicitly enabled; the children are checked one by one.
-                result = true;
-            }
             else
             {
                 IProjectFileSystemSupport fileSystemSupport =
@@ -751,34 +743,6 @@ public class ProjectPathEditingService
             result.append(segment);
         }
         return result.toString();
-    }
-
-    /**
-     * Checks whether the given child full name belongs to a direct child of the parent object.
-     * Marker segments (Field, Command, DimensionTable, ...) are ignored, so a field of a
-     * dimension table of a cube is not a direct child of the cube.
-     *
-     * @param parentFqn full name of the parent object
-     * @param childFqn full name of the candidate child
-     * @return {@code true} when the child is a direct child of the parent
-     */
-    public static boolean isDirectChild(String parentFqn, String childFqn)
-    {
-        if (parentFqn == null || childFqn == null)
-            return false;
-
-        String child = childFqn.trim();
-        String prefix = parentFqn.trim() + "."; //$NON-NLS-1$
-        if (!child.startsWith(prefix))
-            return false;
-
-        int names = 0;
-        for (String segment : child.substring(prefix.length()).split("\\.")) //$NON-NLS-1$
-        {
-            if (!SUB_OBJECT_MARKERS.contains(segment))
-                names++;
-        }
-        return names == 1;
     }
 
     public static boolean isSubObjectFqn(String fullname)
