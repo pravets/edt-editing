@@ -203,7 +203,8 @@ public class ProjectPathEditingService
                 : null;
             boolean moduleDecision = modulePath != null ? canEditWithPatterns(project, cache, modulePath) : true;
             boolean ownerDecision = ownerPath != null ? canEditWithPatterns(project, cache, ownerPath) : true;
-            boolean result = moduleDecision && ownerDecision;
+            // An explicit rule for the module file itself wins over the owner's restriction.
+            boolean result = isEnabledByPattern(cache, modulePath) || (moduleDecision && ownerDecision);
             if (DEBUG_EDITING)
                 CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
                     "canEdit module: modulePath={0}, ownerPath={1}, result={2}", //$NON-NLS-1$
@@ -225,6 +226,14 @@ public class ProjectPathEditingService
             else if (cache.getDisableFullnames().contains(subObjectFqn))
             {
                 result = false;
+            }
+            else if (eObject instanceof IBmObject bmObject && bmObject.bmIsTop()
+                && cache.getEnableFullnames().stream()
+                    .anyMatch(fqn -> fqn.startsWith(subObjectFqn + "."))) //$NON-NLS-1$
+            {
+                // A top object (cube, table, dimension table) must open for editing when any of
+                // its children is explicitly enabled; the children are checked one by one.
+                result = true;
             }
             else
             {
@@ -285,6 +294,46 @@ public class ProjectPathEditingService
         return canEditWithPatterns(project, cache, path);
     }
 
+    /**
+     * Matches a file FQN against a single enable.fullname pattern. File level patterns (form and
+     * module) match exactly, everything else also covers its children.
+     */
+    public static boolean matchesEnablePattern(String pattern, String fqnText)
+    {
+        if (pattern == null || fqnText == null)
+            return false;
+        String trimmedPattern = pattern.trim();
+        if (trimmedPattern.isEmpty())
+            return false;
+        if (fqnText.equals(trimmedPattern))
+            return true;
+        String strippedPattern = stripMarkers(trimmedPattern);
+        String strippedFqn = stripMarkers(fqnText);
+        if (strippedPattern == null || strippedFqn == null)
+            return false;
+        if (strippedFqn.equals(strippedPattern))
+            return true;
+        // A rule for a form or a module must not unlock its sibling files.
+        boolean filePattern = trimmedPattern.endsWith(".Form") || trimmedPattern.endsWith(".Module"); //$NON-NLS-1$ //$NON-NLS-2$
+        return !filePattern && strippedFqn.startsWith(strippedPattern + "."); //$NON-NLS-1$
+    }
+
+    private boolean isEnabledByPattern(ProjectCache cache, IPath path)
+    {
+        if (path == null || cache.getEnablePatterns().isEmpty())
+            return false;
+        QualifiedName fqn = qualifiedNameFilePathConverter.getFqn(path);
+        if (fqn == null)
+            return false;
+        String fqnText = fqn.toString();
+        for (String pattern : cache.getEnablePatterns())
+        {
+            if (matchesEnablePattern(pattern, fqnText))
+                return true;
+        }
+        return false;
+    }
+
     private boolean canEditWithPatterns(IProject project, ProjectCache cache, IPath path)
     {
 
@@ -298,11 +347,9 @@ public class ProjectPathEditingService
             if (fqn != null)
             {
                 String fqnText = fqn.toString();
-                String strippedFqn = stripMarkers(fqnText);
                 for (String pattern : cache.getEnablePatterns())
                 {
-                    if (fqnText.equals(pattern) || (strippedFqn != null
-                        && (strippedFqn.equals(pattern) || strippedFqn.startsWith(pattern + ".")))) //$NON-NLS-1$
+                    if (matchesEnablePattern(pattern, fqnText))
                     {
                         result = true;
                         break;

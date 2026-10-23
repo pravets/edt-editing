@@ -102,4 +102,31 @@ public class ProjectPathEditingServiceHelpersTest
             ProjectPathEditingService.moduleFilePath(new Path("CommonModules/My/Module.bsl")));
         assertNull(ProjectPathEditingService.moduleFilePath(null));
     }
+
+    @Test
+    public void testMatchesEnablePattern()
+    {
+        // file level rules match exactly, never their siblings
+        assertTrue(ProjectPathEditingService.matchesEnablePattern(
+            "ExternalDataSource.ВнешнийИсточникДанных.Cube.Куб.Form.ФормаЗаписи.Form",
+            "ExternalDataSource.ВнешнийИсточникДанных.Cube.Куб.Form.ФормаЗаписи.Form"));
+        assertFalse(ProjectPathEditingService.matchesEnablePattern(
+            "ExternalDataSource.ВнешнийИсточникДанных.Cube.Куб.Form.ФормаЗаписи.Form",
+            "ExternalDataSource.ВнешнийИсточникДанных.Cube.Куб.Form.ФормаЗаписи.Form.Module"));
+        assertTrue(ProjectPathEditingService.matchesEnablePattern(
+            "ExternalDataSource.ВнешнийИсточникДанных.Cube.Куб.Form.ФормаЗаписи.Form.Module",
+            "ExternalDataSource.ВнешнийИсточникДанных.Cube.Куб.Form.ФормаЗаписи.Form.Module"));
+        assertFalse(ProjectPathEditingService.matchesEnablePattern(
+            "ExternalDataSource.ВнешнийИсточникДанных.Cube.Куб.Form.ФормаЗаписи.Form.Module",
+            "ExternalDataSource.ВнешнийИсточникДанных.Cube.Куб.Form.ФормаЗаписи.Form"));
+        // ordinary rules still cover children
+        assertTrue(ProjectPathEditingService.matchesEnablePattern("Catalog.Products",
+            "Catalog.Products.Form.ItemForm.Form"));
+        // marker order is normalised
+        assertTrue(ProjectPathEditingService.matchesEnablePattern("Catalog.Products.Attribute.Barcode",
+            "Catalog.Products.Barcode.Attribute"));
+        assertFalse(ProjectPathEditingService.matchesEnablePattern(null, "Catalog.Products"));
+        assertFalse(ProjectPathEditingService.matchesEnablePattern(" ", "Catalog.Products"));
+        assertFalse(ProjectPathEditingService.matchesEnablePattern("Catalog.Products", null));
+    }
 }
