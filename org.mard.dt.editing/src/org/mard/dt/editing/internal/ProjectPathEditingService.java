@@ -76,9 +76,13 @@ import com._1c.g5.v8.dt.metadata.mdclass.BasicCommand;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection;
 import com._1c.g5.v8.dt.metadata.mdclass.Column;
+import com._1c.g5.v8.dt.metadata.mdclass.Cube;
+import com._1c.g5.v8.dt.metadata.mdclass.DimensionTable;
 import com._1c.g5.v8.dt.metadata.mdclass.EnumValue;
+import com._1c.g5.v8.dt.metadata.mdclass.Function;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com._1c.g5.v8.dt.metadata.mdclass.Subsystem;
+import com._1c.g5.v8.dt.metadata.mdclass.Table;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.inject.Inject;
@@ -427,6 +431,7 @@ public class ProjectPathEditingService
                 continue;
             }
 
+            int before = paths.size();
             IBmObject top = transaction.getTopObjectByFqn(fullname);
             if (top != null)
             {
@@ -447,12 +452,25 @@ public class ProjectPathEditingService
                     // resolve the form path and use the sibling Module.bsl file.
                     if (fullname.endsWith(".Module")) //$NON-NLS-1$
                     {
-                        List<IPath> basePaths = qualifiedNameFilePathConverter.getAllPossibleFilePaths(
-                            QualifiedName.create(fullname.substring(0, fullname.length() - ".Module".length()))); //$NON-NLS-1$
-                        if (basePaths != null)
+                        String baseFqn = fullname.substring(0, fullname.length() - ".Module".length()); //$NON-NLS-1$
+                        List<IPath> basePaths =
+                            qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(baseFqn));
+                        if (basePaths != null && !basePaths.isEmpty())
                         {
-                            basePaths.stream().filter(Objects::nonNull).map(ProjectPathEditingService::moduleFilePath)
-                                .forEach(paths::add);
+                            basePaths.stream().filter(Objects::nonNull)
+                                .map(ProjectPathEditingService::moduleFilePath).forEach(paths::add);
+                        }
+                        else
+                        {
+                            // The path converter does not know form FQNs; resolve the form as a BM
+                            // top object and take its sibling Module.bsl.
+                            IBmObject formTop = transaction.getTopObjectByFqn(baseFqn);
+                            IPath formPath = formTop != null ? fileSystemSupport.getPath(formTop) : null;
+                            IPath modulePath = moduleFilePath(formPath);
+                            if (modulePath != null)
+                            {
+                                paths.add(modulePath);
+                            }
                         }
                     }
                 }
@@ -460,6 +478,12 @@ public class ProjectPathEditingService
                 {
                     modulePaths.stream().filter(Objects::nonNull).forEach(paths::add);
                 }
+            }
+
+            if (DEBUG_EDITING && paths.size() == before)
+            {
+                CorePlugin.log(CorePlugin.createWarningStatus(
+                    "fullname resolved to no paths: " + fullname)); //$NON-NLS-1$
             }
         }
     }
@@ -479,40 +503,64 @@ public class ProjectPathEditingService
         return buildFullName(top.bmGetFqn(), segments);
     }
 
-    // Walks the sub-object chain (features, tabular sections, enum values, columns, commands)
-    // and collects the FQN suffix segments; returns the outermost container.
+    // Walks the sub-object chain (features, tabular sections, enum values, columns, commands,
+    // external data source tables/cubes/functions) and collects the FQN suffix segments;
+    // returns the outermost container.
     static EObject collectSegments(EObject object, LinkedList<String> segments)
     {
         EObject container = object;
-        while (container instanceof BasicFeature feature)
+        while (true)
         {
-            segments.addFirst("Attribute"); //$NON-NLS-1$
-            segments.addFirst(feature.getName());
-            container = feature.eContainer();
-        }
-        while (container instanceof BasicTabularSection tabularSection)
-        {
-            segments.addFirst("TabularSection"); //$NON-NLS-1$
-            segments.addFirst(tabularSection.getName());
-            container = tabularSection.eContainer();
-        }
-        if (container instanceof EnumValue enumValue)
-        {
-            segments.addFirst("Value"); //$NON-NLS-1$
-            segments.addFirst(enumValue.getName());
-            container = enumValue.eContainer();
-        }
-        else if (container instanceof Column column)
-        {
-            segments.addFirst("Column"); //$NON-NLS-1$
-            segments.addFirst(column.getName());
-            container = column.eContainer();
-        }
-        else if (container instanceof BasicCommand command && !(container instanceof IBmObject top && top.bmIsTop()))
-        {
-            segments.addFirst("Command"); //$NON-NLS-1$
-            segments.addFirst(command.getName());
-            container = command.eContainer();
+            if (container instanceof BasicFeature feature)
+            {
+                segments.addFirst("Attribute"); //$NON-NLS-1$
+                segments.addFirst(feature.getName());
+            }
+            else if (container instanceof BasicTabularSection tabularSection)
+            {
+                segments.addFirst("TabularSection"); //$NON-NLS-1$
+                segments.addFirst(tabularSection.getName());
+            }
+            else if (container instanceof EnumValue enumValue)
+            {
+                segments.addFirst("Value"); //$NON-NLS-1$
+                segments.addFirst(enumValue.getName());
+            }
+            else if (container instanceof Column column)
+            {
+                segments.addFirst("Column"); //$NON-NLS-1$
+                segments.addFirst(column.getName());
+            }
+            else if (container instanceof BasicCommand command && !(container instanceof IBmObject top && top.bmIsTop()))
+            {
+                segments.addFirst("Command"); //$NON-NLS-1$
+                segments.addFirst(command.getName());
+            }
+            else if (container instanceof Table table)
+            {
+                segments.addFirst("Table"); //$NON-NLS-1$
+                segments.addFirst(table.getName());
+            }
+            else if (container instanceof Cube cube)
+            {
+                segments.addFirst("Cube"); //$NON-NLS-1$
+                segments.addFirst(cube.getName());
+            }
+            else if (container instanceof DimensionTable dimensionTable)
+            {
+                segments.addFirst("DimensionTable"); //$NON-NLS-1$
+                segments.addFirst(dimensionTable.getName());
+            }
+            else if (container instanceof Function function)
+            {
+                segments.addFirst("Function"); //$NON-NLS-1$
+                segments.addFirst(function.getName());
+            }
+            else
+            {
+                break;
+            }
+            container = ((EObject)container).eContainer();
         }
         return container;
     }
@@ -538,12 +586,25 @@ public class ProjectPathEditingService
         if (fullname == null)
             return false;
         String[] segments = fullname.trim().split("\\."); //$NON-NLS-1$
-        // generator produces marker as LAST segment: Catalog.X.<name>.Attribute
-        return segments.length >= 3 && ("Attribute".equals(segments[segments.length - 1]) //$NON-NLS-1$
-            || "TabularSection".equals(segments[segments.length - 1]) //$NON-NLS-1$
-            || "Value".equals(segments[segments.length - 1]) //$NON-NLS-1$
-            || "Column".equals(segments[segments.length - 1]) //$NON-NLS-1$
-            || "Command".equals(segments[segments.length - 1])); //$NON-NLS-1$
+        // Sub-object FQNs carry a marker segment ("<name>.Attribute", "<name>.Column" etc.);
+        // nested chains (cube dimension tables, tabular section attributes) put it mid-string.
+        for (int i = 2; i < segments.length; i++)
+        {
+            String segment = segments[i];
+            if ("Attribute".equals(segment) //$NON-NLS-1$
+                || "TabularSection".equals(segment) //$NON-NLS-1$
+                || "Value".equals(segment) //$NON-NLS-1$
+                || "Column".equals(segment) //$NON-NLS-1$
+                || "Command".equals(segment) //$NON-NLS-1$
+                || "Table".equals(segment) //$NON-NLS-1$
+                || "Cube".equals(segment) //$NON-NLS-1$
+                || "DimensionTable".equals(segment) //$NON-NLS-1$
+                || "Function".equals(segment)) //$NON-NLS-1$
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void addSubsystemPath(Set<IPath> paths, List<String> subsystems, IBmModel model,

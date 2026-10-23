@@ -36,6 +36,10 @@ public class ProjectPathEditingServiceHelpersTest
         assertTrue(ProjectPathEditingService.isSubObjectFqn("Enum.Genders.Male.Value"));
         assertTrue(ProjectPathEditingService.isSubObjectFqn("DocumentJournal.Journal.Column1.Column"));
         assertTrue(ProjectPathEditingService.isSubObjectFqn("Task.Tasks.MyCommand.Command"));
+        assertTrue(ProjectPathEditingService.isSubObjectFqn("ExternalDataSource.Source.Table.Table"));
+        assertTrue(ProjectPathEditingService.isSubObjectFqn("ExternalDataSource.Source.Cube.Cube"));
+        assertTrue(ProjectPathEditingService.isSubObjectFqn("ExternalDataSource.Source.Function.Function"));
+        assertTrue(ProjectPathEditingService.isSubObjectFqn("ExternalDataSource.Source.Cube.Cube1.DimensionTable.Dim"));
         // nested tabular section attribute
         assertTrue(ProjectPathEditingService.isSubObjectFqn("Catalog.Products.Goods.TabularSection.Name.Attribute"));
         // case-sensitive markers

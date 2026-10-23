@@ -112,12 +112,41 @@
                         </instanceof>
                         <not>
                            <or>
-
                               <instanceof
                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
                               </instanceof>
                               <instanceof
                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                              </instanceof>
+
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.BasicCommand">
+
+                              </instanceof>
+
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.Table">
+
+                              </instanceof>
+
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.Cube">
+
+                              </instanceof>
+
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.DimensionTable">
+
+                              </instanceof>
+
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.Function">
+
                               </instanceof>
                            </or>
                         </not>
@@ -152,7 +181,37 @@
                                <instanceof
                                      value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
                                </instanceof>
-                            </or>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicCommand">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Table">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Cube">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.DimensionTable">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Function">
+
+                               </instanceof>
+                           </or>
                          </not>
                       </and>
                       </iterate>
@@ -214,7 +273,37 @@
                                <instanceof
                                      value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
                                </instanceof>
-                            </or>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicCommand">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Table">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Cube">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.DimensionTable">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Function">
+
+                               </instanceof>
+                           </or>
                          </not>
                             </and>
                             <test
@@ -282,7 +371,37 @@
                                <instanceof
                                      value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
                                </instanceof>
-                            </or>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicCommand">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Table">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Cube">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.DimensionTable">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Function">
+
+                               </instanceof>
+                           </or>
                          </not>
                             </and>
                             <test
@@ -350,7 +469,37 @@
                                    <instanceof
                                          value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
                                    </instanceof>
-                                </or>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.BasicCommand">
+
+                                   </instanceof>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.Table">
+
+                                   </instanceof>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.Cube">
+
+                                   </instanceof>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.DimensionTable">
+
+                                   </instanceof>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.Function">
+
+                                   </instanceof>
+                           </or>
                              </not>
                           </and>
                           <test
@@ -526,7 +675,31 @@
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.BasicCommand">
                         </instanceof>
-                     </or>
+
+                        <instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Table">
+
+                        </instanceof>
+
+                        <instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Cube">
+
+                        </instanceof>
+
+                        <instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.DimensionTable">
+
+                        </instanceof>
+
+                        <instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Function">
+
+                        </instanceof>
+                           </or>
                   </iterate>
                </with>
             </visibleWhen>
