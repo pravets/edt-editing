@@ -143,8 +143,13 @@ public class ProjectPathEditingServiceHelpersTest
     public void testIsStructuralCall()
     {
         assertTrue(EditingCallContext.isStructuralCall(Arrays.asList(
-            "com._1c.g5.v8.dt.navigator.ui.actions.NewActionProvider")));
+            "com._1c.g5.v8.dt.ui.aef.actions.DtDeleteAction")));
         assertTrue(EditingCallContext.isStructuralCall(Arrays.asList(
+            "com._1c.g5.v8.dt.md.help.ui.editor.MdHelpContentEditor")));
+        // creation is a separate kind: it is allowed inside an enabled container
+        assertFalse(EditingCallContext.isStructuralCall(Arrays.asList(
+            "com._1c.g5.v8.dt.navigator.ui.actions.NewActionProvider")));
+        assertFalse(EditingCallContext.isStructuralCall(Arrays.asList(
             "com._1c.g5.v8.dt.md.ui.wizards.base.aef.MdModelNewWizardPageComponent")));
         assertFalse(EditingCallContext.isStructuralCall(Arrays.asList(
             "com._1c.g5.v8.dt.navigator.ui.actions.OpenEditorAction")));
@@ -157,8 +162,13 @@ public class ProjectPathEditingServiceHelpersTest
         assertEquals(EditCallKind.STRUCTURAL, EditingCallContext.classify(Arrays.asList(
             "com._1c.g5.v8.dt.ui.aef.actions.DtDeleteAction",
             "com._1c.g5.v8.dt.ui.editor.aef.components.DtGranularEditorPageSectionComponent")));
-        assertEquals(EditCallKind.STRUCTURAL, EditingCallContext.classify(Arrays.asList(
+        assertEquals(EditCallKind.CREATE, EditingCallContext.classify(Arrays.asList(
             "com._1c.g5.v8.dt.ui.aef.actions.DtWizardAction")));
+        // creation of a new child is allowed inside an enabled container
+        assertEquals(EditCallKind.CREATE, EditingCallContext.classify(Arrays.asList(
+            "com._1c.g5.v8.dt.navigator.ui.actions.NewActionProvider")));
+        assertEquals(EditCallKind.CREATE, EditingCallContext.classify(Arrays.asList(
+            "com._1c.g5.v8.dt.md.ui.wizards.base.aef.MdModelNewWizardPageComponent")));
         assertEquals(EditCallKind.STRUCTURAL, EditingCallContext.classify(Arrays.asList(
             "com._1c.g5.v8.dt.md.help.ui.editor.MdHelpContentEditor",
             "com._1c.g5.v8.dt.html.ui.editor.HtmlMultiPageEditor")));

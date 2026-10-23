@@ -20,7 +20,10 @@ public enum EditCallKind
     /** Editing of the content of an already opened object: fields, forms, commands of an editor. */
     CONTENT,
 
-    /** Structural operation: creation, deletion, moving, sorting, editing of owner properties. */
+    /** Creation of a new child inside an object: allowed, if the container itself is enabled. */
+    CREATE,
+
+    /** Structural operation: deletion, moving, sorting, editing of owner properties. */
     STRUCTURAL,
 
     /** Any other check, e.g. enabling of menu items. */

@@ -26,11 +26,11 @@ public final class EditingCallContext
     }
 
     /**
-     * Creation of new objects is a structural operation: it must not be allowed by an enabled child of a disabled
-     * owner, so the check of the owner must ignore the rule that opens a top object with enabled children.
+     * Structural modifications (deletion, moving, sorting, editing of owner properties) are not allowed by an
+     * enabled child of a disabled owner, so the check of the owner must ignore such rules.
      *
      * @param frames class names of the calling stack.
-     * @return true, if the call comes from a creation of new objects.
+     * @return true, if the call comes from a structural modification.
      */
     public static boolean isStructuralCall(List<String> frames)
     {
@@ -47,8 +47,13 @@ public final class EditingCallContext
     {
         if (frames.stream().anyMatch(frame -> frame.contains("NewActionProvider") //$NON-NLS-1$
             || frame.contains("md.ui.wizards") //$NON-NLS-1$
-            || frame.contains("DtWizardAction") //$NON-NLS-1$
-            || frame.contains("DtDeleteAction") //$NON-NLS-1$
+            || frame.contains("DtWizardAction"))) //$NON-NLS-1$
+        {
+            // Creation of a new child: it is allowed, if the container of the new child is enabled.
+            return EditCallKind.CREATE;
+        }
+
+        if (frames.stream().anyMatch(frame -> frame.contains("DtDeleteAction") //$NON-NLS-1$
             || frame.contains("DtMoveUpAction") //$NON-NLS-1$
             || frame.contains("DtMoveDownAction") //$NON-NLS-1$
             || frame.contains("DtSortAction") //$NON-NLS-1$
