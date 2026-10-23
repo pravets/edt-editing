@@ -107,6 +107,9 @@ public class PathSettingsEditingSupportProvider
 
     private static final boolean DEBUG_EDITING = Boolean.getBoolean("org.mard.dt.editing.debug"); //$NON-NLS-1$
 
+    /** Logs every call instead of one per unique caller path. */
+    private static final boolean DEBUG_ALL = Boolean.getBoolean("org.mard.dt.editing.debug.all"); //$NON-NLS-1$
+
     /** Log each distinct calling path once, so the log stays readable. */
     private static final Set<String> LOGGED_CALLERS = Collections.synchronizedSet(new LinkedHashSet<>());
 
@@ -120,7 +123,7 @@ public class PathSettingsEditingSupportProvider
             .collect(Collectors.joining(" <- "))); //$NON-NLS-1$
 
         String key = eObject.eClass().getName() + "|" + mode + "|" + frames; //$NON-NLS-1$
-        if (LOGGED_CALLERS.add(key))
+        if (DEBUG_ALL || LOGGED_CALLERS.add(key))
         {
             CorePlugin.log(CorePlugin.createWarningStatus(
                 "canEdit call: type=" + eObject.eClass().getName() + ", mode=" + mode //$NON-NLS-1$

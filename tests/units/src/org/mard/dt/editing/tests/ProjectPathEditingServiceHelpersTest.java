@@ -14,11 +14,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.junit.Test;
+
+import com._1c.g5.v8.dt.core.filesystem.IProjectFileSystemSupport;
 
 import org.mard.dt.editing.EditCallKind;
 import org.mard.dt.editing.EditingCallContext;
@@ -175,5 +182,78 @@ public class ProjectPathEditingServiceHelpersTest
             "ExternalDataSource.Source.Cube.Cube1.DimensionTable.Dim.MyField.Field"));
         assertFalse(ProjectPathEditingService.isSubObjectFqn("Catalog.Products"));
         assertFalse(ProjectPathEditingService.isSubObjectFqn("Catalog.Products.Goods"));
+    }
+
+    @Test
+    public void testResolvePathFallsBackToAncestor()
+    {
+        IPath ownerPath = new Path("/src/Catalogs/Products/Products.mdo");
+        IPath ownPath = new Path("/src/Catalogs/Products/Products.mdo");
+        EObject owner = stub(null);
+        EObject child = stub(owner);
+
+        IProjectFileSystemSupport fileSystemSupport = new IProjectFileSystemSupport()
+        {
+            @Override
+            public IFile getFile(EObject object)
+            {
+                return null;
+            }
+
+            @Override
+            public IPath getPath(EObject object)
+            {
+                if (object == owner)
+                    return ownerPath;
+                if (object == child)
+                    return ownPath;
+                return null;
+            }
+
+            @Override
+            public IPath getPath(EObject object, EReference reference)
+            {
+                return getPath(object);
+            }
+
+            @Override
+            public IFile getFile(EObject object, EReference reference)
+            {
+                return null;
+            }
+        };
+
+        assertEquals(ownPath, ProjectPathEditingService.resolvePath(fileSystemSupport, child));
+
+        // an object without its own resource inherits the path of the closest ancestor
+        EObject orphan = stub(owner);
+        assertEquals(ownerPath, ProjectPathEditingService.resolvePath(fileSystemSupport, orphan));
+
+        // no path at all
+        EObject detached = stub(null);
+        assertNull(ProjectPathEditingService.resolvePath(fileSystemSupport, detached));
+        assertNull(ProjectPathEditingService.resolvePath(null, detached));
+    }
+
+    private static EObject stub(EObject container)
+    {
+        return (EObject)Proxy.newProxyInstance(EObject.class.getClassLoader(),
+            new Class<?>[] {EObject.class}, (proxy, method, args) -> {
+                switch (method.getName())
+                {
+                    case "eContainer":
+                        return container;
+                    case "eIsProxy":
+                        return Boolean.FALSE;
+                    case "toString":
+                        return "stub";
+                    case "hashCode":
+                        return System.identityHashCode(proxy);
+                    case "equals":
+                        return proxy == args[0];
+                    default:
+                        return null;
+                }
+            });
     }
 }

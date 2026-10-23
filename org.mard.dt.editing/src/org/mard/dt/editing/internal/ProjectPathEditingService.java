@@ -117,6 +117,9 @@ public class ProjectPathEditingService
 
     private static final boolean DEBUG_EDITING = Boolean.getBoolean("org.mard.dt.editing.debug"); //$NON-NLS-1$
 
+    /** Logs every decision instead of one per unique key. */
+    private static final boolean DEBUG_ALL = Boolean.getBoolean("org.mard.dt.editing.debug.all"); //$NON-NLS-1$
+
     /** Debug messages are logged once per unique decision to keep the log readable. */
     private static final Set<String> LOGGED_DEBUG_KEYS = Collections.synchronizedSet(new LinkedHashSet<>());
 
@@ -126,11 +129,12 @@ public class ProjectPathEditingService
     {
         if (!DEBUG_EDITING)
             return;
-        if (LOGGED_DEBUG_KEYS.size() >= MAX_DEBUG_KEYS)
-            return;
-        if (LOGGED_DEBUG_KEYS.add(key))
+        if (DEBUG_ALL || LOGGED_DEBUG_KEYS.size() < MAX_DEBUG_KEYS)
         {
-            CorePlugin.log(CorePlugin.createWarningStatus(message));
+            if (DEBUG_ALL || LOGGED_DEBUG_KEYS.add(key))
+            {
+                CorePlugin.log(CorePlugin.createWarningStatus(message));
+            }
         }
     }
 
@@ -257,7 +261,7 @@ public class ProjectPathEditingService
             {
                 IProjectFileSystemSupport fileSystemSupport =
                     fileSystemSupportProvider.getProjectFileSystemSupport(project);
-                IPath path = fileSystemSupport != null ? fileSystemSupport.getPath(eObject) : null;
+                IPath path = resolvePath(fileSystemSupport, eObject);
                 result = path != null ? canEditWithPatterns(project, cache, path) : true;
             }
             debugLog("sub|" + eObject.eClass().getName() + "|" + subObjectFqn + "|" + result, //$NON-NLS-1$
@@ -284,8 +288,7 @@ public class ProjectPathEditingService
 
                 if (fileSystemSupport != null)
                 {
-
-                    IPath path = fileSystemSupport.getPath(eObject);
+                    IPath path = resolvePath(fileSystemSupport, eObject);
                     if (path != null)
                         return canEditWithPatterns(project, cache, path);
                 }
@@ -309,6 +312,27 @@ public class ProjectPathEditingService
         ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
 
         return canEditWithPatterns(project, cache, path);
+    }
+
+    /**
+     * Resolves the resource path of the object. Objects without their own resource (for example
+     * type descriptions) inherit the path of the closest ancestor.
+     */
+    public static IPath resolvePath(IProjectFileSystemSupport fileSystemSupport, EObject object)
+    {
+        if (fileSystemSupport == null || object == null)
+            return null;
+
+        IPath path = fileSystemSupport.getPath(object);
+        EObject current = object;
+        while (path == null)
+        {
+            current = current.eContainer();
+            if (current == null || current.eIsProxy())
+                break;
+            path = fileSystemSupport.getPath(current);
+        }
+        return path;
     }
 
     /**
