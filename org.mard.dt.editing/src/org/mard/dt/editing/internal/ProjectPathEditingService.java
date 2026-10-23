@@ -494,6 +494,16 @@ public class ProjectPathEditingService
         if (object == null || object.eIsProxy())
             return null;
 
+        // EDS tables/cubes are BM top objects themselves, so they have no EObject container;
+        // their own canonical FQN (e.g. ExternalDataSource.X.Cube.Cube) is the sub-object name.
+        if (object instanceof IBmObject self
+            && (object instanceof Table || object instanceof Cube || object instanceof DimensionTable
+                || object instanceof Function)
+            && self.bmIsTop())
+        {
+            return self.bmGetFqn();
+        }
+
         LinkedList<String> segments = new LinkedList<>();
         EObject container = collectSegments(object, segments);
 

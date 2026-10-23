@@ -36,6 +36,9 @@ public class ProjectPathEditingServiceHelpersTest
         assertTrue(ProjectPathEditingService.isSubObjectFqn("Enum.Genders.Male.Value"));
         assertTrue(ProjectPathEditingService.isSubObjectFqn("DocumentJournal.Journal.Column1.Column"));
         assertTrue(ProjectPathEditingService.isSubObjectFqn("Task.Tasks.MyCommand.Command"));
+        // canonical form used by BM for top-level EDS tables/cubes
+        assertTrue(ProjectPathEditingService.isSubObjectFqn("ExternalDataSource.Source.Cube.Cube1"));
+        assertTrue(ProjectPathEditingService.isSubObjectFqn("ExternalDataSource.Source.Table.Table1"));
         assertTrue(ProjectPathEditingService.isSubObjectFqn("ExternalDataSource.Source.Table.Table"));
         assertTrue(ProjectPathEditingService.isSubObjectFqn("ExternalDataSource.Source.Cube.Cube"));
         assertTrue(ProjectPathEditingService.isSubObjectFqn("ExternalDataSource.Source.Function.Function"));
