@@ -204,6 +204,12 @@ public class ProjectPathEditingService
     @Override
     public boolean canEdit(IProject project, EObject eObject)
     {
+        return canEdit(project, eObject, true);
+    }
+
+    @Override
+    public boolean canEdit(IProject project, EObject eObject, boolean allowOpenByEnabledChildren)
+    {
 
         if (project == null || eObject == null || eObject.eIsProxy())
             return true;
@@ -245,7 +251,7 @@ public class ProjectPathEditingService
             {
                 result = false;
             }
-            else if (eObject instanceof IBmObject bmObject && bmObject.bmIsTop()
+            else if (allowOpenByEnabledChildren && eObject instanceof IBmObject bmObject && bmObject.bmIsTop()
                 && cache.getEnableFullnames().stream()
                     .anyMatch(fqn -> fqn.startsWith(subObjectFqn + "."))) //$NON-NLS-1$
             {

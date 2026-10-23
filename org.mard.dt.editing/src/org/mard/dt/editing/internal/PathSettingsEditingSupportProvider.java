@@ -16,12 +16,14 @@ import java.lang.StackWalker.Option;
 import java.lang.StackWalker.StackFrame;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.EObject;
+import org.mard.dt.editing.EditingCallContext;
 import org.mard.dt.editing.IPathEditingService;
 
 import com._1c.g5.v8.bm.core.IBmEngine;
@@ -75,13 +77,23 @@ public class PathSettingsEditingSupportProvider
         if (project == null)
             return true;
 
-        boolean canEdit = editingService.canEdit(project, eObject);
+        boolean canEdit = editingService.canEdit(project, eObject, !isStructuralCall());
         debugCall(eObject, mode, canEdit);
         if (!canEdit && editingService.canEditInMerge(project) && isCallFromMerge())
         {
             return true;
         }
         return canEdit;
+    }
+
+    /** Creation of new objects is a structural operation, it must not be allowed by an enabled child. */
+    private boolean isStructuralCall()
+    {
+        List<String> frames = StackWalker.getInstance().walk(s -> s.skip(1).limit(8) //$NON-NLS-1$
+            .map(StackFrame::getClassName)
+            .collect(Collectors.toList()));
+
+        return EditingCallContext.isStructuralCall(frames);
     }
 
     private static final boolean DEBUG_EDITING = Boolean.getBoolean("org.mard.dt.editing.debug"); //$NON-NLS-1$

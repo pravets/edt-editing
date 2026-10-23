@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
+import org.mard.dt.editing.EditingCallContext;
 import org.mard.dt.editing.internal.ProjectPathEditingService;
 
 /**
@@ -129,4 +130,15 @@ public class ProjectPathEditingServiceHelpersTest
         assertFalse(ProjectPathEditingService.matchesEnablePattern(" ", "Catalog.Products"));
         assertFalse(ProjectPathEditingService.matchesEnablePattern("Catalog.Products", null));
     }
-}
+
+    @Test
+    public void testIsStructuralCall()
+    {
+        assertTrue(EditingCallContext.isStructuralCall(Arrays.asList(
+            "com._1c.g5.v8.dt.navigator.ui.actions.NewActionProvider")));
+        assertTrue(EditingCallContext.isStructuralCall(Arrays.asList(
+            "com._1c.g5.v8.dt.md.ui.wizards.base.aef.MdModelNewWizardPageComponent")));
+        assertFalse(EditingCallContext.isStructuralCall(Arrays.asList(
+            "com._1c.g5.v8.dt.navigator.ui.actions.OpenEditorAction")));
+        assertFalse(EditingCallContext.isStructuralCall(Arrays.asList()));
+    }}
