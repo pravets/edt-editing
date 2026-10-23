@@ -165,6 +165,10 @@
 
                                     value="com._1c.g5.v8.dt.metadata.mdclass.Resource">
 
+                              </instanceof><instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.Template">
+
                               </instanceof>
                            </or>
                         </not>
@@ -245,6 +249,10 @@
                                <instanceof
 
                                      value="com._1c.g5.v8.dt.metadata.mdclass.Resource">
+
+                               </instanceof><instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Template">
 
                                </instanceof>
                            </or>
@@ -355,6 +363,10 @@
                                <instanceof
 
                                      value="com._1c.g5.v8.dt.metadata.mdclass.Resource">
+
+                               </instanceof><instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Template">
 
                                </instanceof>
                            </or>
@@ -472,6 +484,10 @@
 
                                      value="com._1c.g5.v8.dt.metadata.mdclass.Resource">
 
+                               </instanceof><instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Template">
+
                                </instanceof>
                            </or>
                          </not>
@@ -587,6 +603,10 @@
                                    <instanceof
 
                                          value="com._1c.g5.v8.dt.metadata.mdclass.Resource">
+
+                                   </instanceof><instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.Template">
 
                                    </instanceof>
                            </or>
@@ -805,6 +825,10 @@
                         <instanceof
 
                               value="com._1c.g5.v8.dt.metadata.mdclass.Resource">
+
+                        </instanceof><instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Template">
 
                         </instanceof>
                            </or>

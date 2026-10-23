@@ -48,6 +48,9 @@ public class ProjectPathEditingServiceHelpersTest
         assertTrue(ProjectPathEditingService.isSubObjectFqn("ExternalDataSource.Source.Cube.Cube1.DimensionTable.Dim"));
         // nested tabular section attribute
         assertTrue(ProjectPathEditingService.isSubObjectFqn("Catalog.Products.Goods.TabularSection.Name.Attribute"));
+        // templates
+        assertTrue(ProjectPathEditingService.isSubObjectFqn("ExternalDataSource.Source.Cube.Cube1.MyTemplate.Template"));
+        assertTrue(ProjectPathEditingService.isSubObjectFqn("Catalog.Products.MyTemplate.Template"));
         // case-sensitive markers
         assertFalse(ProjectPathEditingService.isSubObjectFqn("catalog.x.name.attribute"));
     }

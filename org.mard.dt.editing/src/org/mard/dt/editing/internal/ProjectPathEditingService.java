@@ -86,6 +86,7 @@ import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com._1c.g5.v8.dt.metadata.mdclass.Resource;
 import com._1c.g5.v8.dt.metadata.mdclass.Subsystem;
 import com._1c.g5.v8.dt.metadata.mdclass.Table;
+import com._1c.g5.v8.dt.metadata.mdclass.Template;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.inject.Inject;
@@ -557,6 +558,11 @@ public class ProjectPathEditingService
                 segments.addFirst("Command"); //$NON-NLS-1$
                 segments.addFirst(command.getName());
             }
+            else if (container instanceof Template template)
+            {
+                segments.addFirst("Template"); //$NON-NLS-1$
+                segments.addFirst(template.getName());
+            }
             else if (container instanceof Table table)
             {
                 segments.addFirst("Table"); //$NON-NLS-1$
@@ -638,7 +644,8 @@ public class ProjectPathEditingService
                 || "Function".equals(segment) //$NON-NLS-1$
                 || "Field".equals(segment) //$NON-NLS-1$
                 || "Dimension".equals(segment) //$NON-NLS-1$
-                || "Resource".equals(segment)) //$NON-NLS-1$
+                || "Resource".equals(segment) //$NON-NLS-1$
+                || "Template".equals(segment)) //$NON-NLS-1$
             {
                 return true;
             }
