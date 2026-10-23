@@ -77,10 +77,13 @@ import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection;
 import com._1c.g5.v8.dt.metadata.mdclass.Column;
 import com._1c.g5.v8.dt.metadata.mdclass.Cube;
+import com._1c.g5.v8.dt.metadata.mdclass.Dimension;
 import com._1c.g5.v8.dt.metadata.mdclass.DimensionTable;
 import com._1c.g5.v8.dt.metadata.mdclass.EnumValue;
+import com._1c.g5.v8.dt.metadata.mdclass.Field;
 import com._1c.g5.v8.dt.metadata.mdclass.Function;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
+import com._1c.g5.v8.dt.metadata.mdclass.Resource;
 import com._1c.g5.v8.dt.metadata.mdclass.Subsystem;
 import com._1c.g5.v8.dt.metadata.mdclass.Table;
 import com.google.common.cache.Cache;
@@ -521,6 +524,14 @@ public class ProjectPathEditingService
         EObject container = object;
         while (true)
         {
+            // Top-level EDS tables/cubes are their own FQN base even though they are nested
+            // sub-objects of the external data source.
+            if (container instanceof IBmObject topObject && topObject.bmIsTop()
+                && (container instanceof Table || container instanceof Cube
+                    || container instanceof DimensionTable || container instanceof Function))
+            {
+                break;
+            }
             if (container instanceof BasicFeature feature)
             {
                 segments.addFirst("Attribute"); //$NON-NLS-1$
@@ -566,6 +577,21 @@ public class ProjectPathEditingService
                 segments.addFirst("Function"); //$NON-NLS-1$
                 segments.addFirst(function.getName());
             }
+            else if (container instanceof Field field)
+            {
+                segments.addFirst("Field"); //$NON-NLS-1$
+                segments.addFirst(field.getName());
+            }
+            else if (container instanceof Dimension dimension)
+            {
+                segments.addFirst("Dimension"); //$NON-NLS-1$
+                segments.addFirst(dimension.getName());
+            }
+            else if (container instanceof Resource resource)
+            {
+                segments.addFirst("Resource"); //$NON-NLS-1$
+                segments.addFirst(resource.getName());
+            }
             else
             {
                 break;
@@ -609,7 +635,10 @@ public class ProjectPathEditingService
                 || "Table".equals(segment) //$NON-NLS-1$
                 || "Cube".equals(segment) //$NON-NLS-1$
                 || "DimensionTable".equals(segment) //$NON-NLS-1$
-                || "Function".equals(segment)) //$NON-NLS-1$
+                || "Function".equals(segment) //$NON-NLS-1$
+                || "Field".equals(segment) //$NON-NLS-1$
+                || "Dimension".equals(segment) //$NON-NLS-1$
+                || "Resource".equals(segment)) //$NON-NLS-1$
             {
                 return true;
             }
