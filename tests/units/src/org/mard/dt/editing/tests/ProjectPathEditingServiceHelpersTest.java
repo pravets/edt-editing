@@ -162,4 +162,27 @@ public class ProjectPathEditingServiceHelpersTest
             "com._1c.g5.v8.dt.internal.md.ui.AvailabilityPropertyTester")));
         assertEquals(EditCallKind.OTHER, EditingCallContext.classify(Arrays.asList()));
     }
+
+    @Test
+    public void testIsDirectChild()
+    {
+        String cube = "ExternalDataSource.Source.Cube.Cube1";
+        String dimensionTable = "ExternalDataSource.Source.Cube.Cube1.DimensionTable.Dim";
+        // a field of a dimension table is a direct child of the dimension table only
+        assertTrue(ProjectPathEditingService.isDirectChild(dimensionTable,
+            "ExternalDataSource.Source.Cube.Cube1.DimensionTable.Dim.MyField.Field"));
+        assertFalse(ProjectPathEditingService.isDirectChild(cube,
+            "ExternalDataSource.Source.Cube.Cube1.DimensionTable.Dim.MyField.Field"));
+        // a dimension table is a direct child of the cube
+        assertTrue(ProjectPathEditingService.isDirectChild(cube,
+            "ExternalDataSource.Source.Cube.Cube1.DimensionTable.Dim"));
+        // plain attributes
+        assertTrue(ProjectPathEditingService.isDirectChild("Catalog.Products",
+            "Catalog.Products.Barcode.Attribute"));
+        assertFalse(ProjectPathEditingService.isDirectChild("Catalog.Products",
+            "Catalog.Products.Goods.Name.Attribute"));
+        assertFalse(ProjectPathEditingService.isDirectChild("Catalog.Products", "Catalog.Other.Barcode.Attribute"));
+        assertFalse(ProjectPathEditingService.isDirectChild(null, "Catalog.Products.Barcode.Attribute"));
+        assertFalse(ProjectPathEditingService.isDirectChild("Catalog.Products", null));
+    }
 }
