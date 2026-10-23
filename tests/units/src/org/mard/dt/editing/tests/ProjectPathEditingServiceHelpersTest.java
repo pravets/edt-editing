@@ -160,6 +160,10 @@ public class ProjectPathEditingServiceHelpersTest
             "com._1c.g5.aef2.standard.definitions.models.AbstractFeatureFieldModelFactory")));
         assertEquals(EditCallKind.OTHER, EditingCallContext.classify(Arrays.asList(
             "com._1c.g5.v8.dt.internal.md.ui.AvailabilityPropertyTester")));
+        // the properties editor edits the owner itself, so it is not a content call
+        assertEquals(EditCallKind.OTHER, EditingCallContext.classify(Arrays.asList(
+            "com._1c.g5.v8.dt.md.ui.properties.models.ModelFactory",
+            "com._1c.g5.aef2.standard.definitions.models.AbstractFeatureFieldModelFactory")));
         assertEquals(EditCallKind.OTHER, EditingCallContext.classify(Arrays.asList()));
     }
 

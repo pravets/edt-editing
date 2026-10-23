@@ -60,7 +60,12 @@ public final class EditingCallContext
 
         if (frames.stream().anyMatch(frame -> frame.contains("aef2.standard.definitions"))) //$NON-NLS-1$
         {
-            return EditCallKind.CONTENT;
+            // The properties editor uses the same model factories as the content editor, but it edits
+            // the owner itself, so it must not open a disabled owner by its enabled children.
+            if (frames.stream().noneMatch(frame -> frame.contains("md.ui.properties"))) //$NON-NLS-1$
+            {
+                return EditCallKind.CONTENT;
+            }
         }
 
         return EditCallKind.OTHER;
