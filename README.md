@@ -85,7 +85,7 @@ The `Object` submenu is available for any metadata object, the module submenus o
 
 ### Sub-objects
 
-For attributes, tabular sections, enum values, journal columns, commands, templates and external data source objects (tables, cubes, dimension tables, functions, fields, dimensions, resources) a second `Editing Restrictions` menu offers only `Copy FQN` and `Add to enable.fullname`: such an element is enabled pointwise, the owner object stays locked.
+For attributes, tabular sections, enum values, journal columns, commands, templates and external data source objects (tables, cubes, dimension tables, functions, fields, dimensions, resources) a second `Editing Restrictions` menu offers only `Copy FQN` and `Add to enable.fullname`: such an element is enabled pointwise, its own content becomes editable too, but the owner object stays locked.
 
 The FQN of a sub-object is built as the owner FQN plus the element name plus the type marker: `Catalog.Products.Barcode.Attribute`, `Catalog.Products.Goods.TabularSection`, `Enum.Statuses.New.Value`, `DocumentJournal.Orders.Quantity.Column`, `Task.Performer.Do.Command`, `Catalog.Products.Price.Template`, `ExternalDataSource.Source.Cube.Cube1.Field.Field`.
 
@@ -93,6 +93,7 @@ The FQN of a sub-object is built as the owner FQN plus the element name plus the
 
 - `enable` rules win over `disable` rules; a configuration with `enable` only has no effect (there must be something to disable).
 - A rule with a type marker never unlocks the whole file: it applies to that element only.
+- An enabled container opens its own content: an enabled tabular section opens its attributes, an enabled object opens its content. The owner itself (its `Main` page, properties, help) stays locked.
 - Enabling a sub-object does not open the owner itself: its `Main` page, properties and help stay read-only.
 - Structural operations (create, delete, move, sort) require an enabled owner. The new object wizard checks the top owner object, so while a task or a cube is locked you cannot add a new attribute even into an enabled tabular section.
 - Deleting children of a disabled object is not allowed.
@@ -257,7 +258,7 @@ Open metadata objects to check out disabling and enabling features!
 
 ### Под-объекты
 
-Для реквизитов, табличных частей, значений перечислений, граф журнала документов, команд, макетов и объектов внешних источников данных (таблицы, кубы, таблицы измерений, функции, поля, измерения, ресурсы) в дереве появляется второе меню `Запрет редактирования` с пунктами только `Копировать FQN` и `Добавить в enable.fullname`: такой элемент разрешается точечно, владелец остается заблокированным.
+Для реквизитов, табличных частей, значений перечислений, граф журнала документов, команд, макетов и объектов внешних источников данных (таблицы, кубы, таблицы измерений, функции, поля, измерения, ресурсы) в дереве появляется второе меню `Запрет редактирования` с пунктами только `Копировать FQN` и `Добавить в enable.fullname`: такой элемент разрешается точечно, его собственное содержимое тоже разрешается, а владелец остается заблокированным.
 
 FQN под-объекта строится как FQN владельца + имя элемента + маркер типа: `Catalog.Products.Barcode.Attribute`, `Catalog.Products.Goods.TabularSection`, `Enum.Statuses.New.Value`, `DocumentJournal.Orders.Quantity.Column`, `Task.Performer.Do.Command`, `Catalog.Products.Price.Template`, `ExternalDataSource.Source.Cube.Cube1.Field.Field`.
 
@@ -265,6 +266,7 @@ FQN под-объекта строится как FQN владельца + им�
 
 - Правила `enable` важнее правил `disable`; конфигурация только с `enable` не действует (блокировать должно быть что-то).
 - Правило с маркером типа никогда не разблокирует файл целиком - оно действует только на этот элемент.
+- Включённый контейнер открывает своё содержимое: включённая табличная часть открывает свои реквизиты, включённый объект - своё содержимое. Сам владелец (вкладка `Основное`, свойства, справка) остаётся закрытым.
 - Включение под-объекта не открывает самого владельца: его вкладка `Основное`, свойства и справка остаются только для чтения.
 - Структурные операции (создание, удаление, перемещение, сортировка) требуют разрешенного владельца. Мастер создания нового объекта проверяет верхний объект, поэтому пока задача или куб заблокированы, нельзя добавить новый реквизит даже в разрешенную табличную часть.
 - Удалять дочерние элементы заблокированного объекта нельзя.
