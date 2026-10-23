@@ -3,7 +3,7 @@
 <repository name='1C:EDT Disable Editing Plugins'
     type='org.eclipse.equinox.internal.p2.artifact.repository.CompositeArtifactRepository' version='1.0.0'>
   <properties size='1'>
-    <property name='p2.timestamp' value='1792759173'/>
+    <property name='p2.timestamp' value='1792760531'/>
   </properties>
   <children size='5'>
     <child location='0.7.0'/>
