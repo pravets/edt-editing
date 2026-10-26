@@ -87,6 +87,7 @@ import com._1c.g5.v8.dt.metadata.mdclass.EnumValue;
 import com._1c.g5.v8.dt.metadata.mdclass.Field;
 import com._1c.g5.v8.dt.metadata.mdclass.Function;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
+import com._1c.g5.v8.dt.metadata.mdclass.Recalculation;
 import com._1c.g5.v8.dt.metadata.mdclass.Resource;
 import com._1c.g5.v8.dt.metadata.mdclass.Subsystem;
 import com._1c.g5.v8.dt.metadata.mdclass.Table;
@@ -693,6 +694,11 @@ public class ProjectPathEditingService
             {
                 segments.addFirst("TabularSection"); //$NON-NLS-1$
                 segments.addFirst(tabularSection.getName());
+            }
+            else if (container instanceof Recalculation recalculation)
+            {
+                segments.addFirst("Recalculation"); //$NON-NLS-1$
+                segments.addFirst(recalculation.getName());
             }
             else if (container instanceof EnumValue enumValue)
             {
