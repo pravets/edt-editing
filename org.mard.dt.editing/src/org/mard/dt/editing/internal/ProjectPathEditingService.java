@@ -244,6 +244,19 @@ public class ProjectPathEditingService
         // Attributes and tabular sections share the owner's resource file, so they are checked
         // by their own 1C full name first; otherwise the owner's decision applies.
         String subObjectFqn = getObjectFullName(eObject);
+        if (subObjectFqn == null && eObject instanceof IBmObject bmObject && bmObject.bmIsTop())
+        {
+            // Top objects without a generated name (forms, templates) are matched by
+            // their canonical BM name, which is what the context menu copies for them.
+            try
+            {
+                subObjectFqn = bmObject.bmGetFqn();
+            }
+            catch (RuntimeException e)
+            {
+                // not attached; fall through to path rules
+            }
+        }
         if (subObjectFqn != null)
         {
             ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
