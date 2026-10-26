@@ -29,7 +29,7 @@ $pool = Get-ChildItem "$env:USERPROFILE\.eclipse" -Directory | ForEach-Object {
     $plugins = Join-Path $_.FullName "plugins"
     if (Test-Path $plugins)
     {
-        Get-ChildItem $plugins -Filter "org.mard.dt.editing_0.6.1*.jar" -ErrorAction SilentlyContinue
+        Get-ChildItem $plugins -Filter "org.mard.dt.editing_0.6.*.jar" -ErrorAction SilentlyContinue
     }
 } | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 if ($pool)
@@ -58,7 +58,7 @@ if ($LASTEXITCODE -ne 0)
 }
 
 Copy-Item "$here\META-INF\MANIFEST.MF" "$target\MANIFEST.MF" -Force
-$jar = Join-Path $target "org.mard.dt.editing.selftest_1.0.5.jar"
+$jar = Join-Path $target "org.mard.dt.editing.selftest_1.0.7.jar"
 & "$jdk\jar.exe" cfm $jar "$target\MANIFEST.MF" -C "$target\classes" .
 subst X: /D
 Write-Host "built $jar"

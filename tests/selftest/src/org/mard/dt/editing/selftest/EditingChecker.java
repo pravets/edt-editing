@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -94,7 +95,26 @@ public final class EditingChecker
         {
             transaction.rollback();
         }
+        collectBsl(project, service, rows);
         write(report, project, rows);
+    }
+
+    private static void collectBsl(IProject project, IPathEditingService service, List<String[]> rows)
+        throws CoreException
+    {
+        // Form and command modules are not BM top objects: check them by path,
+        // the way the editor consults editing for module text.
+        project.accept(resource -> {
+            if (resource.getType() == IResource.FILE && "bsl".equals(resource.getFileExtension())) //$NON-NLS-1$
+            {
+                String relative = resource.getProjectRelativePath().toString();
+                boolean editable = service.canEdit(project, resource.getProjectRelativePath());
+                rows.add(new String[] { "BslModule", "", "", relative,
+                    String.valueOf(editable), String.valueOf(editable), String.valueOf(editable),
+                    String.valueOf(editable), String.valueOf(editable) });
+            }
+            return true;
+        });
     }
 
     private static String[] row(EObject object, IProject project, IPathEditingService service,

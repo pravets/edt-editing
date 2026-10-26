@@ -410,19 +410,36 @@ public class ProjectPathEditingService
             return true;
 
         boolean result = canEdit(cache, path);
-        if (!cache.getEnablePatterns().isEmpty())
+
+        String fqnText = null;
+        QualifiedName fqn = qualifiedNameFilePathConverter.getFqn(path);
+        if (fqn != null)
         {
-            QualifiedName fqn = qualifiedNameFilePathConverter.getFqn(path);
-            if (fqn != null)
+            fqnText = fqn.toString();
+        }
+
+        // Files of a disabled owner (e.g. the module of a disabled task's form) must stay
+        // closed even when the path rules alone would allow them.
+        if (result && fqnText != null && !cache.getDisablePatterns().isEmpty())
+        {
+            for (String pattern : cache.getDisablePatterns())
             {
-                String fqnText = fqn.toString();
-                for (String pattern : cache.getEnablePatterns())
+                if (matchesEnablePattern(pattern, fqnText))
                 {
-                    if (matchesEnablePattern(pattern, fqnText))
-                    {
-                        result = true;
-                        break;
-                    }
+                    result = false;
+                    break;
+                }
+            }
+        }
+
+        if (!cache.getEnablePatterns().isEmpty() && fqnText != null)
+        {
+            for (String pattern : cache.getEnablePatterns())
+            {
+                if (matchesEnablePattern(pattern, fqnText))
+                {
+                    result = true;
+                    break;
                 }
             }
         }
@@ -631,6 +648,11 @@ public class ProjectPathEditingService
                 }
             }
 
+            if (DEBUG_EDITING)
+            {
+                debugLog("fqnpath|" + fullname, //$NON-NLS-1$
+                    "fullname " + fullname + " resolved to paths: " + paths + " (size before " + before + ")"); //$NON-NLS-1$
+            }
             if (DEBUG_EDITING && paths.size() == before)
             {
                 debugLog("nopath|" + fullname, //$NON-NLS-1$
@@ -1074,11 +1096,12 @@ public class ProjectPathEditingService
         Set<IPath> enable = new ConcurrentSkipListSet<>(comparator);
 
         Set<String> enablePatterns = new HashSet<>();
+        Set<String> disablePatterns = new HashSet<>();
 
         EditingSettings settings = loadEditingSettings(project);
         if (settings == null)
         {
-            return new ProjectCache(disable, enable, true, Set.of(), Set.of(), Set.of());
+            return new ProjectCache(disable, enable, true, Set.of(), Set.of(), Set.of(), Set.of());
         }
 
         Set<String> enableFullnames = new HashSet<>();
@@ -1104,7 +1127,13 @@ public class ProjectPathEditingService
             // All disabled full names are kept: a disabled container closes its own content,
             // e.g. a disabled external data source closes its tables and fields.
             settings.getDisable().getFullname().stream().filter(fqn -> fqn != null && !fqn.isBlank())
-                .forEach(fqn -> disableFullnames.add(fqn.trim()));
+                .forEach(fqn -> {
+                    disableFullnames.add(fqn.trim());
+                    disablePatterns.add(fqn.trim());
+                    String normalized = stripMarkers(fqn.trim());
+                    if (normalized != null)
+                        disablePatterns.add(normalized);
+                });
         }
 
         if (settings.getDisable() != null)
@@ -1125,7 +1154,8 @@ public class ProjectPathEditingService
         }
 
         boolean canEditInMerge = settings.getEnable() != null && settings.getEnable().isMerge();
-        return new ProjectCache(disable, enable, canEditInMerge, enableFullnames, disableFullnames, enablePatterns);
+        return new ProjectCache(disable, enable, canEditInMerge, enableFullnames, disableFullnames, enablePatterns,
+            disablePatterns);
     }
 
     private EditingSettings loadEditingSettings(IProject project)
@@ -1153,8 +1183,11 @@ public class ProjectPathEditingService
 
         private final Set<String> enablePatterns;
 
+        private final Set<String> disablePatterns;
+
         public ProjectCache(Set<IPath> disable, Set<IPath> enable, boolean canEditInMerge,
-            Set<String> enableFullnames, Set<String> disableFullnames, Set<String> enablePatterns)
+            Set<String> enableFullnames, Set<String> disableFullnames, Set<String> enablePatterns,
+            Set<String> disablePatterns)
         {
             if (disable == null || disable.isEmpty())
             {
@@ -1183,6 +1216,9 @@ public class ProjectPathEditingService
             this.enablePatterns = enablePatterns == null || enablePatterns.isEmpty()
                 ? Set.of()
                 : Set.copyOf(enablePatterns);
+            this.disablePatterns = disablePatterns == null || disablePatterns.isEmpty()
+                ? Set.of()
+                : Set.copyOf(disablePatterns);
 
         }
 
@@ -1219,6 +1255,11 @@ public class ProjectPathEditingService
         public Set<String> getEnablePatterns()
         {
             return enablePatterns;
+        }
+
+        public Set<String> getDisablePatterns()
+        {
+            return disablePatterns;
         }
 
     }
