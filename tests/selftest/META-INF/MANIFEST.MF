@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EDT Editing Self Test
+Bundle-SymbolicName: org.mard.dt.editing.selftest;singleton:=true
+Bundle-Version: 1.0.2
+Bundle-Vendor: mard
+Bundle-Activator: org.mard.dt.editing.selftest.SelftestActivator
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: org.mard.dt.editing,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.emf.common,
+ org.eclipse.emf.ecore
+Import-Package: com._1c.g5.v8.bm.core,
+ com._1c.g5.v8.bm.integration,
+ com._1c.g5.v8.dt.core.filesystem,
+ com._1c.g5.v8.dt.core.model,
+ com._1c.g5.v8.dt.core.platform,
+ com.google.inject;version="[1.4.0,2.0.0)",
+ org.osgi.framework
