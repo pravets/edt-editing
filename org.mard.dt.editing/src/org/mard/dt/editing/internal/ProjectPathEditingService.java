@@ -77,6 +77,7 @@ import com._1c.g5.v8.dt.lifecycle.LifecyclePhase;
 import com._1c.g5.v8.dt.lifecycle.LifecycleService;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicCommand;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
+import com._1c.g5.v8.dt.metadata.mdclass.BasicForm;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection;
 import com._1c.g5.v8.dt.metadata.mdclass.Column;
 import com._1c.g5.v8.dt.metadata.mdclass.Cube;
@@ -260,23 +261,24 @@ public class ProjectPathEditingService
         if (subObjectFqn != null)
         {
             ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
+            List<String> fqns = fqnVariants(subObjectFqn);
             boolean result;
             boolean structural = kind == EditCallKind.STRUCTURAL;
-            if (!structural && cache.getEnableFullnames().contains(subObjectFqn))
+            if (!structural && matchesAny(cache.getEnableFullnames(), fqns))
             {
                 result = true;
             }
-            else if (!structural && isEnabledByAncestor(cache.getEnableFullnames(), subObjectFqn))
+            else if (!structural && matchesAnyAncestor(cache.getEnableFullnames(), fqns))
             {
                 // An enabled container opens its own content, e.g. an enabled tabular section
                 // opens its attributes.
                 result = true;
             }
-            else if (cache.getDisableFullnames().contains(subObjectFqn))
+            else if (matchesAny(cache.getDisableFullnames(), fqns))
             {
                 result = false;
             }
-            else if (isDisabledByAncestor(cache.getDisableFullnames(), subObjectFqn))
+            else if (matchesAnyAncestor(cache.getDisableFullnames(), fqns))
             {
                 // A disabled container closes its own content, e.g. a disabled external
                 // data source closes its tables and their fields.
@@ -677,7 +679,12 @@ public class ProjectPathEditingService
             {
                 break;
             }
-            if (container instanceof BasicFeature feature)
+            if (container instanceof BasicForm form)
+            {
+                segments.addFirst("Form"); //-NLS-1$
+                segments.addFirst(form.getName());
+            }
+            else if (container instanceof BasicFeature feature)
             {
                 segments.addFirst("Attribute"); //$NON-NLS-1$
                 segments.addFirst(feature.getName());
@@ -862,6 +869,67 @@ public class ProjectPathEditingService
             {
                 return true;
             }
+        }
+        return false;
+    }
+
+    // A form or template rule must cover both its nodes: the metadata node carries the
+    // generated name (owner.FormT1.Form) while the content top object carries the canonical
+    // marker-first name (owner.Form.FormT1.Form); derive the missing variant from either.
+    static List<String> fqnVariants(String fullname)
+    {
+        if (fullname == null)
+            return List.of();
+
+        String[] segments = fullname.trim().split("\\."); //$NON-NLS-1$
+        if (segments.length < 4)
+            return List.of(fullname);
+
+        String marker = segments[segments.length - 1];
+        if (!"Form".equals(marker) && !"Template".equals(marker)) //$NON-NLS-1$ //$NON-NLS-2$
+            return List.of(fullname);
+
+        if (marker.equals(segments[segments.length - 3]))
+        {
+            String[] alternate = new String[segments.length - 1];
+            for (int i = 0, j = 0; i < segments.length; i++)
+            {
+                if (i != segments.length - 3)
+                {
+                    alternate[j++] = segments[i];
+                }
+            }
+            return List.of(fullname, String.join(".", alternate)); //$NON-NLS-1$
+        }
+
+        String[] alternate = new String[segments.length + 1];
+        for (int i = 0, j = 0; i < segments.length; i++)
+        {
+            alternate[j++] = segments[i];
+            if (i == segments.length - 3)
+            {
+                alternate[j++] = marker;
+            }
+        }
+        return List.of(fullname, String.join(".", alternate)); //$NON-NLS-1$
+    }
+
+    private static boolean matchesAny(Set<String> fullnames, List<String> fqns)
+    {
+        for (String fqn : fqns)
+        {
+            if (fullnames.contains(fqn))
+                return true;
+        }
+        return false;
+    }
+
+    private static boolean matchesAnyAncestor(Set<String> fullnames, List<String> fqns)
+    {
+        for (String fqn : fqns)
+        {
+            if (hasAncestorMatch(fullnames, fqn))
+                return true;
         }
         return false;
     }
