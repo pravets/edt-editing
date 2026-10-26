@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <?metadataRepository version='1.2.0'?>
-<repository name='Disable Editing plugin 20261026-1524' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1'>
+<repository name='Disable Editing plugin 20261026-1645' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1'>
   <properties size='1'>
-    <property name='p2.timestamp' value='1793028267446'/>
+    <property name='p2.timestamp' value='1793033125210'/>
   </properties>
   <units size='17'>
     <unit id='org.yaml.snakeyaml' version='1.27.0' singleton='false'>
@@ -241,23 +241,6 @@
         Copyright by Brainwy Software LTDA-ME
       </copyright>
     </unit>
-    <unit id='20261026-1524.Default' version='1.0.0.7D7C8ucLoE--BkQIYgKgWeIIoSk'>
-      <properties size='3'>
-        <property name='org.eclipse.equinox.p2.name' value='Uncategorized'/>
-        <property name='org.eclipse.equinox.p2.description' value='Default category for otherwise uncategorized features'/>
-        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
-      </properties>
-      <provides size='1'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='20261026-1524.Default' version='1.0.0.7D7C8ucLoE--BkQIYgKgWeIIoSk'/>
-      </provides>
-      <requires size='4'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.license.feature.group' range='[2.0.2.v20181016-2210,2.0.2.v20181016-2210]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.feature.feature.group' range='[2.5.0.202502081502,2.5.0.202502081502]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.joni' range='[2.2.1.v20230703-0749,2.2.1.v20230703-0749]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.jcodings' range='[1.0.58.v20230703-0749,1.0.58.v20230703-0749]'/>
-      </requires>
-      <touchpoint id='null' version='0.0.0'/>
-    </unit>
     <unit id='org.brainwy.liclipsetext.feature.feature.jar' version='2.5.0.202502081502'>
       <properties size='7'>
         <property name='org.eclipse.equinox.p2.name' value='LiClipseText Feature'/>
@@ -327,8 +310,8 @@
         %copyright
       </copyright>
     </unit>
-    <unit id='org.mard.dt.editing' version='0.6.1.20261026-1524' generation='2'>
-      <update id='org.mard.dt.editing' range='[0.0.0,0.6.1.20261026-1524)' severity='0'/>
+    <unit id='org.mard.dt.editing' version='0.6.1.20261026-1645' generation='2'>
+      <update id='org.mard.dt.editing' range='[0.0.0,0.6.1.20261026-1645)' severity='0'/>
       <properties size='9'>
         <property name='df_LT.pluginName' value='Disable Editing plugin for 1C:EDT'/>
         <property name='df_LT.vendor' value='Dmitriy Marmyshev'/>
@@ -341,10 +324,10 @@
         <property name='maven-type' value='eclipse-plugin'/>
       </properties>
       <provides size='6'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing' version='0.6.1.20261026-1524'/>
-        <provided namespace='osgi.bundle' name='org.mard.dt.editing' version='0.6.1.20261026-1524'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing' version='0.6.1.20261026-1645'/>
+        <provided namespace='osgi.bundle' name='org.mard.dt.editing' version='0.6.1.20261026-1645'/>
         <provided namespace='java.package' name='org.mard.dt.editing' version='0.6.1'/>
-        <provided namespace='osgi.identity' name='org.mard.dt.editing' version='0.6.1.20261026-1524'>
+        <provided namespace='osgi.identity' name='org.mard.dt.editing' version='0.6.1.20261026-1645'>
           <properties size='1'>
             <property name='type' value='osgi.bundle'/>
           </properties>
@@ -383,13 +366,13 @@
         </requiredProperties>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.mard.dt.editing' version='0.6.1.20261026-1524'/>
+        <artifact classifier='osgi.bundle' id='org.mard.dt.editing' version='0.6.1.20261026-1645'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.mard.dt.editing;singleton:=true&#xA;Bundle-Version: 0.6.1.20261026-1524
+            Bundle-SymbolicName: org.mard.dt.editing;singleton:=true&#xA;Bundle-Version: 0.6.1.20261026-1645
           </instruction>
         </instructions>
       </touchpointData>
@@ -478,19 +461,6 @@
           </instruction>
         </instructions>
       </touchpointData>
-    </unit>
-    <unit id='20261026-1524.org.mard.dt.editing.public' version='1.0.0.07A1cKB8U67737E537E15C7A'>
-      <properties size='2'>
-        <property name='org.eclipse.equinox.p2.name' value='1C:EDT Plugins'/>
-        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
-      </properties>
-      <provides size='1'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='20261026-1524.org.mard.dt.editing.public' version='1.0.0.07A1cKB8U67737E537E15C7A'/>
-      </provides>
-      <requires size='1'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.group' range='[0.6.1.20261026-1524,0.6.1.20261026-1524]'/>
-      </requires>
-      <touchpoint id='null' version='0.0.0'/>
     </unit>
     <unit id='org.brainwy.liclipsetext.shared_ui' version='2.5.0.202502081502' generation='2'>
       <update id='org.brainwy.liclipsetext.shared_ui' range='[0.0.0,2.5.0.202502081502)' severity='0'/>
@@ -687,7 +657,7 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.mard.dt.editing.feature.feature.jar' version='0.6.1.20261026-1524'>
+    <unit id='org.mard.dt.editing.feature.feature.jar' version='0.6.1.20261026-1645'>
       <properties size='11'>
         <property name='org.eclipse.equinox.p2.name' value='%featureName'/>
         <property name='org.eclipse.equinox.p2.description' value='%description'/>
@@ -702,15 +672,15 @@
         <property name='maven-type' value='eclipse-feature'/>
       </properties>
       <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.jar' version='0.6.1.20261026-1524'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.jar' version='0.6.1.20261026-1645'/>
         <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
-        <provided namespace='org.eclipse.update.feature' name='org.mard.dt.editing.feature' version='0.6.1.20261026-1524'/>
+        <provided namespace='org.eclipse.update.feature' name='org.mard.dt.editing.feature' version='0.6.1.20261026-1645'/>
       </provides>
       <filter>
         (org.eclipse.update.install.features=true)
       </filter>
       <artifacts size='1'>
-        <artifact classifier='org.eclipse.update.feature' id='org.mard.dt.editing.feature' version='0.6.1.20261026-1524'/>
+        <artifact classifier='org.eclipse.update.feature' id='org.mard.dt.editing.feature' version='0.6.1.20261026-1645'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
@@ -774,8 +744,8 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='org.mard.dt.editing.feature.feature.group' version='0.6.1.20261026-1524' singleton='false'>
-      <update id='org.mard.dt.editing.feature.feature.group' range='[0.0.0,0.6.1.20261026-1524)' severity='0'/>
+    <unit id='org.mard.dt.editing.feature.feature.group' version='0.6.1.20261026-1645' singleton='false'>
+      <update id='org.mard.dt.editing.feature.feature.group' range='[0.0.0,0.6.1.20261026-1645)' severity='0'/>
       <properties size='12'>
         <property name='org.eclipse.equinox.p2.name' value='%featureName'/>
         <property name='org.eclipse.equinox.p2.description' value='%description'/>
@@ -791,15 +761,15 @@
         <property name='df_LT.description' value='1C:EDT Editing plugin allows to disable editing in UI editors via settings.'/>
       </properties>
       <provides size='2'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.group' version='0.6.1.20261026-1524'/>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.group' version='0.6.1.20261026-1645'/>
         <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
       </provides>
       <requires size='5'>
         <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.feature.feature.group' range='[2.5.0.202502081502,2.5.0.202502081502]' optional='true'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing' range='[0.6.1.20261026-1524,0.6.1.20261026-1524]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing' range='[0.6.1.20261026-1645,0.6.1.20261026-1645]'/>
         <required namespace='org.eclipse.equinox.p2.iu' name='org.yaml.snakeyaml' range='[1.27.0,1.27.0]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.ui' range='[0.6.1.20261026-1524,0.6.1.20261026-1524]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.jar' range='[0.6.1.20261026-1524,0.6.1.20261026-1524]'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.ui' range='[0.6.1.20261026-1645,0.6.1.20261026-1645]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.jar' range='[0.6.1.20261026-1645,0.6.1.20261026-1645]'>
           <filter>
             (org.eclipse.update.install.features=true)
           </filter>
@@ -811,6 +781,36 @@
           %license
         </license>
       </licenses>
+    </unit>
+    <unit id='20261026-1645.Default' version='1.0.0.7D7C8ucLoE--BkQIYgKgWeIIoSk'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='Uncategorized'/>
+        <property name='org.eclipse.equinox.p2.description' value='Default category for otherwise uncategorized features'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='20261026-1645.Default' version='1.0.0.7D7C8ucLoE--BkQIYgKgWeIIoSk'/>
+      </provides>
+      <requires size='4'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.license.feature.group' range='[2.0.2.v20181016-2210,2.0.2.v20181016-2210]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.brainwy.liclipsetext.feature.feature.group' range='[2.5.0.202502081502,2.5.0.202502081502]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.joni' range='[2.2.1.v20230703-0749,2.2.1.v20230703-0749]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.jcodings' range='[1.0.58.v20230703-0749,1.0.58.v20230703-0749]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
+    <unit id='20261026-1645.org.mard.dt.editing.public' version='1.0.0.07A1cKB8U67737E537E15EAC'>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='1C:EDT Plugins'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='20261026-1645.org.mard.dt.editing.public' version='1.0.0.07A1cKB8U67737E537E15EAC'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.feature.feature.group' range='[0.6.1.20261026-1645,0.6.1.20261026-1645]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
     </unit>
     <unit id='org.brainwy.liclipsetext.shared_core' version='2.5.0.202502081502' singleton='false' generation='2'>
       <update id='org.brainwy.liclipsetext.shared_core' range='[0.0.0,2.5.0.202502081502)' severity='0'/>
@@ -919,9 +919,9 @@
         <provided namespace='java.package' name='java.awt.desktop' version='0.0.0'/>
         <provided namespace='java.package' name='javax.imageio.plugins.jpeg' version='0.0.0'/>
         <provided namespace='java.package' name='javax.lang.model.type' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.xml.transform.dom' version='0.0.0'/>
-        <provided namespace='java.package' name='java.security.cert' version='0.0.0'/>
         <provided namespace='java.package' name='java.util.zip' version='0.0.0'/>
+        <provided namespace='java.package' name='java.security.cert' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.transform.dom' version='0.0.0'/>
         <provided namespace='java.package' name='java.nio.file' version='0.0.0'/>
         <provided namespace='java.package' name='org.w3c.dom.views' version='0.0.0'/>
         <provided namespace='java.package' name='java.time' version='0.0.0'/>
@@ -937,23 +937,23 @@
         <provided namespace='java.package' name='com.sun.net.httpserver' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.jdi.connect' version='0.0.0'/>
         <provided namespace='java.package' name='org.w3c.dom.events' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.foreign' version='0.0.0'/>
         <provided namespace='java.package' name='javax.swing.text.html' version='0.0.0'/>
         <provided namespace='java.package' name='javax.swing.plaf' version='0.0.0'/>
         <provided namespace='java.package' name='java.awt.datatransfer' version='0.0.0'/>
-        <provided namespace='java.package' name='java.lang.foreign' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.jdi.event' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.dynalink' version='0.0.0'/>
         <provided namespace='java.package' name='javax.swing.plaf.metal' version='0.0.0'/>
         <provided namespace='java.package' name='java.net.spi' version='0.0.0'/>
         <provided namespace='java.package' name='javax.swing.colorchooser' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.xml' version='0.0.0'/>
         <provided namespace='java.package' name='java.util.logging' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.dynalink.support' version='0.0.0'/>
         <provided namespace='java.package' name='javax.security.auth.x500' version='0.0.0'/>
         <provided namespace='java.package' name='java.util.stream' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.classfile' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.jshell.spi' version='0.0.0'/>
         <provided namespace='java.package' name='javax.lang.model' version='0.0.0'/>
-        <provided namespace='java.package' name='java.lang.classfile' version='0.0.0'/>
         <provided namespace='java.package' name='java.lang.annotation' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.jfr' version='0.0.0'/>
         <provided namespace='java.package' name='javax.imageio.spi' version='0.0.0'/>
@@ -970,13 +970,13 @@
         <provided namespace='java.package' name='java.awt' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.swing.interop' version='0.0.0'/>
         <provided namespace='java.package' name='java.text' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.swing.undo' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.management' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing.undo' version='0.0.0'/>
         <provided namespace='java.package' name='javax.xml.transform.stream' version='0.0.0'/>
         <provided namespace='java.package' name='javax.xml.datatype' version='0.0.0'/>
         <provided namespace='java.package' name='javax.print' version='0.0.0'/>
-        <provided namespace='java.package' name='org.w3c.dom.html' version='0.0.0'/>
         <provided namespace='java.package' name='javax.security.auth.login' version='0.0.0'/>
+        <provided namespace='java.package' name='org.w3c.dom.html' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.security.auth.login' version='0.0.0'/>
         <provided namespace='java.package' name='java.rmi' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.jdi.connect.spi' version='0.0.0'/>
@@ -992,8 +992,8 @@
         <provided namespace='java.package' name='java.time.format' version='0.0.0'/>
         <provided namespace='java.package' name='java.util.concurrent' version='0.0.0'/>
         <provided namespace='java.package' name='javax.security.auth.spi' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.sound.sampled' version='0.0.0'/>
         <provided namespace='java.package' name='java.rmi.server' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.sound.sampled' version='0.0.0'/>
         <provided namespace='java.package' name='javax.xml.parsers' version='0.0.0'/>
         <provided namespace='java.package' name='javax.sql.rowset.serial' version='0.0.0'/>
         <provided namespace='java.package' name='javax.swing.plaf.synth' version='0.0.0'/>
@@ -1001,8 +1001,8 @@
         <provided namespace='java.package' name='javax.swing.tree' version='0.0.0'/>
         <provided namespace='java.package' name='javax.net' version='0.0.0'/>
         <provided namespace='java.package' name='java.util.function' version='0.0.0'/>
-        <provided namespace='java.package' name='java.awt.image.renderable' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.dynalink.linker' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.image.renderable' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.nio.file' version='0.0.0'/>
         <provided namespace='java.package' name='org.w3c.dom.ls' version='0.0.0'/>
         <provided namespace='java.package' name='javax.smartcardio' version='0.0.0'/>
@@ -1023,28 +1023,28 @@
         <provided namespace='java.package' name='java.util.concurrent.atomic' version='0.0.0'/>
         <provided namespace='java.package' name='javax.rmi.ssl' version='0.0.0'/>
         <provided namespace='java.package' name='javax.swing.event' version='0.0.0'/>
-        <provided namespace='java.package' name='java.awt.color' version='0.0.0'/>
         <provided namespace='java.package' name='javax.management.openmbean' version='0.0.0'/>
+        <provided namespace='java.package' name='java.awt.color' version='0.0.0'/>
         <provided namespace='java.package' name='javax.swing.text.rtf' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.javadoc.doclet' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.xml.crypto' version='0.0.0'/>
         <provided namespace='java.package' name='java.awt.print' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.crypto' version='0.0.0'/>
         <provided namespace='java.package' name='javax.swing.plaf.multi' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.imageio.event' version='0.0.0'/>
         <provided namespace='java.package' name='java.nio.channels.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.imageio.event' version='0.0.0'/>
         <provided namespace='java.package' name='javax.net.ssl' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.xml.stream.events' version='0.0.0'/>
         <provided namespace='java.package' name='java.rmi.registry' version='0.0.0'/>
-        <provided namespace='java.package' name='com.sun.java.accessibility.util' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.xml.stream.events' version='0.0.0'/>
         <provided namespace='java.package' name='javax.print.attribute' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.swing' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.java.accessibility.util' version='0.0.0'/>
         <provided namespace='java.package' name='java.nio.file.attribute' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.swing' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.management.jfr' version='0.0.0'/>
         <provided namespace='java.package' name='java.lang.constant' version='0.0.0'/>
         <provided namespace='java.package' name='java.nio' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.jdi.request' version='0.0.0'/>
-        <provided namespace='java.package' name='java.lang.instrument' version='0.0.0'/>
         <provided namespace='java.package' name='java.lang.ref' version='0.0.0'/>
+        <provided namespace='java.package' name='java.lang.instrument' version='0.0.0'/>
         <provided namespace='java.package' name='java.util.regex' version='0.0.0'/>
         <provided namespace='java.package' name='org.ietf.jgss' version='0.0.0'/>
         <provided namespace='java.package' name='javax.sound.midi.spi' version='0.0.0'/>
@@ -1053,9 +1053,9 @@
         <provided namespace='java.package' name='java.lang.reflect' version='0.0.0'/>
         <provided namespace='java.package' name='java.security' version='0.0.0'/>
         <provided namespace='java.package' name='org.xml.sax.helpers' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.naming.ldap.spi' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.jshell' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.tools.attach' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.naming.ldap.spi' version='0.0.0'/>
         <provided namespace='java.package' name='javax.print.attribute.standard' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.jshell.tool' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.tools.jconsole' version='0.0.0'/>
@@ -1064,12 +1064,12 @@
         <provided namespace='java.package' name='jdk.security.jarsigner' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.security.auth' version='0.0.0'/>
         <provided namespace='java.package' name='javax.security.auth.kerberos' version='0.0.0'/>
-        <provided namespace='java.package' name='java.sql' version='0.0.0'/>
         <provided namespace='java.package' name='javax.crypto' version='0.0.0'/>
+        <provided namespace='java.package' name='java.sql' version='0.0.0'/>
         <provided namespace='java.package' name='java.util' version='0.0.0'/>
         <provided namespace='java.package' name='java.lang.classfile.constantpool' version='0.0.0'/>
-        <provided namespace='java.package' name='java.nio.channels' version='0.0.0'/>
         <provided namespace='java.package' name='java.time.temporal' version='0.0.0'/>
+        <provided namespace='java.package' name='java.nio.channels' version='0.0.0'/>
         <provided namespace='java.package' name='org.w3c.dom.stylesheets' version='0.0.0'/>
         <provided namespace='java.package' name='java.nio.charset' version='0.0.0'/>
         <provided namespace='java.package' name='javax.sound.midi' version='0.0.0'/>
@@ -1088,10 +1088,10 @@
         <provided namespace='java.package' name='javax.xml.crypto.dsig' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.tools.javac' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.jdi' version='0.0.0'/>
-        <provided namespace='java.package' name='com.sun.security.jgss' version='0.0.0'/>
         <provided namespace='java.package' name='java.nio.charset.spi' version='0.0.0'/>
-        <provided namespace='java.package' name='java.util.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='com.sun.security.jgss' version='0.0.0'/>
         <provided namespace='java.package' name='java.text.spi' version='0.0.0'/>
+        <provided namespace='java.package' name='java.util.spi' version='0.0.0'/>
         <provided namespace='java.package' name='javax.management.timer' version='0.0.0'/>
         <provided namespace='java.package' name='java.security.spec' version='0.0.0'/>
         <provided namespace='java.package' name='java.nio.file.spi' version='0.0.0'/>
@@ -1115,12 +1115,12 @@
         <provided namespace='java.package' name='javax.swing.border' version='0.0.0'/>
         <provided namespace='java.package' name='javax.sql.rowset.spi' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.jfr.consumer' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.imageio.plugins.tiff' version='0.0.0'/>
         <provided namespace='java.package' name='javax.management.remote' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.imageio.plugins.tiff' version='0.0.0'/>
         <provided namespace='java.package' name='org.xml.sax.ext' version='0.0.0'/>
         <provided namespace='java.package' name='sun.reflect' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.lang.model.util' version='0.0.0'/>
         <provided namespace='java.package' name='java.lang.classfile.instruction' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.lang.model.util' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.security.auth.callback' version='0.0.0'/>
         <provided namespace='java.package' name='java.lang.runtime' version='0.0.0'/>
         <provided namespace='java.package' name='javax.security.sasl' version='0.0.0'/>
@@ -1138,8 +1138,8 @@
         <provided namespace='java.package' name='java.lang.module' version='0.0.0'/>
         <provided namespace='java.package' name='com.sun.source.util' version='0.0.0'/>
         <provided namespace='java.package' name='jdk.management' version='0.0.0'/>
-        <provided namespace='java.package' name='javax.sql.rowset' version='0.0.0'/>
         <provided namespace='java.package' name='java.io' version='0.0.0'/>
+        <provided namespace='java.package' name='javax.sql.rowset' version='0.0.0'/>
         <provided namespace='java.package' name='java.util.jar' version='0.0.0'/>
         <provided namespace='java.package' name='javax.crypto.interfaces' version='0.0.0'/>
         <provided namespace='java.package' name='org.w3c.dom.ranges' version='0.0.0'/>
@@ -1183,8 +1183,8 @@
       </provides>
       <touchpoint id='org.eclipse.equinox.p2.native' version='1.0.0'/>
     </unit>
-    <unit id='org.mard.dt.editing.ui' version='0.6.1.20261026-1524' generation='2'>
-      <update id='org.mard.dt.editing.ui' range='[0.0.0,0.6.1.20261026-1524)' severity='0'/>
+    <unit id='org.mard.dt.editing.ui' version='0.6.1.20261026-1645' generation='2'>
+      <update id='org.mard.dt.editing.ui' range='[0.0.0,0.6.1.20261026-1645)' severity='0'/>
       <properties size='9'>
         <property name='df_LT.pluginName' value='Disable Editing plugin for 1C:EDT - UI module'/>
         <property name='df_LT.vendor' value='Dmitriy Marmyshev'/>
@@ -1197,9 +1197,9 @@
         <property name='maven-type' value='eclipse-plugin'/>
       </properties>
       <provides size='5'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.ui' version='0.6.1.20261026-1524'/>
-        <provided namespace='osgi.bundle' name='org.mard.dt.editing.ui' version='0.6.1.20261026-1524'/>
-        <provided namespace='osgi.identity' name='org.mard.dt.editing.ui' version='0.6.1.20261026-1524'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.mard.dt.editing.ui' version='0.6.1.20261026-1645'/>
+        <provided namespace='osgi.bundle' name='org.mard.dt.editing.ui' version='0.6.1.20261026-1645'/>
+        <provided namespace='osgi.identity' name='org.mard.dt.editing.ui' version='0.6.1.20261026-1645'>
           <properties size='1'>
             <property name='type' value='osgi.bundle'/>
           </properties>
@@ -1234,13 +1234,13 @@
         </requiredProperties>
       </requires>
       <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='org.mard.dt.editing.ui' version='0.6.1.20261026-1524'/>
+        <artifact classifier='osgi.bundle' id='org.mard.dt.editing.ui' version='0.6.1.20261026-1645'/>
       </artifacts>
       <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
       <touchpointData size='1'>
         <instructions size='1'>
           <instruction key='manifest'>
-            Bundle-SymbolicName: org.mard.dt.editing.ui;singleton:=true&#xA;Bundle-Version: 0.6.1.20261026-1524
+            Bundle-SymbolicName: org.mard.dt.editing.ui;singleton:=true&#xA;Bundle-Version: 0.6.1.20261026-1645
           </instruction>
         </instructions>
       </touchpointData>
