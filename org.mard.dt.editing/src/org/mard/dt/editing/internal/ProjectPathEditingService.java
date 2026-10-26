@@ -914,6 +914,22 @@ public class ProjectPathEditingService
             return List.of(fullname);
 
         String marker = segments[segments.length - 1];
+        if ("Module".equals(marker) && segments.length >= 5)
+        {
+            // A form module rule may use either name variant of its form
+            // (canonical owner.Form.Name.Form.Module or generated owner.Name.Form.Module).
+            StringBuilder base = new StringBuilder();
+            for (int i = 0; i < segments.length - 1; i++)
+            {
+                if (i > 0)
+                    base.append('.');
+                base.append(segments[i]);
+            }
+            List<String> variants = new java.util.ArrayList<>();
+            for (String variant : fqnVariants(base.toString()))
+                variants.add(variant + ".Module"); //$NON-NLS-1$
+            return variants;
+        }
         if (!"Form".equals(marker) && !"Template".equals(marker)) //$NON-NLS-1$ //$NON-NLS-2$
             return List.of(fullname);
 
@@ -1113,11 +1129,14 @@ public class ProjectPathEditingService
             // Allow editing of files that live under an enabled full name (templates, commands,
             // forms of a disabled owner): getFqn(path) uses the canonical marker-before-name order.
             settings.getEnable().getFullname().stream().filter(fqn -> fqn != null && !fqn.isBlank()).forEach(fqn -> {
-                String trimmed = fqn.trim();
-                enablePatterns.add(trimmed);
-                String normalized = stripMarkers(trimmed);
-                if (normalized != null)
-                    enablePatterns.add(normalized);
+                for (String variant : fqnVariants(fqn))
+                {
+                    String trimmed = variant.trim();
+                    enablePatterns.add(trimmed);
+                    String normalized = stripMarkers(trimmed);
+                    if (normalized != null)
+                        enablePatterns.add(normalized);
+                }
             });
         }
 
@@ -1129,10 +1148,14 @@ public class ProjectPathEditingService
             settings.getDisable().getFullname().stream().filter(fqn -> fqn != null && !fqn.isBlank())
                 .forEach(fqn -> {
                     disableFullnames.add(fqn.trim());
-                    disablePatterns.add(fqn.trim());
-                    String normalized = stripMarkers(fqn.trim());
-                    if (normalized != null)
-                        disablePatterns.add(normalized);
+                    for (String variant : fqnVariants(fqn))
+                    {
+                        String trimmed = variant.trim();
+                        disablePatterns.add(trimmed);
+                        String normalized = stripMarkers(trimmed);
+                        if (normalized != null)
+                            disablePatterns.add(normalized);
+                    }
                 });
         }
 
