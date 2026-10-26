@@ -263,6 +263,12 @@ public class ProjectPathEditingService
             {
                 result = false;
             }
+            else if (isDisabledByAncestor(cache.getDisableFullnames(), subObjectFqn))
+            {
+                // A disabled container closes its own content, e.g. a disabled external
+                // data source closes its tables and their fields.
+                result = false;
+            }
             else
             {
                 IProjectFileSystemSupport fileSystemSupport =
@@ -809,7 +815,25 @@ public class ProjectPathEditingService
      */
     public static boolean isEnabledByAncestor(Set<String> enableFullnames, String fullname)
     {
-        if (enableFullnames == null || enableFullnames.isEmpty() || fullname == null || fullname.isBlank())
+        return hasAncestorMatch(enableFullnames, fullname);
+    }
+
+    /**
+     * Checks whether one of the ancestors of the given full name is disabled. A disabled container
+     * closes its own content, e.g. a disabled external data source closes its tables and fields.
+     *
+     * @param disableFullnames full names of the disabled objects.
+     * @param fullname full name of the checked object.
+     * @return true, if an ancestor of the object is disabled.
+     */
+    public static boolean isDisabledByAncestor(Set<String> disableFullnames, String fullname)
+    {
+        return hasAncestorMatch(disableFullnames, fullname);
+    }
+
+    private static boolean hasAncestorMatch(Set<String> fullnames, String fullname)
+    {
+        if (fullnames == null || fullnames.isEmpty() || fullname == null || fullname.isBlank())
             return false;
 
         String[] segments = fullname.trim().split("\\."); //$NON-NLS-1$
@@ -821,7 +845,7 @@ public class ProjectPathEditingService
                 builder.append('.');
             }
             builder.append(segments[i]);
-            if (i >= 1 && enableFullnames.contains(builder.toString()))
+            if (i >= 1 && fullnames.contains(builder.toString()))
             {
                 return true;
             }
@@ -989,8 +1013,12 @@ public class ProjectPathEditingService
 
         Set<String> disableFullnames = new HashSet<>();
         if (settings.getDisable() != null && settings.getDisable().getFullname() != null)
-            settings.getDisable().getFullname().stream().filter(ProjectPathEditingService::isSubObjectFqn)
-                .forEach(disableFullnames::add);
+        {
+            // All disabled full names are kept: a disabled container closes its own content,
+            // e.g. a disabled external data source closes its tables and fields.
+            settings.getDisable().getFullname().stream().filter(fqn -> fqn != null && !fqn.isBlank())
+                .forEach(fqn -> disableFullnames.add(fqn.trim()));
+        }
 
         if (settings.getDisable() != null)
             addAllPath(project, settings.getDisable(), disable);
