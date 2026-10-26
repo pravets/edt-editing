@@ -30,10 +30,16 @@ public final class SelftestActivator implements BundleActivator
 
     public static final String PROJECT_PROPERTY = "org.mard.dt.editing.selftest.project"; //$NON-NLS-1$
     public static final String REPORT_PROPERTY = "org.mard.dt.editing.selftest.report"; //$NON-NLS-1$
+    public static final String ENABLED_PROPERTY = "org.mard.dt.editing.selftest.enabled"; //$NON-NLS-1$
 
     @Override
     public void start(BundleContext context) throws Exception
     {
+        if (!Boolean.getBoolean(ENABLED_PROPERTY))
+        {
+            // shortcut: inert unless explicitly enabled via -D (safe in shared installs)
+            return;
+        }
         log("Self test bundle started"); //$NON-NLS-1$
         new SelftestJob().schedule(15000L);
     }
@@ -82,7 +88,7 @@ public final class SelftestActivator implements BundleActivator
         private IStatus retry(String message)
         {
             log(message);
-            if (++attempt > 20)
+            if (++attempt > 60)
             {
                 return new Status(IStatus.ERROR, "org.mard.dt.editing.selftest", message); //$NON-NLS-1$
             }

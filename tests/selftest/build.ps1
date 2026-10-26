@@ -38,6 +38,13 @@ if ($pool)
 }
 
 $classPath = ($jars -join ";")
+# The installation contains old fragments of the same packages: put the current
+# platform bundles first so that javac does not pick their outdated classes.
+$preferred = Get-ChildItem X:\ -Filter "org.eclipse.core.resources_3.*.jar" | Select-Object -First 1
+if ($preferred)
+{
+    $classPath = $preferred.FullName + ";" + $classPath
+}
 $javacArgs = @("-cp", "$classPath", "-d", "$target\classes")
 $javacArgs += Get-ChildItem "$here\src" -Recurse -Filter *.java | ForEach-Object FullName
 
@@ -51,7 +58,7 @@ if ($LASTEXITCODE -ne 0)
 }
 
 Copy-Item "$here\META-INF\MANIFEST.MF" "$target\MANIFEST.MF" -Force
-$jar = Join-Path $target "org.mard.dt.editing.selftest_1.0.2.jar"
+$jar = Join-Path $target "org.mard.dt.editing.selftest_1.0.5.jar"
 & "$jdk\jar.exe" cfm $jar "$target\MANIFEST.MF" -C "$target\classes" .
 subst X: /D
 Write-Host "built $jar"

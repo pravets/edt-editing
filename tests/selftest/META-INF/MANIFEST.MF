@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EDT Editing Self Test
 Bundle-SymbolicName: org.mard.dt.editing.selftest;singleton:=true
-Bundle-Version: 1.0.2
+Bundle-Version: 1.0.6
 Bundle-Vendor: mard
 Bundle-Activator: org.mard.dt.editing.selftest.SelftestActivator
 Bundle-RequiredExecutionEnvironment: JavaSE-17
