@@ -86,12 +86,16 @@ import com._1c.g5.v8.dt.metadata.mdclass.DimensionTable;
 import com._1c.g5.v8.dt.metadata.mdclass.EnumValue;
 import com._1c.g5.v8.dt.metadata.mdclass.Field;
 import com._1c.g5.v8.dt.metadata.mdclass.Function;
+import com._1c.g5.v8.dt.metadata.mdclass.Method;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
+import com._1c.g5.v8.dt.metadata.mdclass.Operation;
+import com._1c.g5.v8.dt.metadata.mdclass.Parameter;
 import com._1c.g5.v8.dt.metadata.mdclass.Recalculation;
 import com._1c.g5.v8.dt.metadata.mdclass.Resource;
 import com._1c.g5.v8.dt.metadata.mdclass.Subsystem;
 import com._1c.g5.v8.dt.metadata.mdclass.Table;
 import com._1c.g5.v8.dt.metadata.mdclass.Template;
+import com._1c.g5.v8.dt.metadata.mdclass.URLTemplate;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.inject.Inject;
@@ -777,6 +781,26 @@ public class ProjectPathEditingService
                 segments.addFirst("Resource"); //$NON-NLS-1$
                 segments.addFirst(resource.getName());
             }
+            else if (container instanceof Method method)
+            {
+                segments.addFirst("Method"); //$NON-NLS-1$
+                segments.addFirst(method.getName());
+            }
+            else if (container instanceof URLTemplate urlTemplate)
+            {
+                segments.addFirst("URLTemplate"); //$NON-NLS-1$
+                segments.addFirst(urlTemplate.getName());
+            }
+            else if (container instanceof Operation operation)
+            {
+                segments.addFirst("Operation"); //$NON-NLS-1$
+                segments.addFirst(operation.getName());
+            }
+            else if (container instanceof Parameter parameter)
+            {
+                segments.addFirst("Parameter"); //$NON-NLS-1$
+                segments.addFirst(parameter.getName());
+            }
             else
             {
                 break;
@@ -804,7 +828,8 @@ public class ProjectPathEditingService
 
     private static final Set<String> SUB_OBJECT_MARKERS =
         Set.of("Attribute", "TabularSection", "Value", "Column", "Command", "Table", "Cube", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-            "DimensionTable", "Function", "Field", "Dimension", "Resource", "Template"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            "DimensionTable", "Function", "Field", "Dimension", "Resource", "Template", "Method", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+            "URLTemplate", "Operation", "Parameter"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     /**
      * Removes sub-object marker segments (Attribute, Template, Command, ...) from a full name, so that our
@@ -1000,7 +1025,11 @@ public class ProjectPathEditingService
                 || "Field".equals(segment) //$NON-NLS-1$
                 || "Dimension".equals(segment) //$NON-NLS-1$
                 || "Resource".equals(segment) //$NON-NLS-1$
-                || "Template".equals(segment)) //$NON-NLS-1$
+                || "Template".equals(segment) //$NON-NLS-1$
+                || "Method".equals(segment) //$NON-NLS-1$
+                || "URLTemplate".equals(segment) //$NON-NLS-1$
+                || "Operation".equals(segment) //$NON-NLS-1$
+                || "Parameter".equals(segment)) //$NON-NLS-1$
             {
                 return true;
             }

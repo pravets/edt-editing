@@ -171,6 +171,18 @@
 
                               </instanceof>
                            </or>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Method">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.URLTemplate">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Operation">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
+                        </instanceof>
                         </not>
                      </and>
                   </iterate>
@@ -256,6 +268,18 @@
 
                                </instanceof>
                            </or>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Method">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.URLTemplate">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Operation">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
+                        </instanceof>
                          </not>
                       </and>
                       </iterate>
@@ -370,6 +394,18 @@
 
                                </instanceof>
                            </or>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Method">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.URLTemplate">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Operation">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
+                        </instanceof>
                          </not>
                             </and>
                             <test
@@ -490,6 +526,18 @@
 
                                </instanceof>
                            </or>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Method">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.URLTemplate">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Operation">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
+                        </instanceof>
                          </not>
                             </and>
                             <test
@@ -610,6 +658,18 @@
 
                                    </instanceof>
                            </or>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Method">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.URLTemplate">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Operation">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
+                        </instanceof>
                              </not>
                           </and>
                           <test
@@ -832,6 +892,18 @@
 
                         </instanceof>
                            </or>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Method">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.URLTemplate">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Operation">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
+                        </instanceof>
                   </iterate>
                </with>
             </visibleWhen>
