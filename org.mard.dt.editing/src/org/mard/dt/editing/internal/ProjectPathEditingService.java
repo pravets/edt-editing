@@ -339,6 +339,12 @@ public class ProjectPathEditingService
                 if (fileSystemSupport != null)
                 {
                     IPath path = resolvePath(fileSystemSupport, eObject);
+                    // Plain EObjects without their own file (e.g. a template's spreadsheet
+                    // content) inherit the decision of their closest container with a path.
+                    for (EObject container = eObject.eContainer(); container != null && path == null; container = container.eContainer())
+                    {
+                        path = resolvePath(fileSystemSupport, container);
+                    }
                     if (path != null)
                         return canEditWithPatterns(project, cache, path);
                 }
