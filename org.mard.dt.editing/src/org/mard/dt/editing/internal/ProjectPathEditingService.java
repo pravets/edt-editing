@@ -294,6 +294,23 @@ public class ProjectPathEditingService
                 IProjectFileSystemSupport fileSystemSupport =
                     fileSystemSupportProvider.getProjectFileSystemSupport(project);
                 IPath path = resolvePath(fileSystemSupport, eObject);
+                if (path == null && eObject instanceof IBmObject bmObject)
+                {
+                    // Objects without their own file (e.g. a template's spreadsheet content)
+                    // inherit the decision of their top object instead of defaulting to allowed.
+                    try
+                    {
+                        IBmObject top = bmObject.bmGetTopObject();
+                        if (top != null && top != bmObject)
+                        {
+                            path = fileSystemSupport != null ? fileSystemSupport.getPath(top) : null;
+                        }
+                    }
+                    catch (RuntimeException e)
+                    {
+                        // not attached; keep the default
+                    }
+                }
                 result = path != null ? canEditWithPatterns(project, cache, path) : true;
             }
             debugLog("sub|" + eObject.eClass().getName() + "|" + subObjectFqn + "|" + result, //$NON-NLS-1$
