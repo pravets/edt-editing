@@ -75,6 +75,7 @@ import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.lifecycle.LifecycleParticipant;
 import com._1c.g5.v8.dt.lifecycle.LifecyclePhase;
 import com._1c.g5.v8.dt.lifecycle.LifecycleService;
+import com._1c.g5.v8.dt.metadata.mdclass.AbstractForm;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicCommand;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicForm;
@@ -817,6 +818,12 @@ public class ProjectPathEditingService
             {
                 segments.addFirst("Parameter"); //$NON-NLS-1$
                 segments.addFirst(parameter.getName());
+            }
+            else if (container instanceof Module module && module.eContainer() instanceof AbstractForm)
+            {
+                // A form module is not BM-attached; its FQN is the owning form's canonical
+                // name plus the Module marker. Object/manager modules keep the file-based fallback.
+                segments.addFirst("Module"); //$NON-NLS-1$
             }
             else
             {
