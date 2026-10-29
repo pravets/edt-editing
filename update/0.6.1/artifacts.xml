@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <?artifactRepository version='1.1.0'?>
-<repository name='Disable Editing plugin 20261029-1411' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1'>
+<repository name='Disable Editing plugin 20261029-1440' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1'>
   <properties size='1'>
-    <property name='p2.timestamp' value='1793283088418'/>
+    <property name='p2.timestamp' value='1793284829154'/>
   </properties>
   <mappings size='3'>
     <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
@@ -35,20 +35,6 @@
         <property name='download.checksum.sha-1' value='26ec6e34c47bf593a623843421715c200693f35c'/>
       </properties>
     </artifact>
-    <artifact classifier='org.eclipse.update.feature' id='org.mard.dt.editing.feature' version='0.6.1.20261029-1411'>
-      <properties size='10'>
-        <property name='artifact.size' value='13139'/>
-        <property name='download.size' value='13139'/>
-        <property name='download.checksum.sha-512' value='74b132a6751d5bcde05837905c03d48660d4c149dd256aff4f7ddb11f563d0ab3b7dedc437979681e357db061b8f90923f7c407d939f2d10c3ea019cb873b127'/>
-        <property name='download.checksum.sha-1' value='14cd1377e3d5e9847804b3d78a293863cbd26827'/>
-        <property name='download.checksum.sha-256' value='ab50f7879e913ff143af21d7d376d2986225485ab9fa6df065db02ca44f5e32e'/>
-        <property name='maven-groupId' value='org.mard.dt.editing.group'/>
-        <property name='maven-artifactId' value='org.mard.dt.editing.feature'/>
-        <property name='maven-version' value='0.6.1-SNAPSHOT'/>
-        <property name='maven-type' value='eclipse-feature'/>
-        <property name='download.contentType' value='application/zip'/>
-      </properties>
-    </artifact>
     <artifact classifier='osgi.bundle' id='org.brainwy.liclipsetext.shared_ui' version='2.5.0.202502081502'>
       <properties size='9'>
         <property name='artifact.size' value='418107'/>
@@ -62,19 +48,6 @@
         <property name='download.checksum.sha-256' value='bf9768e9704d1ae1eaf7384ee43937e8a6d006fde4cdfa7b84cbced4b6c502ce'/>
       </properties>
     </artifact>
-    <artifact classifier='osgi.bundle' id='org.mard.dt.editing.ui' version='0.6.1.20261029-1411'>
-      <properties size='9'>
-        <property name='artifact.size' value='27969'/>
-        <property name='download.size' value='27969'/>
-        <property name='download.checksum.sha-512' value='d279864d8873bdbf20e40ebcc006555cb7321194543ab103e335d9844c79ee4ef3446f7f78c8906eeff6f330c71d8d9ae7fbdb4d89d05ebd92d84754b1219f06'/>
-        <property name='download.checksum.sha-1' value='ee31141630f40823e8c7ce109cb5192d1ee7211f'/>
-        <property name='download.checksum.sha-256' value='f1e3e7f254554ce6097824a905cd34ad7fb85a9d47018fb96df198932a4c2cc0'/>
-        <property name='maven-groupId' value='org.mard.dt.editing'/>
-        <property name='maven-artifactId' value='org.mard.dt.editing.ui'/>
-        <property name='maven-version' value='0.6.1-SNAPSHOT'/>
-        <property name='maven-type' value='eclipse-plugin'/>
-      </properties>
-    </artifact>
     <artifact classifier='osgi.bundle' id='org.brainwy.liclipsetext.editor' version='2.5.0.202502081502'>
       <properties size='9'>
         <property name='artifact.size' value='3103529'/>
@@ -86,6 +59,20 @@
         <property name='download.checksum.sha-512' value='704f9748cde86bc23436373f3b190eae499dafa237b28d3ca49848f0b49fa1c134b7fcf63537c28a79b125c86c4699263e3ccae56630e3b0c24fa9d88709985a'/>
         <property name='download.checksum.sha-1' value='1d04eb93c3ad29aeeca89846918924e6f5f1b247'/>
         <property name='download.checksum.sha-256' value='cc26935e0d70f13d9a04a6a0e9d1a3c80654c1edec68cf17c3d77651bf0aa0d9'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='org.mard.dt.editing.feature' version='0.6.1.20261029-1440'>
+      <properties size='10'>
+        <property name='artifact.size' value='13138'/>
+        <property name='download.size' value='13138'/>
+        <property name='download.checksum.sha-512' value='63b8857260eb4aae07647a1bc5a761029d57b58645458891afdb5e5a8105e305f6a71a4848496e876e6fca310ce118d4235e39ec02702b881f5e439a7cb62a31'/>
+        <property name='download.checksum.sha-1' value='d2782527fc06cd738a86c47dcb0852b295efb172'/>
+        <property name='download.checksum.sha-256' value='56198af30afae5c7608e9f81f81c5924ba82f78a2be74157d3a4a42b25d24539'/>
+        <property name='maven-groupId' value='org.mard.dt.editing.group'/>
+        <property name='maven-artifactId' value='org.mard.dt.editing.feature'/>
+        <property name='maven-version' value='0.6.1-SNAPSHOT'/>
+        <property name='maven-type' value='eclipse-feature'/>
+        <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
     <artifact classifier='osgi.bundle' id='org.joni' version='2.2.1.v20230703-0749'>
@@ -113,6 +100,19 @@
         <property name='download.checksum.sha-256' value='88986df06c9ec607a4ee3fcf1f89535eea9665013672a7bfc092907b195a7f68'/>
       </properties>
     </artifact>
+    <artifact classifier='osgi.bundle' id='org.mard.dt.editing.ui' version='0.6.1.20261029-1440'>
+      <properties size='9'>
+        <property name='artifact.size' value='27969'/>
+        <property name='download.size' value='27969'/>
+        <property name='download.checksum.sha-512' value='2b385d40d0a8f0bb5290fc9e8e4478364cc4957bca45fa6312a3cb24e4d55cf16a3977de90566414d910471e68568a80cdbd190138899e04f7a48b37113c9af2'/>
+        <property name='download.checksum.sha-1' value='9396f02f96e5f77f98941aff36616bb832cbbdfc'/>
+        <property name='download.checksum.sha-256' value='e7cad8319c02a5170f7756a9b35f25c4ef6965ff930581fec7bf254c361a81af'/>
+        <property name='maven-groupId' value='org.mard.dt.editing'/>
+        <property name='maven-artifactId' value='org.mard.dt.editing.ui'/>
+        <property name='maven-version' value='0.6.1-SNAPSHOT'/>
+        <property name='maven-type' value='eclipse-plugin'/>
+      </properties>
+    </artifact>
     <artifact classifier='org.eclipse.update.feature' id='org.brainwy.liclipsetext.feature' version='2.5.0.202502081502'>
       <properties size='10'>
         <property name='artifact.size' value='17791'/>
@@ -127,13 +127,13 @@
         <property name='download.checksum.sha-256' value='e8057fd375f3c712cbb94f3898bf6e58e4c26b7a9c304ca25d4e605af584e657'/>
       </properties>
     </artifact>
-    <artifact classifier='osgi.bundle' id='org.mard.dt.editing' version='0.6.1.20261029-1411'>
+    <artifact classifier='osgi.bundle' id='org.mard.dt.editing' version='0.6.1.20261029-1440'>
       <properties size='9'>
-        <property name='artifact.size' value='46163'/>
-        <property name='download.size' value='46163'/>
-        <property name='download.checksum.sha-512' value='dbc943f33a811e57d2f60b285a6f403c22fe4ad90356444dc1cf96517ed4373e655dac8452e75365ed0405e5eaced26d400b8b1ecb426b983286a3f5779d60e7'/>
-        <property name='download.checksum.sha-1' value='089f0aa24806509dbc0d723066b0657072d0e536'/>
-        <property name='download.checksum.sha-256' value='df927425aeb02987644f71b3c736d12426db5887ca7290297ece375fbf1e73b1'/>
+        <property name='artifact.size' value='46166'/>
+        <property name='download.size' value='46166'/>
+        <property name='download.checksum.sha-512' value='839c27cdad0cc8f23542fa090ee8491382b6f86b48958a98924819b8986d61d4bd717b769e6552e36c422fe63f008b62fb82d78b60e6a8ff072ba20f8349aab1'/>
+        <property name='download.checksum.sha-1' value='58607b5c2817edcdb87ec46653be6af746616856'/>
+        <property name='download.checksum.sha-256' value='5c545f5e7e3086ec4167f24dd807c9b83170535d79b1f6c45180fa9a2a7b9327'/>
         <property name='maven-groupId' value='org.mard.dt.editing'/>
         <property name='maven-artifactId' value='org.mard.dt.editing'/>
         <property name='maven-version' value='0.6.1-SNAPSHOT'/>
