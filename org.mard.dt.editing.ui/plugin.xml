@@ -894,8 +894,7 @@
                               value="com._1c.g5.v8.dt.metadata.mdclass.Template">
 
                         </instanceof>
-                           </or>
-                        <instanceof
+                           <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.Method">
                         </instanceof>
                         <instanceof
@@ -907,7 +906,7 @@
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
                         </instanceof>
-                  </iterate>
+                           </or></iterate>
                </with>
             </visibleWhen>
             <command

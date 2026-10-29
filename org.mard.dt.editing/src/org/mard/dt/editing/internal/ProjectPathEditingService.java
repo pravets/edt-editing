@@ -15,6 +15,7 @@ package org.mard.dt.editing.internal;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SUBSYSTEM;
 
 import java.text.MessageFormat;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Collections;
@@ -32,7 +33,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -42,6 +45,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -1179,6 +1183,8 @@ public class ProjectPathEditingService
             return new ProjectCache(disable, enable, true, Set.of(), Set.of(), Set.of(), Set.of());
         }
 
+        ensureModuleFiles(project, settings);
+
         Set<String> enableFullnames = new HashSet<>();
         if (settings.getEnable() != null && settings.getEnable().getFullname() != null)
         {
@@ -1245,6 +1251,73 @@ public class ProjectPathEditingService
 
         IFile file = project.getFile(SETTING_FILE_PATH);
         return EditingSettingsYamlReader.readOrNull(file);
+    }
+
+    // An enabled module that has no file yet cannot be created via EDT UI (the module does not
+    // exist to be edited), so an explicit enable rule creates an empty module file once.
+    private void ensureModuleFiles(IProject project, EditingSettings settings)
+    {
+        if (settings.getEnable() == null || settings.getEnable().getFullname() == null)
+            return;
+
+        Set<IPath> missing = new LinkedHashSet<>();
+        for (String fullname : settings.getEnable().getFullname())
+        {
+            if (fullname == null)
+                continue;
+
+            String fqn = fullname.trim();
+            if (!fqn.endsWith(".ObjectModule") && !fqn.endsWith(".ManagerModule") && !fqn.endsWith(".Module")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                continue;
+
+            List<IPath> paths =
+                qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(fqn));
+            if ((paths == null || paths.isEmpty()) && fqn.endsWith(".Module")) //$NON-NLS-1$
+            {
+                // Form module: resolve the form path and use the sibling Module.bsl file.
+                String baseFqn = fqn.substring(0, fqn.length() - ".Module".length()); //$NON-NLS-1$
+                List<IPath> formPaths =
+                    qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(baseFqn));
+                if (formPaths != null)
+                {
+                    formPaths.stream().filter(Objects::nonNull)
+                        .map(p -> p.removeLastSegments(1).append("Module.bsl")) //$NON-NLS-1$
+                        .forEach(missing::add);
+                }
+            }
+            else if (paths != null)
+            {
+                paths.stream().filter(Objects::nonNull).forEach(missing::add);
+            }
+        }
+
+        List<IPath> toCreate = missing.stream()
+            .filter(p -> p != null && !project.getFile(p).exists())
+            .collect(java.util.stream.Collectors.toList());
+        if (toCreate.isEmpty())
+            return;
+
+        Job.create("Create enabled module files", monitor -> {
+            for (IPath path : toCreate)
+            {
+                try
+                {
+                    IFile file = project.getFile(path);
+                    IContainer parent = file.getParent();
+                    while (parent instanceof IFolder folder && !folder.exists())
+                    {
+                        folder.create(true, true, monitor);
+                        parent = parent.getParent();
+                    }
+                    if (!file.exists())
+                        file.create(new ByteArrayInputStream(new byte[0]), true, monitor);
+                }
+                catch (Exception e)
+                {
+                    CorePlugin.logError(e);
+                }
+            }
+        }).schedule();
     }
 
     private class ProjectCache
