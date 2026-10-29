@@ -249,6 +249,12 @@ public class ProjectPathEditingService
                         .getAllPossibleFilePaths(QualifiedName.create(ownerObject.bmGetFqn() + ".Module")); //$NON-NLS-1$
                     modulePath = resolved != null ? resolved.stream().filter(Objects::nonNull).findFirst().orElse(null)
                         : null;
+                    if (modulePath == null && fileSystemSupport != null)
+                    {
+                        // The converter does not map common module code; take the sibling
+                        // Module.bsl of the owner's metadata file, like form modules do.
+                        modulePath = moduleFilePath(fileSystemSupport.getPath(ownerObject));
+                    }
                 }
                 catch (RuntimeException e)
                 {
