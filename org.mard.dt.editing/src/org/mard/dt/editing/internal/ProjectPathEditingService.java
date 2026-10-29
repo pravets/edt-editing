@@ -239,6 +239,22 @@ public class ProjectPathEditingService
                 fileSystemSupportProvider.getProjectFileSystemSupport(project);
             IPath modulePath = fileSystemSupport != null ? fileSystemSupport.getPath(eObject) : null;
             EObject owner = module.getOwner();
+            if (modulePath == null && owner instanceof IBmObject ownerObject)
+            {
+                // Common module BSL files have no direct getPath() mapping; resolve the owner's
+                // canonical FQN plus the Module marker through the path converter instead.
+                try
+                {
+                    List<IPath> resolved = qualifiedNameFilePathConverter
+                        .getAllPossibleFilePaths(QualifiedName.create(ownerObject.bmGetFqn() + ".Module")); //$NON-NLS-1$
+                    modulePath = resolved != null ? resolved.stream().filter(Objects::nonNull).findFirst().orElse(null)
+                        : null;
+                }
+                catch (RuntimeException e)
+                {
+                    // not attached; keep the default
+                }
+            }
             IPath ownerPath = fileSystemSupport != null && owner != null && !owner.eIsProxy()
                 ? fileSystemSupport.getPath(owner)
                 : null;
