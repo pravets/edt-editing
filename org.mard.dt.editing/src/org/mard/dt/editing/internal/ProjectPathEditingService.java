@@ -239,16 +239,17 @@ public class ProjectPathEditingService
                 fileSystemSupportProvider.getProjectFileSystemSupport(project);
             IPath modulePath = fileSystemSupport != null ? fileSystemSupport.getPath(eObject) : null;
             EObject owner = module.getOwner();
-            if (modulePath == null && owner instanceof IBmObject ownerObject)
+            if ((modulePath == null || "mdo".equals(modulePath.getFileExtension())) //$NON-NLS-1$
+                && owner != null && !owner.eIsProxy())
             {
-                // Common module BSL files have no direct getPath() mapping and the path
-                // converter ignores the Module marker, so take the sibling Module.bsl of
-                // the owner's metadata file, like form modules do.
+                // Common module BSL files may have no direct getPath() mapping (or map to the
+                // owner's .mdo), and the path converter ignores the Module marker, so take the
+                // sibling Module.bsl of the owner's metadata file, like form modules do.
                 try
                 {
                     if (fileSystemSupport != null)
                     {
-                        modulePath = moduleFilePath(fileSystemSupport.getPath(ownerObject));
+                        modulePath = moduleFilePath(fileSystemSupport.getPath(owner));
                     }
                 }
                 catch (RuntimeException e)
