@@ -241,18 +241,13 @@ public class ProjectPathEditingService
             EObject owner = module.getOwner();
             if (modulePath == null && owner instanceof IBmObject ownerObject)
             {
-                // Common module BSL files have no direct getPath() mapping; resolve the owner's
-                // canonical FQN plus the Module marker through the path converter instead.
+                // Common module BSL files have no direct getPath() mapping and the path
+                // converter ignores the Module marker, so take the sibling Module.bsl of
+                // the owner's metadata file, like form modules do.
                 try
                 {
-                    List<IPath> resolved = qualifiedNameFilePathConverter
-                        .getAllPossibleFilePaths(QualifiedName.create(ownerObject.bmGetFqn() + ".Module")); //$NON-NLS-1$
-                    modulePath = resolved != null ? resolved.stream().filter(Objects::nonNull).findFirst().orElse(null)
-                        : null;
-                    if (modulePath == null && fileSystemSupport != null)
+                    if (fileSystemSupport != null)
                     {
-                        // The converter does not map common module code; take the sibling
-                        // Module.bsl of the owner's metadata file, like form modules do.
                         modulePath = moduleFilePath(fileSystemSupport.getPath(ownerObject));
                     }
                 }
