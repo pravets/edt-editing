@@ -77,6 +77,7 @@ public class EditingRestrictionsHandler
     private static final String TARGET_RECORD_SET_MODULE = "recordSetModule"; //$NON-NLS-1$
 
     private static final String TARGET_FORM_MODULE = "formModule"; //$NON-NLS-1$
+    private static final String TARGET_MODULE = "module"; //$NON-NLS-1$
 
     @Inject
     private IResourceLookup resourceLookup;
@@ -247,6 +248,7 @@ public class EditingRestrictionsHandler
             case TARGET_OBJECT_MODULE -> module(selected, TARGET_OBJECT_MODULE);
             case TARGET_MANAGER_MODULE -> module(selected, TARGET_MANAGER_MODULE);
             case TARGET_RECORD_SET_MODULE -> module(selected, TARGET_RECORD_SET_MODULE);
+            case TARGET_MODULE -> module(selected, TARGET_MODULE);
             case TARGET_FORM_MODULE -> {
                 if (selected instanceof AbstractForm form && form.getModule() != null)
                     yield (EObject)form.getModule();
