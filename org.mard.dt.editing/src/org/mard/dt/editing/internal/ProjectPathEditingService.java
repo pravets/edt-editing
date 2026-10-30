@@ -231,12 +231,13 @@ public class ProjectPathEditingService
         if (project == null || eObject == null || eObject.eIsProxy())
             return true;
 
-        if (kind == EditCallKind.STRUCTURAL && eObject instanceof Configuration)
+        if ((kind == EditCallKind.CREATE || kind == EditCallKind.STRUCTURAL)
+            && eObject instanceof Configuration)
         {
             ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
             // The navigator's New action asks the configuration object, not the selected parent.
             // Allow it once something is explicitly enabled; writing into a disabled parent object
-            // is still blocked by its own structural check.
+            // is still blocked by its own check.
             if (!cache.getEnable().isEmpty() || !cache.getEnableFullnames().isEmpty())
             {
                 return true;
