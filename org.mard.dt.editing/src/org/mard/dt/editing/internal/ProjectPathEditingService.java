@@ -1122,10 +1122,16 @@ public class ProjectPathEditingService
             String[] segments = subsystemName.trim().split("\\."); //$NON-NLS-1$
             for (int i = 0; i < segments.length; i++)
             {
-                String segment = segments[i];
-                sb.append(preffix);
-                sb.append("."); //$NON-NLS-1$
-                sb.append(segment);
+                if (i == 0)
+                {
+                    sb.append(preffix);
+                    sb.append("."); //$NON-NLS-1$
+                }
+                else
+                {
+                    sb.append("."); //$NON-NLS-1$
+                }
+                sb.append(segments[i]);
             }
 
             IBmObject subsystem = transaction.getTopObjectByFqn(sb.toString());
@@ -1138,6 +1144,18 @@ public class ProjectPathEditingService
 
     private void addSubsystemPath(Subsystem subsystem, Set<IPath> paths, IProjectFileSystemSupport fileSystemSupport)
     {
+
+        // The subsystem itself must be writable as well: creating or renaming a child object
+        // is a structural operation that is checked against the subsystem's own file.
+        IPath subsystemPath = fileSystemSupport.getPath(subsystem);
+        if (subsystemPath != null)
+        {
+            paths.add(subsystemPath);
+            if (subsystemPath.segmentCount() > 1)
+            {
+                paths.add(subsystemPath.removeLastSegments(1));
+            }
+        }
 
         for (MdObject item : subsystem.getContent())
         {
