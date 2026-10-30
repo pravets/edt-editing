@@ -85,6 +85,7 @@ import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicForm;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection;
 import com._1c.g5.v8.dt.metadata.mdclass.Column;
+import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 import com._1c.g5.v8.dt.metadata.mdclass.Cube;
 import com._1c.g5.v8.dt.metadata.mdclass.Dimension;
 import com._1c.g5.v8.dt.metadata.mdclass.DimensionTable;
@@ -229,6 +230,18 @@ public class ProjectPathEditingService
 
         if (project == null || eObject == null || eObject.eIsProxy())
             return true;
+
+        if (kind == EditCallKind.STRUCTURAL && eObject instanceof Configuration)
+        {
+            ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
+            // The navigator's New action asks the configuration object, not the selected parent.
+            // Allow it once something is explicitly enabled; writing into a disabled parent object
+            // is still blocked by its own structural check.
+            if (!cache.getEnable().isEmpty() || !cache.getEnableFullnames().isEmpty())
+            {
+                return true;
+            }
+        }
 
         // BSL module code lives in a separate Module.bsl file, so the owner-based decision
         // does not apply directly; check both the module file path and the owner path.
