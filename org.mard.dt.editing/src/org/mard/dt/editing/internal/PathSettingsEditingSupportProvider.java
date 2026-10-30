@@ -14,6 +14,7 @@ package org.mard.dt.editing.internal;
 
 import java.lang.StackWalker.Option;
 import java.lang.StackWalker.StackFrame;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -88,12 +89,31 @@ public class PathSettingsEditingSupportProvider
 
         boolean canEdit = editingService.canEdit(project, eObject, callKind());
         debugCall(eObject, mode, canEdit);
+        if (!canEdit)
+        {
+            logDenial(eObject);
+        }
         if (!canEdit && editingService.canEditInMerge(project) && isCallFromMerge())
         {
             return true;
         }
         return canEdit;
     }
+
+    /** Logs every distinct denial with the EDT caller stack; used to diagnose blocked UI actions. */
+    private static void logDenial(EObject eObject)
+    {
+        List<String> frames = StackWalker.getInstance().walk(s -> s.skip(2).limit(14) //$NON-NLS-1$
+            .map(StackFrame::getClassName)
+            .collect(Collectors.toList()));
+        String key = eObject.eClass().getName() + "|" + String.join("<", frames); //$NON-NLS-1$ //$NON-NLS-2$
+        if (!DENIED_LOGGED.add(key))
+            return;
+        CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
+            "canEdit denied: type={0}, stack={1}", eObject.eClass().getName(), String.join(" <- ", frames)))); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    private static final Set<String> DENIED_LOGGED = Collections.synchronizedSet(new LinkedHashSet<>());
 
     /** Detects the kind of the check by the calling stack of EDT. */
     private static EditCallKind callKind()
