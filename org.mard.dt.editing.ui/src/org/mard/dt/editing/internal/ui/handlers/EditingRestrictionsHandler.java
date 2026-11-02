@@ -77,6 +77,12 @@ public class EditingRestrictionsHandler
     private static final String TARGET_RECORD_SET_MODULE = "recordSetModule"; //$NON-NLS-1$
 
     private static final String TARGET_FORM_MODULE = "formModule"; //$NON-NLS-1$
+
+    private static final String TARGET_MANAGED_APPLICATION_MODULE = "managedApplicationModule"; //$NON-NLS-1$
+
+    private static final String TARGET_SESSION_MODULE = "sessionModule"; //$NON-NLS-1$
+
+    private static final String TARGET_EXTERNAL_CONNECTION_MODULE = "externalConnectionModule"; //$NON-NLS-1$
     private static final String TARGET_MODULE = "module"; //$NON-NLS-1$
 
     @Inject
@@ -249,6 +255,9 @@ public class EditingRestrictionsHandler
             case TARGET_MANAGER_MODULE -> module(selected, TARGET_MANAGER_MODULE);
             case TARGET_RECORD_SET_MODULE -> module(selected, TARGET_RECORD_SET_MODULE);
             case TARGET_MODULE -> module(selected, TARGET_MODULE);
+            case TARGET_MANAGED_APPLICATION_MODULE -> module(selected, TARGET_MANAGED_APPLICATION_MODULE);
+            case TARGET_SESSION_MODULE -> module(selected, TARGET_SESSION_MODULE);
+            case TARGET_EXTERNAL_CONNECTION_MODULE -> module(selected, TARGET_EXTERNAL_CONNECTION_MODULE);
             case TARGET_FORM_MODULE -> {
                 if (selected instanceof AbstractForm form && form.getModule() != null)
                     yield (EObject)form.getModule();

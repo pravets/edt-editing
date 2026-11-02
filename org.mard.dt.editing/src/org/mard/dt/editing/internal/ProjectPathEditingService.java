@@ -48,6 +48,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand.ListMode;
@@ -253,6 +254,15 @@ public class ProjectPathEditingService
                 fileSystemSupportProvider.getProjectFileSystemSupport(project);
             IPath modulePath = fileSystemSupport != null ? fileSystemSupport.getPath(eObject) : null;
             EObject owner = module.getOwner();
+            if (owner instanceof Configuration)
+            {
+                // Configuration modules live in src/Configuration under their own file names.
+                IPath configurationModulePath = configurationModulePath(module);
+                if (configurationModulePath != null)
+                {
+                    modulePath = configurationModulePath;
+                }
+            }
             if ((modulePath == null || "mdo".equals(modulePath.getFileExtension())) //$NON-NLS-1$
                 && owner != null && !owner.eIsProxy())
             {
@@ -657,6 +667,15 @@ public class ProjectPathEditingService
     {
         for (String fullname : fullnames)
         {
+            IPath configurationModulePath = configurationModulePath(fullname);
+            if (configurationModulePath != null)
+            {
+                // Configuration module files follow their own naming scheme, the path
+                // converter maps them to Configuration.mdo.
+                paths.add(configurationModulePath);
+                continue;
+            }
+
             if (isSubObjectFqn(fullname))
             {
                 // Sub-object rules are matched by full name, not by file path.
@@ -867,6 +886,14 @@ public class ProjectPathEditingService
                 // name plus the Module marker. Object/manager modules keep the file-based fallback.
                 segments.addFirst("Module"); //$NON-NLS-1$
             }
+            else if (container instanceof Module module && module.eContainer() instanceof Configuration
+                && module.eContainmentFeature() != null
+                && CONFIGURATION_MODULE_FILES.containsKey(module.eContainmentFeature().getName()))
+            {
+                // Configuration module FQN is Configuration.<FeatureName>.
+                String feature = module.eContainmentFeature().getName();
+                segments.addFirst(Character.toUpperCase(feature.charAt(0)) + feature.substring(1));
+            }
             else
             {
                 break;
@@ -890,6 +917,41 @@ public class ProjectPathEditingService
         if (basePath == null)
             return null;
         return basePath.removeLastSegments(1).append("Module.bsl"); //$NON-NLS-1$
+    }
+
+    private static final IPath CONFIGURATION_PATH = new Path("src/Configuration"); //$NON-NLS-1$
+
+    // Configuration module code files have their own names, keyed by the module feature name.
+    private static final Map<String, String> CONFIGURATION_MODULE_FILES = Map.of(
+        "managedApplicationModule", "ManagedApplicationModule.bsl", //$NON-NLS-1$ //$NON-NLS-2$
+        "sessionModule", "SessionModule.bsl", //$NON-NLS-1$ //$NON-NLS-2$
+        "externalConnectionModule", "ExternalConnectionModule.bsl", //$NON-NLS-1$ //$NON-NLS-2$
+        "ordinaryApplicationModule", "OrdinaryApplicationModule.bsl"); //$NON-NLS-1$ //$NON-NLS-2$
+
+    /** Resolves the configuration module file of a rule like Configuration.SessionModule. */
+    public static IPath configurationModulePath(String fullname)
+    {
+        if (fullname == null || !fullname.startsWith("Configuration.")) //$NON-NLS-1$
+            return null;
+
+        String marker = fullname.substring("Configuration.".length()); //$NON-NLS-1$
+        if (marker.indexOf('.') >= 0)
+            return null;
+
+        String feature = Character.toLowerCase(marker.charAt(0)) + marker.substring(1);
+        String file = CONFIGURATION_MODULE_FILES.get(feature);
+        return file != null ? CONFIGURATION_PATH.append(file) : null;
+    }
+
+    /** Resolves the configuration module file of a module object. */
+    private static IPath configurationModulePath(Module module)
+    {
+        EStructuralFeature feature = module.eContainmentFeature();
+        if (feature == null)
+            return null;
+
+        String file = CONFIGURATION_MODULE_FILES.get(feature.getName());
+        return file != null ? CONFIGURATION_PATH.append(file) : null;
     }
 
     private static final Set<String> SUB_OBJECT_MARKERS =
@@ -1317,6 +1379,12 @@ public class ProjectPathEditingService
                 continue;
 
             String fqn = fullname.trim();
+            IPath configurationModulePath = configurationModulePath(fqn);
+            if (configurationModulePath != null)
+            {
+                missing.add(configurationModulePath);
+                continue;
+            }
             if (!fqn.endsWith(".ObjectModule") && !fqn.endsWith(".ManagerModule") && !fqn.endsWith(".Module")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 continue;
 
