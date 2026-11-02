@@ -21,20 +21,9 @@ Disable Editing plugin developer set up some rules to make read-only mode in UI 
 ## Install
 
 
-| Plugin Version | 1C:EDT version |
-|----------------|----------------|
-| [0.6.0](https://gitlab.com/marmyshev/edt-editing/-/packages/) | 2024.1+ and newer... |
-| [0.5.0](https://gitlab.com/marmyshev/edt-editing/-/packages/15488906) | 2023.1 - 2023.3 |
-| [0.4.0](https://gitlab.com/marmyshev/edt-editing/-/packages/10924902) | 2020.5 - 2022.2 |
-| 0.3.0 | 2020.5+ and newer... |
-| 0.2.0 | 2020.5 - 2020.6 |
-| 0.1.0 | 2020.1 - 2020.4 |
+Current build: `0.6.1` for 1C:EDT 2026.1 and newer.
 
-
-[![Drag to your running 1C:EDT* workspace. *Requires Eclipse Marketplace Client](https://marketplace.eclipse.org/sites/all/themes/solstice/public/images/marketplace/btn-install.png)](http://marketplace.eclipse.org/marketplace-client-intro?mpc_install=5141319 "Drag to your running 1C:EDT* workspace. *Requires Eclipse Marketplace Client")
-
-
-For manual install Select menu: `Help -> Install New Software...` past in p2-repository URL [https://marmyshev.gitlab.io/edt-editing/update](https://marmyshev.gitlab.io/edt-editing/update)
+For manual install select menu: `Help -> Install New Software...` and paste the p2 repository URL [https://pravets.github.io/edt-editing/update](https://pravets.github.io/edt-editing/update)
 
 Select installable feature `Disable Editing plugin for 1C:EDT`
 
@@ -171,7 +160,7 @@ Or open existing disable editing settings file to setup your project.
 
 ![image](images/open_settings.png "Open existing settings file")
 
-##  Demo example
+## Demo example
 
 ### Simple example for disabling an entire project
 
@@ -191,42 +180,98 @@ Open metadata objects to check out disabling and enabling features!
 
 > Note! If the plugin was installed after the creation of the workspace then, to display the icons of blocked objects in the navigator, you need to enable display the icon in the settings "Window -> Parameters -> Appearance -> Label decoration", item "Disable to edit objects"
 
-# Плагин Disable Editing для 1C:EDT
+# Плагин запрета редактирования для 1C:EDT
 
-Плагин для 1C:Enterprise Development Tools: запрещает редактирование объектов метаданных 1С в редакторах IDE и даёт доступ к настройкам заблокированных объектов.
+Плагин для 1C:Enterprise Development Tools блокирует редактирование объектов метаданных 1С в редакторах в интерфейсе. Гибкие настройки блокируемых объектов.
 
-Исторически разработчики пользовались настройками поставщика, чтобы разрешить редактирование части объектов, а остальные оставались недоступными (как объекты, поставленные вендором конфигурации).
+Исторически, разработчики использовали настройки поддержки поставщика, чтобы разрешить редактирование некоторых объектов метаданных, а остальные объекты оставить заблокированными (как будто они на поддержке поставщика).
 
-В новой IDE 1C:EDT разработка стала гибче и использует git с веткой supplier-master, поэтому настройки поставщика сейчас приносят больше проблем, чем пользы. Большинство разработчиков удаляют их из репозитория.
+В новой IDE 1C:EDT приложения разрабатываются гибче, в т.ч. используя Git для ветвления supplier-master, начальные настройки поставки можно при этом использовать, но приносят больше сложностей, чем пользы. Поэтому большинство разработчиков удаляют настройки из репозитория.
 
-Разработчики хотят защитить себя и младших коллег от случайного изменения объектов, которые не нужно трогать при изучении чужих конфигураций.
+Разработчики желают защитить себя и менее опытных коллег от случайного редактирования некоторых объектов, которые не хотелось бы редактировать в процессе изучения больших конфигураций.
 
-Плагин Disable Editing позволяет задать правила и включить режим только для чтения в редакторах 1C:EDT.
+В плагине запрета редактирования разработчик настраивает некоторые правила, чтобы включить режим Только-просмотр в редакторах интерфейса 1C:EDT.
+
 
 ## Установка
 
-Для ручной установки выберите меню `Help -> Install New Software...` и укажите p2-репозиторий [https://pravets.github.io/edt-editing/update](https://pravets.github.io/edt-editing/update), затем выберите компонент `Disable Editing plugin for 1C:EDT`.
+
+Текущая версия — `0.6.1` для 1C:EDT 2026.1 и новее.
+
+Для ручной установки выберите меню: `Help -> Install New Software...` и вставьте адрес p2-репозитория [https://pravets.github.io/edt-editing/update](https://pravets.github.io/edt-editing/update)
+
+Выберите фичу для установки `Disable Editing plugin for 1C:EDT`
+
 
 ## Основные возможности
 
-Правила **disable** (запрет редактирования, режим только для чтения):
+Настройка правил блокировки (**Disable**) редактирования (режим Только-просмотр) в редакторах:
 
-- подсистемы, содержимое которых запрещено редактировать (поддерживается иерархия подсистем);
-- путь или папки проекта, содержимое которых запрещено редактировать;
-- полные имена (FQN) объектов метаданных 1С, которые хранятся в отдельном файле и должны быть запрещены в редакторах;
-- имена git-веток, содержимое которых запрещено редактировать.
+- Указание подсистем, состав объектов которых заблокирован для редактирования, иерархия подсистем поддерживается
+- Указание относительно проекта полного пути к файлу или к каталогу, контент которых заблокирован для редактирования
+- Указание полного квалифицированного имени метаданного 1С:Предприятия (хранящихся в отдельных файлах), которые должны быть заблокированы в редакторах
+- Указание серверных веток Git, список файлов в которых можно заблокировать для редактирования
 
-Правила **enable** (исключения из запретов):
+Настройка правила исключения (**Enable**) для разрешения редактирования:
 
-- по подсистеме;
-- по пути к файлу или папке проекта;
-- по полному имени (FQN).
+- по подсистеме
+- по пути к файлу или каталогу относительно проекта
+- по полному квалифицированному имени (FQN)
 
-> Важно! Плагин не запрещает редактирование файлов средствами файловой системы.
 
-**Внимание!** Запрещённые объекты исключаются из проверки проекта в 1C:EDT.
+> Примечание! Этот плагин не блокирует редактирование файлов через файловую систему!
+
+**Внимание!** Заблокированные объекты будут исключены из проверки (валидации) по проекту в 1C:EDT.
+
+
+## Настройка правил по проекту
+
+Разместите yaml-файл с настройками в каталоге вашего проекта: `YourProjectName/.settings/editing.yml` с содержанием:
+
+```yaml
+# секция блокирует редактирование в UI
+disable:
+  # Список подсистем, состав объектов которых должен быть заблокирован
+  subsystem:
+    - DisabledSubsystem1
+    - DisabledSubsystem2
+  # Список путей относительно проекта к файлам или каталогам
+  path:
+    - src/CommonModules/LockedOnlyModule/Module.bsl
+   
+  # Список полных квалифицированных имен объектов с ресурсами
+  fullname:
+    - Catalog.Products.Form.ItemForm.Form
+
+  # Список серверных веток Git контент которых должен быть заблокирован
+  branch:
+    - vendor
+   
+# секция добавляет исключения из правил блокировки
+enable:
+  merge: true # разрешает редактирование из системы Сравнения/Объединения
+  subsystem:
+    - EnabledSubsystem
+  path:
+    - src/Catalogs/Enabled
+
+```
+
+### Создайте или откройте настройки в Редакторе проекта
+
+Откройте "Редактор проекта" в меню Навигатора 1С.
+
+Создайте новый файл настроек запрета редактирования и продолжите настройку вашего проекта.
+
+![image](images/create_settings.png "Создайте новые настройки запрета редактирования")
+
+Или откройте существующий файл настроек запрета редактирования чтобы настроить ваш проект.
+
+![image](images/open_settings.png "Откройте существующий файл настроек")
 
 ## Запрет редактирования в дереве конфигурации
+
+### Контекстное меню в дереве конфигурации
 
 В контекстном меню дерева конфигурации (при выборе одного объекта) используйте меню `Запрет редактирования`:
 
@@ -290,67 +335,24 @@ FQN под-объекта строится как FQN владельца плю�
 
 Запустите 1C:EDT с `-Dorg.mard.dt.editing.debug=true` (после `-vmargs` в `eclipse.ini`), чтобы логировать уникальные решения о редактировании, или с `-Dorg.mard.dt.editing.debug.all=true`, чтобы логировать каждую проверку. Сообщения `canEdit call:`, `canEdit sub-object:`, `canEdit path:` в `.log` рабочего пространства показывают объект, применённое правило и результат.
 
-## Настройка правил проекта
+## Демо пример
 
-Разместите Yaml-файл в папке настроек проекта: `ИмяПроекта/.settings/editing.yml`:
-
-```yaml
-# section allows to disable editing in UI
-disable:
-  # List of subsystems which content should be disabled
-  subsystem:
-    - DisabledSubsystem1
-    - DisabledSubsystem2
-  # List of project relative path to file or to folder 
-  path:
-    - src/CommonModules/LockedOnlyModule/Module.bsl
-   
-  # Full qualified name of top objects (resources)
-  fullname:
-    - Catalog.Products.Form.ItemForm.Form
-
-  # List of Git remote branches which content should be disabled
-  branch:
-    - vendor
-     
-# section allows to make some exceptions from disable rule
-enable:
-  merge: true # allows to edit by compare and merge EDT system
-  subsystem:
-    - EnabledSubsystem
-  path:
-    - src/Catalogs/Enabled
-
-```
-
-### Создание и открытие настроек в редакторе проекта
-
-Откройте "Редактор проекта" в меню навигатора 1C.
-
-Создайте новый файл настроек запрета редактирования и продолжайте настройку проекта.
-
-![image](images/create_settings.png "Create new disable editing settings")
-
-Или откройте существующий файл настроек.
-
-![image](images/open_settings.png "Open existing settings file")
-
-## Демо-пример
-
-### Простой пример запрета редактирования всего проекта
+### Простой пример для блокировки всего проекта
 
 ```yaml
-# section allows to disable editing in UI
+# секция блокирует редактирование в UI
 disable:
-  # List of project relative path to file or to folder 
+  # Список путей относительно проекта к файлам или каталогам
   path:
     - src/
 ```
 
-Откройте 1C:EDT и импортируйте проект из этого репозитория [EditingDemoConfig](EditingDemoConfig) в рабочее пространство.
+Откройте 1C:EDT и импортируйте проект из этого репозитория [EditingDemoConfig](EditingDemoConfig) в воркспейс.
 
-[Настройки демо здесь](EditingDemoConfig/.settings/editing.yml).
+[Демо настройки здесь](EditingDemoConfig/.settings/editing.yml).
 
-Откройте объекты метаданных и проверьте запрет и разрешение редактирования!
+Откройте объекты метаданных, чтобы исследовать функциональность блокировки и разрешения!
 
-> Примечание! Если плагин установлен после создания рабочего пространства, для отображения иконок заблокированных объектов в навигаторе включите отображение иконки в настройках "Окно -> Параметры -> Внешний вид -> Оформление меток", пункт "Запретить редактирование объектов".
+> Примечание! Если установка плагина была выполнена после создания проекта (воркспейса), то, для отображения иконок блокированных объектов в навигаторе, необходимо включить отображение значков в настройках "Окно -> Параметры -> Внешний вид -> Оформление меток", пункт "Запретить редактирование объектов"
+
+![image](images/settings_screen.png "Параметры меток")
