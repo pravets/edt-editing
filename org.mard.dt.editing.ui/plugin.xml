@@ -313,7 +313,7 @@
                   </parameter>
                </command>
             
-            <menu
+            </menu><menu
                   label="%menu.appModule.label">
                <visibleWhen
                      checkEnabled="false">
@@ -470,7 +470,7 @@
                   </parameter>
                </command>
             </menu>
-            </menu>
+            
             <menu
                   label="%menu.objectModule.label">
                <visibleWhen
