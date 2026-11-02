@@ -66,10 +66,9 @@ In the configuration tree context menu (single selection) use the `Editing Restr
 
 - `Copy FQN` - copy the canonical 1C full name of the selected object, its module or the form module to the clipboard;
 - `Add to disable.fullname` - append the FQN to `disable.fullname` in `<project>/.settings/editing.yml`;
-- `Add to enable.fullname` - append the FQN to `enable.fullname` in `<project>/.settings/editing.yml`;
-- `Refresh editing restrictions` - re-read the rules without restart (the file is not modified).
+- `Add to enable.fullname` - append the FQN to `enable.fullname` in `<project>/.settings/editing.yml`.
 
-The commands only append entries to the chosen list (an existing identical entry is a no-op) and preserve the rest of the file: comments, unknown fields, order, encoding and line endings.
+The commands only append entries to the chosen list (an existing identical entry is a no-op) and preserve the rest of the file: comments, unknown fields, order, encoding and line endings. The rules are re-read automatically as soon as `editing.yml` changes, so no restart or refresh is needed.
 
 ### Targets
 
@@ -83,14 +82,27 @@ Submenus are shown only when the selected object really has the corresponding mo
 | Record set module | `InformationRegister.Products.RecordSetModule` |
 | Form | `Catalog.Products.Form.ItemForm.Form` |
 | Form module | `Catalog.Products.Form.ItemForm.Form.Module` |
+| Module (common module) | `CommonModule.Locked` / its code `CommonModule.Locked.Module` |
+| Configuration | `Configuration` |
+| Application module | `Configuration.ManagedApplicationModule` |
+| Session module | `Configuration.SessionModule` |
+| External connection module | `Configuration.ExternalConnectionModule` |
 
 The `Object` submenu is available for any metadata object, the module submenus only for the objects that have such a module.
+
+For a common module the object itself and its BSL code are controlled separately: `CommonModule.Locked` locks the properties (`Locked.mdo`), `CommonModule.Locked.Module` locks only the code (`Module.bsl`). The same holds for the configuration: `Configuration` locks its properties and command interfaces, while `Configuration.<XxxModule>` locks only the corresponding module file. Enabling `Configuration` opens its `.mdo`, both `.cmi` files and all three modules; enabling a module does not open the configuration itself.
+
+Forms and templates of such containers are regular targets too: `SettingsStorage.Settings.Form.FormT1.Form`, `SettingsStorage.Settings.Template.TemplateT1.Template`.
 
 ### Sub-objects
 
 For attributes, tabular sections, enum values, journal columns, commands, templates and external data source objects (tables, cubes, dimension tables, functions, fields, dimensions, resources) a second `Editing Restrictions` menu offers only `Copy FQN` and `Add to enable.fullname`: such an element is enabled pointwise, its own content becomes editable too, but the owner object stays locked.
 
 The FQN of a sub-object is built as the owner FQN plus the element name plus the type marker: `Catalog.Products.Barcode.Attribute`, `Catalog.Products.Goods.TabularSection`, `Enum.Statuses.New.Value`, `DocumentJournal.Orders.Quantity.Column`, `Task.Performer.Do.Command`, `Catalog.Products.Price.Template`, `ExternalDataSource.Source.Cube.Cube1.Field.Field`.
+
+HTTP and web service members follow the same pattern: `HTTPService.Service.URLTemplate.Template.Method.Method1`, `WebService.Service.Operation.Operation1.Parameter.Parameter1`.
+
+Subsystems are separate top objects, not sub-objects: the nested subsystem FQN is `Subsystem.Parent.Subsystem.Child`. Enabling a parent subsystem opens its nested subsystems, and enabling only a nested one works while the parent stays locked.
 
 ### Semantics and limitations
 
@@ -102,11 +114,11 @@ The FQN of a sub-object is built as the owner FQN plus the element name plus the
 - Deleting children of a disabled object is not allowed.
 - Common attributes (`Общие реквизиты`) are separate global metadata objects with their own files (`src/CommonAttributes/<Name>/<Name>.mdo`) shared between owners. Enabling an object does not open the common attributes attached to it: enable them separately, by path `src/CommonAttributes` or by their own full name.
 - Disabled objects are skipped from project validation by 1C:EDT.
+- A configuration module is controlled separately from the configuration: `Configuration.SessionModule` locks only `SessionModule.bsl`, `Configuration` locks the configuration object with its command interfaces and all its modules.
 
 ### Other commands
 
 - `Sort settings` in the project properties (`Disable editing` section) sorts the `fullname` and `path` lists of the `disable` and `enable` sections case-insensitively, keeping the rest of the file untouched.
-- `Refresh editing restrictions` re-reads `<project>/.settings/editing.yml` without restart.
 
 ### Debugging
 
