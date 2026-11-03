@@ -41,6 +41,19 @@ public interface IPathEditingService
     boolean canEdit(IProject project, EObject eObject);
 
     /**
+     * Can edit the eObject, taking the kind of the check into account.
+     * Structural operations (creation, deletion, moving, sorting, editing of owner properties) must not be allowed
+     * by an enabled child of a disabled owner, so they ignore the rules that open a top object with enabled
+     * children and the exact match of an enabled sub object.
+     *
+     * @param project the project, cannot be {@code null}.
+     * @param eObject the EMF object, cannot be {@code null}.
+     * @param kind the kind of the check.
+     * @return true, if can edit
+     */
+    boolean canEdit(IProject project, EObject eObject, EditCallKind kind);
+
+    /**
      * Can edit the object by it's path.
      *
      * @param project the project, cannot be {@code null}.
@@ -56,5 +69,22 @@ public interface IPathEditingService
      * @return true, if can edit
      */
     boolean canEditInMerge(IProject project);
+
+    /**
+     * Drops cached editing rules of the project; rules are re-read from the settings file on next check.
+     *
+     * @param project the project, cannot be {@code null}.
+     */
+    void invalidate(IProject project);
+
+    /**
+     * Returns the 1C full name of the attribute or tabular section object, e.g.
+     * {@code Catalog.Products.Attribute.Barcode} or {@code Catalog.Products.TabularSection.Goods}, or {@code null}
+     * if the object is not a sub-object with a computable full name.
+     *
+     * @param object the EMF object, cannot be {@code null}.
+     * @return the full name or {@code null}
+     */
+    String getObjectFullName(EObject object);
 
 }

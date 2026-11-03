@@ -14,19 +14,28 @@ package org.mard.dt.editing.internal;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SUBSYSTEM;
 
+import java.text.MessageFormat;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -36,8 +45,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand.ListMode;
@@ -47,6 +58,8 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
+import org.eclipse.xtext.naming.QualifiedName;
+import org.mard.dt.editing.EditCallKind;
 import org.mard.dt.editing.EditingSettings;
 import org.mard.dt.editing.EditingSettingsContent;
 import org.mard.dt.editing.EditingSettingsYamlReader;
@@ -56,17 +69,40 @@ import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
+import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.common.git.GitUtils;
 import com._1c.g5.v8.dt.core.filesystem.IProjectFileSystemSupport;
 import com._1c.g5.v8.dt.core.filesystem.IProjectFileSystemSupportProvider;
+import com._1c.g5.v8.dt.core.filesystem.IQualifiedNameFilePathConverter;
 import com._1c.g5.v8.dt.core.lifecycle.ProjectContext;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.lifecycle.LifecycleParticipant;
 import com._1c.g5.v8.dt.lifecycle.LifecyclePhase;
 import com._1c.g5.v8.dt.lifecycle.LifecycleService;
+import com._1c.g5.v8.dt.metadata.mdclass.AbstractForm;
+import com._1c.g5.v8.dt.metadata.mdclass.BasicCommand;
+import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
+import com._1c.g5.v8.dt.metadata.mdclass.BasicForm;
+import com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection;
+import com._1c.g5.v8.dt.metadata.mdclass.Column;
+import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
+import com._1c.g5.v8.dt.metadata.mdclass.Cube;
+import com._1c.g5.v8.dt.metadata.mdclass.Dimension;
+import com._1c.g5.v8.dt.metadata.mdclass.DimensionTable;
+import com._1c.g5.v8.dt.metadata.mdclass.EnumValue;
+import com._1c.g5.v8.dt.metadata.mdclass.Field;
+import com._1c.g5.v8.dt.metadata.mdclass.Function;
+import com._1c.g5.v8.dt.metadata.mdclass.Method;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
+import com._1c.g5.v8.dt.metadata.mdclass.Operation;
+import com._1c.g5.v8.dt.metadata.mdclass.Parameter;
+import com._1c.g5.v8.dt.metadata.mdclass.Recalculation;
+import com._1c.g5.v8.dt.metadata.mdclass.Resource;
 import com._1c.g5.v8.dt.metadata.mdclass.Subsystem;
+import com._1c.g5.v8.dt.metadata.mdclass.Table;
+import com._1c.g5.v8.dt.metadata.mdclass.Template;
+import com._1c.g5.v8.dt.metadata.mdclass.URLTemplate;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.inject.Inject;
@@ -86,16 +122,42 @@ public class ProjectPathEditingService
 
     private final IBmModelManager modelManager;
 
+    private final IQualifiedNameFilePathConverter qualifiedNameFilePathConverter;
+
     private final Map<IProject, ProjectCache> projects = new ConcurrentHashMap<>();
 
     private final IResourceChangeListener resourceListener = new ResourceChangeListener();
 
+    private static final boolean DEBUG_EDITING = Boolean.getBoolean("org.mard.dt.editing.debug"); //$NON-NLS-1$
+
+    /** Logs every decision instead of one per unique key. */
+    private static final boolean DEBUG_ALL = Boolean.getBoolean("org.mard.dt.editing.debug.all"); //$NON-NLS-1$
+
+    /** Debug messages are logged once per unique decision to keep the log readable. */
+    private static final Set<String> LOGGED_DEBUG_KEYS = Collections.synchronizedSet(new LinkedHashSet<>());
+
+    private static final int MAX_DEBUG_KEYS = 500;
+
+    private static void debugLog(String key, String message)
+    {
+        if (!DEBUG_EDITING)
+            return;
+        if (DEBUG_ALL || LOGGED_DEBUG_KEYS.size() < MAX_DEBUG_KEYS)
+        {
+            if (DEBUG_ALL || LOGGED_DEBUG_KEYS.add(key))
+            {
+                CorePlugin.log(CorePlugin.createWarningStatus(message));
+            }
+        }
+    }
+
     @Inject
     public ProjectPathEditingService(IProjectFileSystemSupportProvider fileSystemSupportProvider,
-        IBmModelManager modelManager)
+        IBmModelManager modelManager, IQualifiedNameFilePathConverter qualifiedNameFilePathConverter)
     {
         this.fileSystemSupportProvider = fileSystemSupportProvider;
         this.modelManager = modelManager;
+        this.qualifiedNameFilePathConverter = qualifiedNameFilePathConverter;
     }
 
     @Override
@@ -149,11 +211,167 @@ public class ProjectPathEditingService
     }
 
     @Override
+    public void invalidate(IProject project)
+    {
+        if (project != null)
+        {
+            dispose(project);
+        }
+    }
+
+    @Override
     public boolean canEdit(IProject project, EObject eObject)
+    {
+        return canEdit(project, eObject, EditCallKind.CONTENT);
+    }
+
+    @Override
+    public boolean canEdit(IProject project, EObject eObject, EditCallKind kind)
     {
 
         if (project == null || eObject == null || eObject.eIsProxy())
             return true;
+
+        if ((kind == EditCallKind.CREATE || kind == EditCallKind.STRUCTURAL)
+            && eObject instanceof Configuration)
+        {
+            ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
+            // The navigator's New action asks the configuration object, not the selected parent.
+            // Allow it once something is explicitly enabled; writing into a disabled parent object
+            // is still blocked by its own check.
+            if (!cache.getEnable().isEmpty() || !cache.getEnableFullnames().isEmpty())
+            {
+                return true;
+            }
+        }
+
+        // BSL module code lives in a separate Module.bsl file, so the owner-based decision
+        // does not apply directly; check both the module file path and the owner path.
+        if (eObject instanceof Module module)
+        {
+            ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
+            IProjectFileSystemSupport fileSystemSupport =
+                fileSystemSupportProvider.getProjectFileSystemSupport(project);
+            IPath modulePath = fileSystemSupport != null ? fileSystemSupport.getPath(eObject) : null;
+            EObject owner = module.getOwner();
+            if (owner instanceof Configuration)
+            {
+                // Configuration modules live in src/Configuration under their own file names.
+                IPath configurationModulePath = configurationModulePath(module);
+                if (configurationModulePath != null)
+                {
+                    modulePath = configurationModulePath;
+                }
+            }
+            if ((modulePath == null || "mdo".equals(modulePath.getFileExtension())) //$NON-NLS-1$
+                && owner != null && !owner.eIsProxy())
+            {
+                // Common module BSL files may have no direct getPath() mapping (or map to the
+                // owner's .mdo), and the path converter ignores the Module marker, so take the
+                // sibling Module.bsl of the owner's metadata file, like form modules do.
+                try
+                {
+                    if (fileSystemSupport != null)
+                    {
+                        modulePath = moduleFilePath(fileSystemSupport.getPath(owner));
+                    }
+                }
+                catch (RuntimeException e)
+                {
+                    // not attached; keep the default
+                }
+            }
+            IPath ownerPath = fileSystemSupport != null && owner != null && !owner.eIsProxy()
+                ? fileSystemSupport.getPath(owner)
+                : null;
+            boolean moduleDecision = modulePath != null ? canEditWithPatterns(project, cache, modulePath) : true;
+            boolean ownerDecision = ownerPath != null ? canEditWithPatterns(project, cache, ownerPath) : true;
+            // An explicit rule for the module file itself wins over the owner's restriction.
+            boolean result = isEnabledByPattern(cache, modulePath) || (moduleDecision && ownerDecision);
+            if (DEBUG_EDITING)
+            {
+                debugLog("module|" + modulePath + "|" + ownerPath + "|" + result, //$NON-NLS-1$
+                    MessageFormat.format("canEdit module: modulePath={0}, ownerPath={1}, result={2}", //$NON-NLS-1$
+                        modulePath, ownerPath, result));
+            }
+            return result;
+        }
+
+        // Attributes and tabular sections share the owner's resource file, so they are checked
+        // by their own 1C full name first; otherwise the owner's decision applies.
+        String subObjectFqn = getObjectFullName(eObject);
+        if (subObjectFqn == null && eObject instanceof IBmObject bmObject && bmObject.bmIsTop())
+        {
+            // Top objects without a generated name (forms, templates) are matched by
+            // their canonical BM name, which is what the context menu copies for them.
+            try
+            {
+                subObjectFqn = bmObject.bmGetFqn();
+            }
+            catch (RuntimeException e)
+            {
+                // not attached; fall through to path rules
+            }
+        }
+        if (subObjectFqn != null)
+        {
+            ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
+            List<String> fqns = fqnVariants(subObjectFqn);
+            boolean result;
+            boolean structural = kind == EditCallKind.STRUCTURAL;
+            if (!structural && matchesAny(cache.getEnableFullnames(), fqns))
+            {
+                result = true;
+            }
+            else if (!structural && matchesAnyAncestor(cache.getEnableFullnames(), fqns))
+            {
+                // An enabled container opens its own content, e.g. an enabled tabular section
+                // opens its attributes.
+                result = true;
+            }
+            else if (matchesAny(cache.getDisableFullnames(), fqns))
+            {
+                result = false;
+            }
+            else if (matchesAnyAncestor(cache.getDisableFullnames(), fqns))
+            {
+                // A disabled container closes its own content, e.g. a disabled external
+                // data source closes its tables and their fields.
+                result = false;
+            }
+            else
+            {
+                IProjectFileSystemSupport fileSystemSupport =
+                    fileSystemSupportProvider.getProjectFileSystemSupport(project);
+                IPath path = resolvePath(fileSystemSupport, eObject);
+                if (path == null && eObject instanceof IBmObject bmObject)
+                {
+                    // Objects without their own file (e.g. a template's spreadsheet content)
+                    // inherit the decision of their top object instead of defaulting to allowed.
+                    try
+                    {
+                        IBmObject top = bmObject.bmGetTopObject();
+                        if (top != null && top != bmObject)
+                        {
+                            path = fileSystemSupport != null ? fileSystemSupport.getPath(top) : null;
+                        }
+                    }
+                    catch (RuntimeException e)
+                    {
+                        // not attached; keep the default
+                    }
+                }
+                result = path != null ? canEditWithPatterns(project, cache, path) : true;
+            }
+            if (DEBUG_EDITING)
+            {
+                debugLog("sub|" + eObject.eClass().getName() + "|" + subObjectFqn + "|" + result, //$NON-NLS-1$
+                    MessageFormat.format("canEdit sub-object: type={0}, fqn={1}, result={2}, enableFullnames={3}", //$NON-NLS-1$
+                        eObject.eClass().getName(), subObjectFqn, result, cache.getEnableFullnames()));
+            }
+            return result;
+        }
+
         URI uri = EcoreUtil.getURI(eObject);
         if (uri == null)
             return true;
@@ -172,10 +390,15 @@ public class ProjectPathEditingService
 
                 if (fileSystemSupport != null)
                 {
-
-                    IPath path = fileSystemSupport.getPath(eObject);
+                    IPath path = resolvePath(fileSystemSupport, eObject);
+                    // Plain EObjects without their own file (e.g. a template's spreadsheet
+                    // content) inherit the decision of their closest container with a path.
+                    for (EObject container = eObject.eContainer(); container != null && path == null; container = container.eContainer())
+                    {
+                        path = resolvePath(fileSystemSupport, container);
+                    }
                     if (path != null)
-                        return canEdit(cache, path);
+                        return canEditWithPatterns(project, cache, path);
                 }
                 return true;
             });
@@ -196,7 +419,120 @@ public class ProjectPathEditingService
 
         ProjectCache cache = projects.computeIfAbsent(project, this::createProjectCache);
 
-        return canEdit(cache, path);
+        return canEditWithPatterns(project, cache, path);
+    }
+
+    /**
+     * Resolves the resource path of the object. Objects without their own resource (for example
+     * type descriptions) inherit the path of the closest ancestor.
+     */
+    public static IPath resolvePath(IProjectFileSystemSupport fileSystemSupport, EObject object)
+    {
+        if (fileSystemSupport == null || object == null)
+            return null;
+
+        IPath path = fileSystemSupport.getPath(object);
+        EObject current = object;
+        while (path == null)
+        {
+            current = current.eContainer();
+            if (current == null || current.eIsProxy())
+                break;
+            path = fileSystemSupport.getPath(current);
+        }
+        return path;
+    }
+
+    /**
+     * Matches a file FQN against a single enable.fullname pattern. File level patterns (form and
+     * module) match exactly, everything else also covers its children.
+     */
+    public static boolean matchesEnablePattern(String pattern, String fqnText)
+    {
+        if (pattern == null || fqnText == null)
+            return false;
+        String trimmedPattern = pattern.trim();
+        if (trimmedPattern.isEmpty())
+            return false;
+        if (fqnText.equals(trimmedPattern))
+            return true;
+        String strippedPattern = stripMarkers(trimmedPattern);
+        String strippedFqn = stripMarkers(fqnText);
+        if (strippedPattern == null || strippedFqn == null)
+            return false;
+        if (strippedFqn.equals(strippedPattern))
+            return true;
+        // A rule for a form or a module must not unlock its sibling files.
+        boolean filePattern = trimmedPattern.endsWith(".Form") || trimmedPattern.endsWith(".Module"); //$NON-NLS-1$ //$NON-NLS-2$
+        return !filePattern && strippedFqn.startsWith(strippedPattern + "."); //$NON-NLS-1$
+    }
+
+    private boolean isEnabledByPattern(ProjectCache cache, IPath path)
+    {
+        if (path == null || cache.getEnablePatterns().isEmpty())
+            return false;
+        QualifiedName fqn = qualifiedNameFilePathConverter.getFqn(path);
+        if (fqn == null)
+            return false;
+        String fqnText = fqn.toString();
+        for (String pattern : cache.getEnablePatterns())
+        {
+            if (matchesEnablePattern(pattern, fqnText))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean canEditWithPatterns(IProject project, ProjectCache cache, IPath path)
+    {
+
+        if (path == null)
+            return true;
+
+        boolean result = canEdit(cache, path);
+
+        String fqnText = null;
+        QualifiedName fqn = qualifiedNameFilePathConverter.getFqn(path);
+        if (fqn != null)
+        {
+            fqnText = fqn.toString();
+        }
+
+        // Files of a disabled owner (e.g. the module of a disabled task's form) must stay
+        // closed even when the path rules alone would allow them. An explicit enable path
+        // wins over a disable full name.
+        boolean enabledByPath = cache.getEnable().contains(path)
+            || cache.getEnable().stream().anyMatch(enablePath -> enablePath.isPrefixOf(path));
+        if (result && !enabledByPath && fqnText != null && !cache.getDisablePatterns().isEmpty())
+        {
+            for (String pattern : cache.getDisablePatterns())
+            {
+                if (matchesEnablePattern(pattern, fqnText))
+                {
+                    result = false;
+                    break;
+                }
+            }
+        }
+
+        if (!cache.getEnablePatterns().isEmpty() && fqnText != null)
+        {
+            for (String pattern : cache.getEnablePatterns())
+            {
+                if (matchesEnablePattern(pattern, fqnText))
+                {
+                    result = true;
+                    break;
+                }
+            }
+        }
+
+        if (DEBUG_EDITING)
+        {
+            debugLog("path|" + path + "|" + result, //$NON-NLS-1$
+                MessageFormat.format("canEdit path: path={0}, result={1}", path, result)); //$NON-NLS-1$
+        }
+        return result;
     }
 
     @Override
@@ -343,7 +679,22 @@ public class ProjectPathEditingService
     {
         for (String fullname : fullnames)
         {
+            IPath configurationModulePath = configurationModulePath(fullname);
+            if (configurationModulePath != null)
+            {
+                // Configuration module files follow their own naming scheme, the path
+                // converter maps them to Configuration.mdo.
+                paths.add(configurationModulePath);
+                continue;
+            }
 
+            if (isSubObjectFqn(fullname))
+            {
+                // Sub-object rules are matched by full name, not by file path.
+                continue;
+            }
+
+            int before = paths.size();
             IBmObject top = transaction.getTopObjectByFqn(fullname);
             if (top != null)
             {
@@ -353,7 +704,477 @@ public class ProjectPathEditingService
                     paths.add(path);
                 }
             }
+            else
+            {
+                // BSL modules are not BM top objects, resolve their paths from the FQN directly.
+                List<IPath> modulePaths =
+                    qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(fullname));
+                if (modulePaths == null || modulePaths.isEmpty())
+                {
+                    // Form modules (<form FQN>.Module) have no direct FQN-to-path mapping;
+                    // resolve the form path and use the sibling Module.bsl file.
+                    if (fullname.endsWith(".Module")) //$NON-NLS-1$
+                    {
+                        String baseFqn = fullname.substring(0, fullname.length() - ".Module".length()); //$NON-NLS-1$
+                        List<IPath> basePaths =
+                            qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(baseFqn));
+                        if (basePaths != null && !basePaths.isEmpty())
+                        {
+                            basePaths.stream().filter(Objects::nonNull)
+                                .map(ProjectPathEditingService::moduleFilePath).forEach(paths::add);
+                        }
+                        else
+                        {
+                            // The path converter does not know form FQNs; resolve the form as a BM
+                            // top object and take its sibling Module.bsl.
+                            IBmObject formTop = transaction.getTopObjectByFqn(baseFqn);
+                            IPath formPath = formTop != null ? fileSystemSupport.getPath(formTop) : null;
+                            IPath modulePath = moduleFilePath(formPath);
+                            if (modulePath != null)
+                            {
+                                paths.add(modulePath);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    modulePaths.stream().filter(Objects::nonNull).forEach(paths::add);
+                }
+            }
+
+            if (DEBUG_EDITING)
+            {
+                debugLog("fqnpath|" + fullname, //$NON-NLS-1$
+                    "fullname " + fullname + " resolved to paths: " + paths + " (size before " + before + ")"); //$NON-NLS-1$
+            }
+            if (DEBUG_EDITING && paths.size() == before)
+            {
+                debugLog("nopath|" + fullname, //$NON-NLS-1$
+                    "fullname resolved to no paths: " + fullname); //$NON-NLS-1$
+            }
         }
+    }
+
+    @Override
+    public String getObjectFullName(EObject object)
+    {
+        if (object == null || object.eIsProxy())
+            return null;
+
+        // EDS tables/cubes are BM top objects themselves, so they have no EObject container;
+        // their own canonical FQN (e.g. ExternalDataSource.X.Cube.Cube) is the sub-object name.
+        if (object instanceof IBmObject self
+            && (object instanceof Table || object instanceof Cube || object instanceof DimensionTable
+                || object instanceof Function)
+            && self.bmIsTop())
+        {
+            return self.bmGetFqn();
+        }
+
+        LinkedList<String> segments = new LinkedList<>();
+        EObject container = collectSegments(object, segments);
+
+        if (segments.isEmpty() || !(container instanceof IBmObject top) || !top.bmIsTop())
+            return null;
+
+        return buildFullName(top.bmGetFqn(), segments);
+    }
+
+    // Walks the sub-object chain (features, tabular sections, enum values, columns, commands,
+    // external data source tables/cubes/functions) and collects the FQN suffix segments;
+    // returns the outermost container.
+    static EObject collectSegments(EObject object, LinkedList<String> segments)
+    {
+        EObject container = object;
+        while (true)
+        {
+            // Top-level EDS tables/cubes are their own FQN base even though they are nested
+            // sub-objects of the external data source.
+            if (container instanceof IBmObject topObject && topObject.bmIsTop()
+                && (container instanceof Table || container instanceof Cube
+                    || container instanceof DimensionTable || container instanceof Function))
+            {
+                break;
+            }
+            if (container instanceof BasicForm form)
+            {
+                segments.addFirst("Form"); //-NLS-1$
+                segments.addFirst(form.getName());
+            }
+            else if (container instanceof BasicFeature feature)
+            {
+                segments.addFirst("Attribute"); //$NON-NLS-1$
+                segments.addFirst(feature.getName());
+            }
+            else if (container instanceof BasicTabularSection tabularSection)
+            {
+                segments.addFirst("TabularSection"); //$NON-NLS-1$
+                segments.addFirst(tabularSection.getName());
+            }
+            else if (container instanceof Recalculation recalculation)
+            {
+                segments.addFirst("Recalculation"); //$NON-NLS-1$
+                segments.addFirst(recalculation.getName());
+            }
+            else if (container instanceof EnumValue enumValue)
+            {
+                segments.addFirst("Value"); //$NON-NLS-1$
+                segments.addFirst(enumValue.getName());
+            }
+            else if (container instanceof Column column)
+            {
+                segments.addFirst("Column"); //$NON-NLS-1$
+                segments.addFirst(column.getName());
+            }
+            else if (container instanceof BasicCommand command && !(container instanceof IBmObject top && top.bmIsTop()))
+            {
+                segments.addFirst("Command"); //$NON-NLS-1$
+                segments.addFirst(command.getName());
+            }
+            else if (container instanceof Template template)
+            {
+                segments.addFirst("Template"); //$NON-NLS-1$
+                segments.addFirst(template.getName());
+            }
+            else if (container instanceof Table table)
+            {
+                segments.addFirst("Table"); //$NON-NLS-1$
+                segments.addFirst(table.getName());
+            }
+            else if (container instanceof Cube cube)
+            {
+                segments.addFirst("Cube"); //$NON-NLS-1$
+                segments.addFirst(cube.getName());
+            }
+            else if (container instanceof DimensionTable dimensionTable)
+            {
+                segments.addFirst("DimensionTable"); //$NON-NLS-1$
+                segments.addFirst(dimensionTable.getName());
+            }
+            else if (container instanceof Function function)
+            {
+                segments.addFirst("Function"); //$NON-NLS-1$
+                segments.addFirst(function.getName());
+            }
+            else if (container instanceof Field field)
+            {
+                segments.addFirst("Field"); //$NON-NLS-1$
+                segments.addFirst(field.getName());
+            }
+            else if (container instanceof Dimension dimension)
+            {
+                segments.addFirst("Dimension"); //$NON-NLS-1$
+                segments.addFirst(dimension.getName());
+            }
+            else if (container instanceof Resource resource)
+            {
+                segments.addFirst("Resource"); //$NON-NLS-1$
+                segments.addFirst(resource.getName());
+            }
+            else if (container instanceof Method method)
+            {
+                segments.addFirst("Method"); //$NON-NLS-1$
+                segments.addFirst(method.getName());
+            }
+            else if (container instanceof URLTemplate urlTemplate)
+            {
+                segments.addFirst("URLTemplate"); //$NON-NLS-1$
+                segments.addFirst(urlTemplate.getName());
+            }
+            else if (container instanceof Operation operation)
+            {
+                segments.addFirst("Operation"); //$NON-NLS-1$
+                segments.addFirst(operation.getName());
+            }
+            else if (container instanceof Parameter parameter)
+            {
+                segments.addFirst("Parameter"); //$NON-NLS-1$
+                segments.addFirst(parameter.getName());
+            }
+            else if (container instanceof Module module && module.eContainer() instanceof AbstractForm)
+            {
+                // A form module is not BM-attached; its FQN is the owning form's canonical
+                // name plus the Module marker. Object/manager modules keep the file-based fallback.
+                segments.addFirst("Module"); //$NON-NLS-1$
+            }
+            else if (container instanceof Module module && module.eContainer() instanceof Configuration
+                && module.eContainmentFeature() != null
+                && CONFIGURATION_MODULE_FILES.containsKey(module.eContainmentFeature().getName()))
+            {
+                // Configuration module FQN is Configuration.<FeatureName>.
+                String feature = module.eContainmentFeature().getName();
+                segments.addFirst(Character.toUpperCase(feature.charAt(0)) + feature.substring(1));
+            }
+            else
+            {
+                break;
+            }
+            container = ((EObject)container).eContainer();
+        }
+        return container;
+    }
+
+    public static String buildFullName(String baseFqn, List<String> segments)
+    {
+        if (baseFqn == null || baseFqn.isBlank() || segments.isEmpty())
+            return null;
+
+        return baseFqn + "." + String.join(".", segments); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    // Form module code file is the sibling Module.bsl of the form file.
+    public static IPath moduleFilePath(IPath basePath)
+    {
+        if (basePath == null)
+            return null;
+        return basePath.removeLastSegments(1).append("Module.bsl"); //$NON-NLS-1$
+    }
+
+    private static final IPath CONFIGURATION_PATH = new Path("src/Configuration"); //$NON-NLS-1$
+
+    // Configuration module code files have their own names, keyed by the module feature name.
+    private static final Map<String, String> CONFIGURATION_MODULE_FILES = Map.of(
+        "managedApplicationModule", "ManagedApplicationModule.bsl", //$NON-NLS-1$ //$NON-NLS-2$
+        "sessionModule", "SessionModule.bsl", //$NON-NLS-1$ //$NON-NLS-2$
+        "externalConnectionModule", "ExternalConnectionModule.bsl", //$NON-NLS-1$ //$NON-NLS-2$
+        "ordinaryApplicationModule", "OrdinaryApplicationModule.bsl"); //$NON-NLS-1$ //$NON-NLS-2$
+
+    /** Resolves the configuration module file of a rule like Configuration.SessionModule. */
+    public static IPath configurationModulePath(String fullname)
+    {
+        if (fullname == null || !fullname.startsWith("Configuration.")) //$NON-NLS-1$
+            return null;
+
+        String marker = fullname.substring("Configuration.".length()); //$NON-NLS-1$
+        if (marker.indexOf('.') >= 0)
+            return null;
+
+        String feature = Character.toLowerCase(marker.charAt(0)) + marker.substring(1);
+        String file = CONFIGURATION_MODULE_FILES.get(feature);
+        return file != null ? CONFIGURATION_PATH.append(file) : null;
+    }
+
+    /** Resolves the configuration module file of a module object. */
+    private static IPath configurationModulePath(Module module)
+    {
+        EStructuralFeature feature = module.eContainmentFeature();
+        if (feature == null)
+            return null;
+
+        String file = CONFIGURATION_MODULE_FILES.get(feature.getName());
+        return file != null ? CONFIGURATION_PATH.append(file) : null;
+    }
+
+    private static final Set<String> SUB_OBJECT_MARKERS =
+        Set.of("Attribute", "TabularSection", "Value", "Column", "Command", "Table", "Cube", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+            "DimensionTable", "Function", "Field", "Dimension", "Resource", "Template", "Method", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+            "URLTemplate", "Operation", "Parameter"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+    /**
+     * Removes sub-object marker segments (Attribute, Template, Command, ...) from a full name, so that our
+     * "name.Marker" convention and the canonical BM "Marker.name" order compare equal.
+     *
+     * @param fullname the full name, may be {@code null}
+     * @return the marker-less full name, or {@code null}
+     */
+    public static String stripMarkers(String fullname)
+    {
+        if (fullname == null)
+            return null;
+        StringBuilder result = new StringBuilder();
+        for (String segment : fullname.trim().split("\\.")) //$NON-NLS-1$
+        {
+            if (SUB_OBJECT_MARKERS.contains(segment))
+                continue;
+            if (result.length() > 0)
+                result.append('.');
+            result.append(segment);
+        }
+        return result.toString();
+    }
+
+    /**
+     * Collects the full names of the enabled objects. Both whole objects and their sub-objects are
+     * kept, because an enabled object opens its content.
+     *
+     * @param fullnames full names from the settings.
+     * @return set of the enabled full names.
+     */
+    public static Set<String> collectEnabledFullnames(List<String> fullnames)
+    {
+        Set<String> result = new HashSet<>();
+        if (fullnames == null)
+        {
+            return result;
+        }
+        for (String fullname : fullnames)
+        {
+            if (fullname != null && !fullname.isBlank())
+            {
+                result.add(fullname.trim());
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Checks whether one of the ancestors of the given full name is enabled. An enabled container opens
+     * its own content, e.g. an enabled tabular section opens its attributes.
+     *
+     * @param enableFullnames full names of the enabled objects.
+     * @param fullname full name of the checked object.
+     * @return true, if an ancestor of the object is enabled.
+     */
+    public static boolean isEnabledByAncestor(Set<String> enableFullnames, String fullname)
+    {
+        return hasAncestorMatch(enableFullnames, fullname);
+    }
+
+    /**
+     * Checks whether one of the ancestors of the given full name is disabled. A disabled container
+     * closes its own content, e.g. a disabled external data source closes its tables and fields.
+     *
+     * @param disableFullnames full names of the disabled objects.
+     * @param fullname full name of the checked object.
+     * @return true, if an ancestor of the object is disabled.
+     */
+    public static boolean isDisabledByAncestor(Set<String> disableFullnames, String fullname)
+    {
+        return hasAncestorMatch(disableFullnames, fullname);
+    }
+
+    private static boolean hasAncestorMatch(Set<String> fullnames, String fullname)
+    {
+        if (fullnames == null || fullnames.isEmpty() || fullname == null || fullname.isBlank())
+            return false;
+
+        String[] segments = fullname.trim().split("\\."); //$NON-NLS-1$
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < segments.length - 1; i++)
+        {
+            if (i > 0)
+            {
+                builder.append('.');
+            }
+            builder.append(segments[i]);
+            if (i >= 1 && fullnames.contains(builder.toString()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // A form or template rule must cover both its nodes: the metadata node carries the
+    // generated name (owner.FormT1.Form) while the content top object carries the canonical
+    // marker-first name (owner.Form.FormT1.Form); derive the missing variant from either.
+    static List<String> fqnVariants(String fullname)
+    {
+        if (fullname == null)
+            return List.of();
+
+        String[] segments = fullname.trim().split("\\."); //$NON-NLS-1$
+        if (segments.length < 4)
+            return List.of(fullname);
+
+        String marker = segments[segments.length - 1];
+        if ("Module".equals(marker) && segments.length >= 5)
+        {
+            // A form module rule may use either name variant of its form
+            // (canonical owner.Form.Name.Form.Module or generated owner.Name.Form.Module).
+            StringBuilder base = new StringBuilder();
+            for (int i = 0; i < segments.length - 1; i++)
+            {
+                if (i > 0)
+                    base.append('.');
+                base.append(segments[i]);
+            }
+            List<String> variants = new java.util.ArrayList<>();
+            for (String variant : fqnVariants(base.toString()))
+                variants.add(variant + ".Module"); //$NON-NLS-1$
+            return variants;
+        }
+        if (!"Form".equals(marker) && !"Template".equals(marker)) //$NON-NLS-1$ //$NON-NLS-2$
+            return List.of(fullname);
+
+        if (marker.equals(segments[segments.length - 3]))
+        {
+            String[] alternate = new String[segments.length - 1];
+            for (int i = 0, j = 0; i < segments.length; i++)
+            {
+                if (i != segments.length - 3)
+                {
+                    alternate[j++] = segments[i];
+                }
+            }
+            return List.of(fullname, String.join(".", alternate)); //$NON-NLS-1$
+        }
+
+        String[] alternate = new String[segments.length + 1];
+        for (int i = 0, j = 0; i < segments.length; i++)
+        {
+            alternate[j++] = segments[i];
+            if (i == segments.length - 3)
+            {
+                alternate[j++] = marker;
+            }
+        }
+        return List.of(fullname, String.join(".", alternate)); //$NON-NLS-1$
+    }
+
+    private static boolean matchesAny(Set<String> fullnames, List<String> fqns)
+    {
+        for (String fqn : fqns)
+        {
+            if (fullnames.contains(fqn))
+                return true;
+        }
+        return false;
+    }
+
+    private static boolean matchesAnyAncestor(Set<String> fullnames, List<String> fqns)
+    {
+        for (String fqn : fqns)
+        {
+            if (hasAncestorMatch(fullnames, fqn))
+                return true;
+        }
+        return false;
+    }
+
+    public static boolean isSubObjectFqn(String fullname)
+    {
+        if (fullname == null)
+            return false;
+        String[] segments = fullname.trim().split("\\."); //$NON-NLS-1$
+        // Sub-object FQNs carry a marker segment ("<name>.Attribute", "<name>.Column" etc.);
+        // nested chains (cube dimension tables, tabular section attributes) put it mid-string.
+        for (int i = 2; i < segments.length; i++)
+        {
+            String segment = segments[i];
+            if ("Attribute".equals(segment) //$NON-NLS-1$
+                || "TabularSection".equals(segment) //$NON-NLS-1$
+                || "Value".equals(segment) //$NON-NLS-1$
+                || "Column".equals(segment) //$NON-NLS-1$
+                || "Command".equals(segment) //$NON-NLS-1$
+                || "Table".equals(segment) //$NON-NLS-1$
+                || "Cube".equals(segment) //$NON-NLS-1$
+                || "DimensionTable".equals(segment) //$NON-NLS-1$
+                || "Function".equals(segment) //$NON-NLS-1$
+                || "Field".equals(segment) //$NON-NLS-1$
+                || "Dimension".equals(segment) //$NON-NLS-1$
+                || "Resource".equals(segment) //$NON-NLS-1$
+                || "Template".equals(segment) //$NON-NLS-1$
+                || "Method".equals(segment) //$NON-NLS-1$
+                || "URLTemplate".equals(segment) //$NON-NLS-1$
+                || "Operation".equals(segment) //$NON-NLS-1$
+                || "Parameter".equals(segment)) //$NON-NLS-1$
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void addSubsystemPath(Set<IPath> paths, List<String> subsystems, IBmModel model,
@@ -389,14 +1210,16 @@ public class ProjectPathEditingService
             String[] segments = subsystemName.trim().split("\\."); //$NON-NLS-1$
             for (int i = 0; i < segments.length; i++)
             {
-                String segment = segments[i];
-                if (i > 0)
+                if (i == 0)
                 {
-                    sb.append('.');
+                    sb.append(preffix);
+                    sb.append("."); //$NON-NLS-1$
                 }
-                sb.append(preffix);
-                sb.append('.');
-                sb.append(segment);
+                else
+                {
+                    sb.append("."); //$NON-NLS-1$
+                }
+                sb.append(segments[i]);
             }
 
             IBmObject subsystem = transaction.getTopObjectByFqn(sb.toString());
@@ -409,6 +1232,18 @@ public class ProjectPathEditingService
 
     private void addSubsystemPath(Subsystem subsystem, Set<IPath> paths, IProjectFileSystemSupport fileSystemSupport)
     {
+
+        // The subsystem itself must be writable as well: creating or renaming a child object
+        // is a structural operation that is checked against the subsystem's own file.
+        IPath subsystemPath = fileSystemSupport.getPath(subsystem);
+        if (subsystemPath != null)
+        {
+            paths.add(subsystemPath);
+            if (subsystemPath.segmentCount() > 1)
+            {
+                paths.add(subsystemPath.removeLastSegments(1));
+            }
+        }
 
         for (MdObject item : subsystem.getContent())
         {
@@ -463,16 +1298,60 @@ public class ProjectPathEditingService
         Set<IPath> disable = new ConcurrentSkipListSet<>(comparator);
         Set<IPath> enable = new ConcurrentSkipListSet<>(comparator);
 
+        Set<String> enablePatterns = new HashSet<>();
+        Set<String> disablePatterns = new HashSet<>();
+
         EditingSettings settings = loadEditingSettings(project);
         if (settings == null)
         {
-            return new ProjectCache(disable, enable, true);
+            return new ProjectCache(disable, enable, true, Set.of(), Set.of(), Set.of(), Set.of());
+        }
+
+        ensureModuleFiles(project, settings);
+
+        Set<String> enableFullnames = new HashSet<>();
+        if (settings.getEnable() != null && settings.getEnable().getFullname() != null)
+        {
+            // All enabled full names are kept: an enabled object opens its content, an enabled
+            // sub-object opens its own content.
+            enableFullnames.addAll(collectEnabledFullnames(settings.getEnable().getFullname()));
+            // Allow editing of files that live under an enabled full name (templates, commands,
+            // forms of a disabled owner): getFqn(path) uses the canonical marker-before-name order.
+            settings.getEnable().getFullname().stream().filter(fqn -> fqn != null && !fqn.isBlank()).forEach(fqn -> {
+                for (String variant : fqnVariants(fqn))
+                {
+                    String trimmed = variant.trim();
+                    enablePatterns.add(trimmed);
+                    String normalized = stripMarkers(trimmed);
+                    if (normalized != null)
+                        enablePatterns.add(normalized);
+                }
+            });
+        }
+
+        Set<String> disableFullnames = new HashSet<>();
+        if (settings.getDisable() != null && settings.getDisable().getFullname() != null)
+        {
+            // All disabled full names are kept: a disabled container closes its own content,
+            // e.g. a disabled external data source closes its tables and fields.
+            settings.getDisable().getFullname().stream().filter(fqn -> fqn != null && !fqn.isBlank())
+                .forEach(fqn -> {
+                    disableFullnames.add(fqn.trim());
+                    for (String variant : fqnVariants(fqn))
+                    {
+                        String trimmed = variant.trim();
+                        disablePatterns.add(trimmed);
+                        String normalized = stripMarkers(trimmed);
+                        if (normalized != null)
+                            disablePatterns.add(normalized);
+                    }
+                });
         }
 
         if (settings.getDisable() != null)
             addAllPath(project, settings.getDisable(), disable);
 
-        if (!disable.isEmpty() && settings.getEnable() != null)
+        if (settings.getEnable() != null)
             addAllPath(project, settings.getEnable(), enable);
 
         // Remove disable path if there is higher enable (permissive) path
@@ -487,7 +1366,8 @@ public class ProjectPathEditingService
         }
 
         boolean canEditInMerge = settings.getEnable() != null && settings.getEnable().isMerge();
-        return new ProjectCache(disable, enable, canEditInMerge);
+        return new ProjectCache(disable, enable, canEditInMerge, enableFullnames, disableFullnames, enablePatterns,
+            disablePatterns);
     }
 
     private EditingSettings loadEditingSettings(IProject project)
@@ -495,6 +1375,102 @@ public class ProjectPathEditingService
 
         IFile file = project.getFile(SETTING_FILE_PATH);
         return EditingSettingsYamlReader.readOrNull(file);
+    }
+
+    // An enabled module that has no file yet cannot be created via EDT UI (the module does not
+    // exist to be edited), so an explicit enable rule creates an empty module file once.
+    private void ensureModuleFiles(IProject project, EditingSettings settings)
+    {
+        if (settings.getEnable() == null || settings.getEnable().getFullname() == null)
+            return;
+
+        Set<IPath> missing = new LinkedHashSet<>();
+        for (String fullname : settings.getEnable().getFullname())
+        {
+            if (fullname == null)
+                continue;
+
+            String fqn = fullname.trim();
+            String ownerFqn;
+            List<IPath> candidates;
+            IPath configurationModulePath = configurationModulePath(fqn);
+            if (configurationModulePath != null)
+            {
+                ownerFqn = "Configuration"; //$NON-NLS-1$
+                candidates = List.of(configurationModulePath);
+            }
+            else if (fqn.endsWith(".ObjectModule") || fqn.endsWith(".ManagerModule") || fqn.endsWith(".Module")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            {
+                String trimmedFqn = fqn;
+                ownerFqn = trimmedFqn.substring(0, trimmedFqn.lastIndexOf('.'));
+                candidates =
+                    qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(trimmedFqn));
+                if ((candidates == null || candidates.isEmpty()) && trimmedFqn.endsWith(".Module")) //$NON-NLS-1$
+                {
+                    // Form module: resolve the form path and use the sibling Module.bsl file.
+                    List<IPath> formPaths = qualifiedNameFilePathConverter
+                        .getAllPossibleFilePaths(QualifiedName.create(ownerFqn));
+                    if (formPaths != null)
+                    {
+                        candidates = formPaths.stream().filter(Objects::nonNull)
+                            .map(path -> path.removeLastSegments(1).append("Module.bsl")) //$NON-NLS-1$
+                            .collect(java.util.stream.Collectors.toList());
+                    }
+                }
+            }
+            else
+            {
+                continue;
+            }
+
+            // Only a rule that points to an existing owner may create its module file: a typo
+            // must not add folders or empty modules to the project.
+            if (!ownerExists(project, ownerFqn))
+                continue;
+
+            if (candidates != null)
+            {
+                // One path per rule, so a rule cannot create several files at once.
+                candidates.stream().filter(Objects::nonNull).findFirst().ifPresent(missing::add);
+            }
+        }
+
+        List<IPath> toCreate = missing.stream()
+            .filter(p -> p != null && !project.getFile(p).exists())
+            .collect(java.util.stream.Collectors.toList());
+        if (toCreate.isEmpty())
+            return;
+
+        Job.create("Create enabled module files", monitor -> {
+            for (IPath path : toCreate)
+            {
+                try
+                {
+                    IFile file = project.getFile(path);
+                    IContainer parent = file.getParent();
+                    while (parent instanceof IFolder folder && !folder.exists())
+                    {
+                        folder.create(true, true, monitor);
+                        parent = parent.getParent();
+                    }
+                    if (!file.exists())
+                        file.create(new ByteArrayInputStream(new byte[0]), true, monitor);
+                }
+                catch (Exception e)
+                {
+                    CorePlugin.logError(e);
+                }
+            }
+        }).schedule();
+    }
+
+    /** True when the owner named by a module rule exists as a resource of the project. */
+    private boolean ownerExists(IProject project, String ownerFqn)
+    {
+        List<IPath> paths = qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(ownerFqn));
+        if (paths == null)
+            return false;
+        return paths.stream().filter(Objects::nonNull).anyMatch(path -> project.getFile(path).exists());
     }
 
     private class ProjectCache
@@ -509,7 +1485,17 @@ public class ProjectPathEditingService
 
         private final boolean canEditInMerge;
 
-        public ProjectCache(Set<IPath> disable, Set<IPath> enable, boolean canEditInMerge)
+        private final Set<String> enableFullnames;
+
+        private final Set<String> disableFullnames;
+
+        private final Set<String> enablePatterns;
+
+        private final Set<String> disablePatterns;
+
+        public ProjectCache(Set<IPath> disable, Set<IPath> enable, boolean canEditInMerge,
+            Set<String> enableFullnames, Set<String> disableFullnames, Set<String> enablePatterns,
+            Set<String> disablePatterns)
         {
             if (disable == null || disable.isEmpty())
             {
@@ -520,7 +1506,7 @@ public class ProjectPathEditingService
                 this.disable = Set.copyOf(disable);
             }
 
-            if (enable == null || enable.isEmpty() || this.getDisable().isEmpty())
+            if (enable == null || enable.isEmpty())
             {
                 this.enable = Set.of();
             }
@@ -529,6 +1515,18 @@ public class ProjectPathEditingService
                 this.enable = Set.copyOf(enable);
             }
             this.canEditInMerge = canEditInMerge;
+            this.enableFullnames = enableFullnames == null || enableFullnames.isEmpty()
+                ? Set.of()
+                : Set.copyOf(enableFullnames);
+            this.disableFullnames = disableFullnames == null || disableFullnames.isEmpty()
+                ? Set.of()
+                : Set.copyOf(disableFullnames);
+            this.enablePatterns = enablePatterns == null || enablePatterns.isEmpty()
+                ? Set.of()
+                : Set.copyOf(enablePatterns);
+            this.disablePatterns = disablePatterns == null || disablePatterns.isEmpty()
+                ? Set.of()
+                : Set.copyOf(disablePatterns);
 
         }
 
@@ -550,6 +1548,26 @@ public class ProjectPathEditingService
         public boolean canEditInMerge()
         {
             return canEditInMerge;
+        }
+
+        public Set<String> getEnableFullnames()
+        {
+            return enableFullnames;
+        }
+
+        public Set<String> getDisableFullnames()
+        {
+            return disableFullnames;
+        }
+
+        public Set<String> getEnablePatterns()
+        {
+            return enablePatterns;
+        }
+
+        public Set<String> getDisablePatterns()
+        {
+            return disablePatterns;
         }
 
     }

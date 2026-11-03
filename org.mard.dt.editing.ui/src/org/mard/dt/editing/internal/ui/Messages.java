@@ -18,7 +18,7 @@ import org.eclipse.osgi.util.NLS;
  * @author Dmitriy Marmyshev
  *
  */
-final class Messages
+final public class Messages
     extends NLS
 {
     private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
@@ -33,9 +33,16 @@ final class Messages
     public static String ProjectEditorSection_Disable_settings_created;
     public static String ProjectEditorSection_Disable_with_subsystems;
     public static String ProjectEditorSection_Open_settings;
+    public static String ProjectEditorSection_SortSettings;
     public static String ProjectEditorSection_Project_has_disable_editing_settings;
     public static String ProjectEditorSection_Project_has_no_settings_to_disable_editing;
     public static String ProjectEditorSection_Settings_file__0__to_disable__objects_created;
+    public static String EditingRestrictionsHandler_Dialog_title;
+    public static String EditingRestrictionsHandler_Fqn_not_resolved;
+    public static String EditingRestrictionsHandler_Module_not_found;
+    public static String EditingRestrictionsHandler_Project_not_found;
+    public static String EditingRestrictionsHandler_Unable_to_update;
+    public static String EditingRestrictionsHandler_Unsaved_changes;
     static
     {
         // initialize resource bundle

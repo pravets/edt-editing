@@ -14,11 +14,18 @@ package org.mard.dt.editing.internal;
 
 import java.lang.StackWalker.Option;
 import java.lang.StackWalker.StackFrame;
+import java.text.MessageFormat;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.EObject;
+import org.mard.dt.editing.EditCallKind;
+import org.mard.dt.editing.EditingCallContext;
 import org.mard.dt.editing.IPathEditingService;
 
 import com._1c.g5.v8.bm.core.IBmEngine;
@@ -49,7 +56,15 @@ public class PathSettingsEditingSupportProvider
     @Override
     public boolean canDelete(EObject object, EditingMode mode)
     {
-        return true;
+        if (mode != EditingMode.DIRECT)
+            return true;
+
+        IProject project = resourceLookup.getProject(object);
+        if (project == null)
+            return true;
+
+        // Deletion is a structural operation: an enabled child of a disabled owner must not be deletable.
+        return editingService.canEdit(project, object, EditCallKind.STRUCTURAL);
     }
 
     @Override
@@ -72,12 +87,80 @@ public class PathSettingsEditingSupportProvider
         if (project == null)
             return true;
 
-        boolean canEdit = editingService.canEdit(project, eObject);
+        boolean canEdit = editingService.canEdit(project, eObject, callKind());
+        debugCall(eObject, mode, canEdit);
+        if (!canEdit)
+        {
+            logDenial(eObject);
+        }
         if (!canEdit && editingService.canEditInMerge(project) && isCallFromMerge())
         {
             return true;
         }
         return canEdit;
+    }
+
+    /** Logs every distinct denial with the EDT caller stack; used to diagnose blocked UI actions. */
+    private static void logDenial(EObject eObject)
+    {
+        if (!DEBUG_EDITING)
+            return;
+
+        synchronized (DENIED_LOGGED)
+        {
+            if (DENIED_LOGGED.size() >= MAX_DENIED_KEYS)
+                return;
+        }
+
+        List<String> frames = StackWalker.getInstance().walk(s -> s.skip(2).limit(14) //$NON-NLS-1$
+            .map(StackFrame::getClassName)
+            .collect(Collectors.toList()));
+        String key = eObject.eClass().getName() + "|" + String.join("<", frames); //$NON-NLS-1$ //$NON-NLS-2$
+        if (!DENIED_LOGGED.add(key))
+            return;
+        CorePlugin.log(CorePlugin.createWarningStatus(MessageFormat.format(
+            "canEdit denied: type={0}, stack={1}", eObject.eClass().getName(), String.join(" <- ", frames)))); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    private static final Set<String> DENIED_LOGGED = Collections.synchronizedSet(new LinkedHashSet<>());
+
+    /** Upper bound for DENIED_LOGGED, so a long session cannot grow the set without limit. */
+    private static final int MAX_DENIED_KEYS = 500;
+
+    /** Detects the kind of the check by the calling stack of EDT. */
+    private static EditCallKind callKind()
+    {
+        List<String> frames = StackWalker.getInstance().walk(s -> s.skip(1).limit(8) //$NON-NLS-1$
+            .map(StackFrame::getClassName)
+            .collect(Collectors.toList()));
+
+        return EditingCallContext.classify(frames);
+    }
+
+    private static final boolean DEBUG_EDITING = Boolean.getBoolean("org.mard.dt.editing.debug"); //$NON-NLS-1$
+
+    /** Logs every call instead of one per unique caller path. */
+    private static final boolean DEBUG_ALL = Boolean.getBoolean("org.mard.dt.editing.debug.all"); //$NON-NLS-1$
+
+    /** Log each distinct calling path once, so the log stays readable. */
+    private static final Set<String> LOGGED_CALLERS = Collections.synchronizedSet(new LinkedHashSet<>());
+
+    private static void debugCall(EObject eObject, EditingMode mode, boolean canEdit)
+    {
+        if (!DEBUG_EDITING)
+            return;
+
+        String frames = StackWalker.getInstance().walk(s -> s.skip(1).limit(8) //$NON-NLS-1$
+            .map(StackFrame::getClassName)
+            .collect(Collectors.joining(" <- "))); //$NON-NLS-1$
+
+        String key = eObject.eClass().getName() + "|" + mode + "|" + frames; //$NON-NLS-1$
+        if (DEBUG_ALL || LOGGED_CALLERS.add(key))
+        {
+            CorePlugin.log(CorePlugin.createWarningStatus(
+                "canEdit call: type=" + eObject.eClass().getName() + ", mode=" + mode //$NON-NLS-1$
+                    + ", result=" + canEdit + ", caller=" + frames)); //$NON-NLS-1$
+        }
     }
 
     private boolean isCallFromMerge()

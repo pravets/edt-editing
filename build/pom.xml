@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.mard.dt.editing</groupId>
   <artifactId>build</artifactId>
-  <version>0.7.0-SNAPSHOT</version>
+  <version>0.7.1-SNAPSHOT</version>
   <name>Disable Editing plugin for 1C:EDT</name>
   <packaging>pom</packaging>
   <prerequisites>
@@ -136,7 +136,7 @@
             <artifact>
               <groupId>org.mard.dt.editing.target</groupId>
               <artifactId>default</artifactId>
-              <version>0.7.0-SNAPSHOT</version>
+              <version>0.7.1-SNAPSHOT</version>
             </artifact>
           </target>
           <environments>
@@ -182,7 +182,7 @@
             <artifact>
               <groupId>org.mard.dt.editing.target</groupId>
               <artifactId>default</artifactId>
-              <version>0.7.0-SNAPSHOT</version>
+              <version>0.7.1-SNAPSHOT</version>
             </artifact>
             </target>
               <dependency-resolution>

@@ -1,3 +1,4 @@
 */bin/
 /.m2/
-*/target/
+**/target/
+.opencode/

@@ -28,12 +28,1117 @@
    <extension
          point="com._1c.g5.v8.dt.ui.projectEditorContributions">
       <section
-            class="org.mard.dt.editing.internal.ui.ProjectEditorSection"
+            class="org.mard.dt.editing.internal.ui.ExecutableExtensionFactory:org.mard.dt.editing.internal.ui.ProjectEditorSection"
             description="%projectSection.description"
             id="org.mard.dt.editing.ui.section"
             page="com._1c.g5.v8.dt.ui.projectEditor.page.Overview"
             title="%projectSection.title">
       </section>
    </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="org.mard.dt.editing.ui.commands.copyFqn"
+            name="%command.copyFqn.name">
+         <commandParameter
+               id="org.mard.dt.editing.ui.commands.param.target"
+               name="Target"
+               optional="true">
+         </commandParameter>
+      </command>
+      <command
+            id="org.mard.dt.editing.ui.commands.addDisable"
+            name="%command.addDisable.name">
+         <commandParameter
+               id="org.mard.dt.editing.ui.commands.param.target"
+               name="Target"
+               optional="true">
+         </commandParameter>
+      </command>
+      <command
+            id="org.mard.dt.editing.ui.commands.addEnable"
+            name="%command.addEnable.name">
+         <commandParameter
+               id="org.mard.dt.editing.ui.commands.param.target"
+               name="Target"
+               optional="true">
+         </commandParameter>
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.mard.dt.editing.internal.ui.ExecutableExtensionFactory:org.mard.dt.editing.internal.ui.handlers.EditingRestrictionsHandler"
+            commandId="org.mard.dt.editing.ui.commands.copyFqn">
+      </handler>
+      <handler
+            class="org.mard.dt.editing.internal.ui.ExecutableExtensionFactory:org.mard.dt.editing.internal.ui.handlers.EditingRestrictionsHandler"
+            commandId="org.mard.dt.editing.ui.commands.addDisable">
+      </handler>
+      <handler
+            class="org.mard.dt.editing.internal.ui.ExecutableExtensionFactory:org.mard.dt.editing.internal.ui.handlers.EditingRestrictionsHandler"
+            commandId="org.mard.dt.editing.ui.commands.addEnable">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:com._1c.g5.v8.dt.navigator.ui.navigator.popup?after=additions">
+         <menu
+               id="org.mard.dt.editing.ui.menu.restrictions"
+               label="%menu.restrictions.label">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <and>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.MdObject">
+                        </instanceof>
+                        <not>
+                           <or>
+                              <instanceof
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
+                              </instanceof>
+                              <instanceof
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                              </instanceof>
 
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.BasicCommand">
+
+                              </instanceof>
+
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.Table">
+
+                              </instanceof>
+
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.Cube">
+
+                              </instanceof>
+
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.DimensionTable">
+
+                              </instanceof>
+
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.Function">
+
+                              </instanceof>
+
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.Field">
+
+                              </instanceof>
+
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.Dimension">
+
+                              </instanceof>
+
+                              <instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.Resource">
+
+                              </instanceof><instanceof
+
+                                    value="com._1c.g5.v8.dt.metadata.mdclass.Template">
+
+                              </instanceof>
+
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Method">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.URLTemplate">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Operation">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
+                        </instanceof>
+                           </or>
+                        </not>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+            <menu
+                  label="%menu.mdObject.label">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                         <instanceof
+                               value="com._1c.g5.v8.dt.metadata.mdclass.MdObject">
+                         </instanceof>
+                         <not>
+                            <or>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
+                               </instanceof>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
+                               </instanceof>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicCommand">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Table">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Cube">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.DimensionTable">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Function">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Field">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Dimension">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Resource">
+
+                               </instanceof><instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Template">
+
+                               </instanceof>
+
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Method">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.URLTemplate">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Operation">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
+                        </instanceof>
+                           </or>
+                         </not>
+                      </and>
+                      </iterate>
+                  </with>
+               </visibleWhen>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="self">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="self">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="self">
+                  </parameter>
+               </command>
+            
+            </menu><menu
+                  label="%menu.appModule.label">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                           <instanceof
+                                 value="com._1c.g5.v8.dt.metadata.mdclass.Configuration">
+                           </instanceof>
+                           <test
+                                 args="managedApplicationModule"
+                                 forcePluginActivation="true"
+                                 property="org.mard.dt.editing.ui.hasModule">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="managedApplicationModule">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="managedApplicationModule">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="managedApplicationModule">
+                  </parameter>
+               </command>
+            </menu>            <menu
+                  label="%menu.sessionModule.label">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                           <instanceof
+                                 value="com._1c.g5.v8.dt.metadata.mdclass.Configuration">
+                           </instanceof>
+                           <test
+                                 args="sessionModule"
+                                 forcePluginActivation="true"
+                                 property="org.mard.dt.editing.ui.hasModule">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="sessionModule">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="sessionModule">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="sessionModule">
+                  </parameter>
+               </command>
+            </menu>            <menu
+                  label="%menu.externalConnectionModule.label">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                           <instanceof
+                                 value="com._1c.g5.v8.dt.metadata.mdclass.Configuration">
+                           </instanceof>
+                           <test
+                                 args="externalConnectionModule"
+                                 forcePluginActivation="true"
+                                 property="org.mard.dt.editing.ui.hasModule">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="externalConnectionModule">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="externalConnectionModule">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="externalConnectionModule">
+                  </parameter>
+               </command>
+            </menu>
+            
+            <menu
+                  label="%menu.objectModule.label">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                           <and>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.MdObject">
+                               </instanceof>
+                               <not>
+                            <or>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
+                               </instanceof>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
+                               </instanceof>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicCommand">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Table">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Cube">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.DimensionTable">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Function">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Field">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Dimension">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Resource">
+
+                               </instanceof><instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Template">
+
+                               </instanceof>
+
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Method">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.URLTemplate">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Operation">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
+                        </instanceof>
+                           </or>
+                         </not>
+                            </and>
+                            <test
+                                 args="objectModule"
+                                 forcePluginActivation="true"
+                                 property="org.mard.dt.editing.ui.hasModule">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="objectModule">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="objectModule">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="objectModule">
+                  </parameter>
+               </command>
+            </menu>
+            <menu
+                  label="%menu.managerModule.label">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                           <and>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.MdObject">
+                               </instanceof>
+                               <not>
+                            <or>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
+                               </instanceof>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
+                               </instanceof>
+                               <instanceof
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.BasicCommand">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Table">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Cube">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.DimensionTable">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Function">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Field">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Dimension">
+
+                               </instanceof>
+
+                               <instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Resource">
+
+                               </instanceof><instanceof
+
+                                     value="com._1c.g5.v8.dt.metadata.mdclass.Template">
+
+                               </instanceof>
+
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Method">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.URLTemplate">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Operation">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
+                        </instanceof>
+                           </or>
+                         </not>
+                            </and>
+                            <test
+                                 args="managerModule"
+                                 forcePluginActivation="true"
+                                 property="org.mard.dt.editing.ui.hasModule">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="managerModule">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="managerModule">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="managerModule">
+                  </parameter>
+               </command>
+            </menu>
+           <menu
+                 label="%menu.recordSetModule.label">
+              <visibleWhen
+                    checkEnabled="false">
+                 <with
+                       variable="selection">
+                    <count
+                          value="1">
+                    </count>
+                    <iterate
+                          ifEmpty="false"
+                          operator="and">
+                       <and>
+                          <and>
+                             <instanceof
+                                   value="com._1c.g5.v8.dt.metadata.mdclass.MdObject">
+                             </instanceof>
+                             <not>
+                                <or>
+                                   <instanceof
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
+                                   </instanceof>
+                                   <instanceof
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
+                                   </instanceof>
+                                   <instanceof
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                                   </instanceof>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.BasicCommand">
+
+                                   </instanceof>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.Table">
+
+                                   </instanceof>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.Cube">
+
+                                   </instanceof>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.DimensionTable">
+
+                                   </instanceof>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.Function">
+
+                                   </instanceof>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.Field">
+
+                                   </instanceof>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.Dimension">
+
+                                   </instanceof>
+
+                                   <instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.Resource">
+
+                                   </instanceof><instanceof
+
+                                         value="com._1c.g5.v8.dt.metadata.mdclass.Template">
+
+                                   </instanceof>
+
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Method">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.URLTemplate">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Operation">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
+                        </instanceof>
+                           </or>
+                             </not>
+                          </and>
+                          <test
+                                args="recordSetModule"
+                                forcePluginActivation="true"
+                                property="org.mard.dt.editing.ui.hasModule">
+                          </test>
+                       </and>
+                    </iterate>
+                 </with>
+              </visibleWhen>
+              <command
+                    commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                    label="%command.copyFqn.name"
+                    style="push">
+                 <parameter
+                       name="org.mard.dt.editing.ui.commands.param.target"
+                       value="recordSetModule">
+                 </parameter>
+              </command>
+              <command
+                    commandId="org.mard.dt.editing.ui.commands.addDisable"
+                    label="%command.addDisable.name"
+                    style="push">
+                 <parameter
+                       name="org.mard.dt.editing.ui.commands.param.target"
+                       value="recordSetModule">
+                 </parameter>
+              </command>
+              <command
+                    commandId="org.mard.dt.editing.ui.commands.addEnable"
+                    label="%command.addEnable.name"
+                    style="push">
+                 <parameter
+                       name="org.mard.dt.editing.ui.commands.param.target"
+                       value="recordSetModule">
+                 </parameter>
+              </command>
+           </menu>
+            <menu
+                  label="%menu.module.label">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                           <instanceof
+                                 value="com._1c.g5.v8.dt.metadata.mdclass.CommonModule">
+                           </instanceof>
+                           <test
+                                 args="module"
+                                 forcePluginActivation="true"
+                                 property="org.mard.dt.editing.ui.hasModule">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="module">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="module">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="module">
+                  </parameter>
+               </command>
+            </menu>
+            <menu
+                  label="%menu.form.label">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
+                        </instanceof>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="self">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="self">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="self">
+                  </parameter>
+               </command>
+            </menu>
+            <menu
+                  label="%menu.formModule.label">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                           <instanceof
+                                 value="com._1c.g5.v8.dt.metadata.mdclass.BasicForm">
+                           </instanceof>
+                           <test
+                                 args="module"
+                                 forcePluginActivation="true"
+                                 property="org.mard.dt.editing.ui.hasModule">
+                           </test>
+                        </and>
+                     </iterate>
+                  </with>
+               </visibleWhen>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                     label="%command.copyFqn.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="formModule">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addDisable"
+                     label="%command.addDisable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="formModule">
+                  </parameter>
+               </command>
+               <command
+                     commandId="org.mard.dt.editing.ui.commands.addEnable"
+                     label="%command.addEnable.name"
+                     style="push">
+                  <parameter
+                        name="org.mard.dt.editing.ui.commands.param.target"
+                        value="formModule">
+                  </parameter>
+               </command>
+             </menu>
+          </menu>
+         <menu
+               label="%menu.restrictions.label">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <or>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.BasicFeature">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.BasicTabularSection">
+                        </instanceof>
+<instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.EnumValue">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Template">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Column">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.BasicCommand">
+                        </instanceof>
+
+                        <instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Table">
+
+                        </instanceof>
+
+                        <instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Cube">
+
+                        </instanceof>
+
+                        <instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.DimensionTable">
+
+                        </instanceof>
+
+                        <instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Function">
+
+                        </instanceof>
+
+                        <instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Field">
+
+                        </instanceof>
+
+                        <instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Dimension">
+
+                        </instanceof>
+
+                        <instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Resource">
+
+                        </instanceof><instanceof
+
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Template">
+
+                        </instanceof>
+                           <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Method">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.URLTemplate">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Operation">
+                        </instanceof>
+                        <instanceof
+                              value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
+                        </instanceof>
+                           </or></iterate>
+               </with>
+            </visibleWhen>
+            <command
+                  commandId="org.mard.dt.editing.ui.commands.copyFqn"
+                  label="%command.copyFqn.name"
+                  style="push">
+               <parameter
+                     name="org.mard.dt.editing.ui.commands.param.target"
+                     value="self">
+               </parameter>
+            </command>
+            <command
+                  commandId="org.mard.dt.editing.ui.commands.addEnable"
+                  label="%command.addEnable.name"
+                  style="push">
+               <parameter
+                     name="org.mard.dt.editing.ui.commands.param.target"
+                     value="self">
+               </parameter>
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+
+  <extension
+        point="org.eclipse.core.expressions.propertyTesters">
+     <propertyTester
+           class="org.mard.dt.editing.internal.ui.HasModulePropertyTester"
+           id="org.mard.dt.editing.ui.hasModuleTester"
+           namespace="org.mard.dt.editing.ui"
+           properties="hasModule"
+           type="java.lang.Object">
+     </propertyTester>
+  </extension>
 </plugin>
