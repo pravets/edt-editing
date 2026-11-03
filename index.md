@@ -63,7 +63,7 @@ In the configuration tree context menu (single selection) use the `Editing Restr
 - `Add to disable.fullname` - append the FQN to `disable.fullname` in `<project>/.settings/editing.yml`;
 - `Add to enable.fullname` - append the FQN to `enable.fullname` in `<project>/.settings/editing.yml`.
 
-The commands only append entries to the chosen list (an existing identical entry is a no-op) and preserve the rest of the file: comments, unknown fields, order, encoding and line endings. The rules are re-read automatically as soon as `editing.yml` changes, so no restart or refresh is needed.
+The commands only append entries to the chosen list (an existing identical entry is a no-op) and preserve the rest of the file: comments, unknown fields, order and line endings. The file is read and written as UTF-8 only; other encodings are not supported. The rules are re-read automatically as soon as `editing.yml` changes, so no restart or refresh is needed.
 
 ### Targets
 
@@ -117,7 +117,7 @@ Subsystems are separate top objects, not sub-objects: the nested subsystem FQN i
 
 ### Debugging
 
-Start 1C:EDT with `-Dorg.mard.dt.editing.debug=true` (after `-vmargs` in `eclipse.ini`) to log unique editing decisions, or with `-Dorg.mard.dt.editing.debug.all=true` to log every check. The messages `canEdit call:`, `canEdit sub-object:`, `canEdit path:` in the workspace `.log` show the object, the applied rule and the result.
+Start 1C:EDT with `-Dorg.mard.dt.editing.debug=true` (after `-vmargs` in `eclipse.ini`) to log unique editing decisions; add `-Dorg.mard.dt.editing.debug.all=true` as well to log every check. The messages `canEdit call:`, `canEdit sub-object:`, `canEdit path:` in the workspace `.log` show the object, the applied rule and the result.
 
 
 ## Set up your project rules
@@ -291,7 +291,7 @@ enable:
 - `Добавить в disable.fullname` — добавляет FQN в `disable.fullname` файла `<project>/.settings/editing.yml`;
 - `Добавить в enable.fullname` — добавляет FQN в `enable.fullname` файла `<project>/.settings/editing.yml`.
 
-Команды только добавляют строку в выбранный список (повтор существующей записи ничего не делает) и сохраняют остальное содержимое файла: комментарии, неизвестные поля, порядок, кодировку и переводы строк. Правила перечитываются автоматически при изменении `editing.yml` — перезапуск или обновление не нужны.
+Команды только дописывают записи в выбранный список (если такая запись уже есть — ничего не меняется) и сохраняют остальное содержимое файла: комментарии, незнакомые поля, порядок и переводы строк. Файл читается и записывается только в UTF-8, другие кодировки не поддерживаются. Правила перечитываются автоматически сразу после изменения `editing.yml`, перезапуск не нужен.
 
 ### Объекты
 
@@ -345,7 +345,7 @@ FQN под-объекта строится как FQN владельца плю�
 
 ### Отладка
 
-Запустите 1C:EDT с `-Dorg.mard.dt.editing.debug=true` (после `-vmargs` в `eclipse.ini`), чтобы логировать уникальные решения о редактировании, или с `-Dorg.mard.dt.editing.debug.all=true`, чтобы логировать каждую проверку. Сообщения `canEdit call:`, `canEdit sub-object:`, `canEdit path:` в `.log` рабочего пространства показывают объект, применённое правило и результат.
+Запустите 1C:EDT с `-Dorg.mard.dt.editing.debug=true` (после `-vmargs` в `eclipse.ini`), чтобы писать в `.log` уникальные решения о редактировании; добавьте также `-Dorg.mard.dt.editing.debug.all=true`, чтобы писать каждую проверку. Сообщения `canEdit call:`, `canEdit sub-object:`, `canEdit path:` в `.log` рабочей области показывают объект, применённое правило и результат.
 
 ## Демо пример
 
