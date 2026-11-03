@@ -222,7 +222,11 @@ public class ProjectEditorSection
         Job.create(Messages.ProjectEditorSection_SortSettings, monitor -> {
             try
             {
-                String content = new String(file.getContents().readAllBytes(), StandardCharsets.UTF_8);
+                String content;
+                try (InputStream in = file.getContents())
+                {
+                    content = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+                }
                 String sorted = EditingSettingsYamlUpdater.sortSettings(content);
                 if (sorted == content)
                 {

@@ -103,6 +103,15 @@ public class PathSettingsEditingSupportProvider
     /** Logs every distinct denial with the EDT caller stack; used to diagnose blocked UI actions. */
     private static void logDenial(EObject eObject)
     {
+        if (!DEBUG_EDITING)
+            return;
+
+        synchronized (DENIED_LOGGED)
+        {
+            if (DENIED_LOGGED.size() >= MAX_DENIED_KEYS)
+                return;
+        }
+
         List<String> frames = StackWalker.getInstance().walk(s -> s.skip(2).limit(14) //$NON-NLS-1$
             .map(StackFrame::getClassName)
             .collect(Collectors.toList()));
@@ -114,6 +123,9 @@ public class PathSettingsEditingSupportProvider
     }
 
     private static final Set<String> DENIED_LOGGED = Collections.synchronizedSet(new LinkedHashSet<>());
+
+    /** Upper bound for DENIED_LOGGED, so a long session cannot grow the set without limit. */
+    private static final int MAX_DENIED_KEYS = 500;
 
     /** Detects the kind of the check by the calling stack of EDT. */
     private static EditCallKind callKind()

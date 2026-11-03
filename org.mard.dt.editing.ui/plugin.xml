@@ -162,7 +162,7 @@
                                     value="com._1c.g5.v8.dt.metadata.mdclass.Template">
 
                               </instanceof>
-                           </or>
+
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.Method">
                         </instanceof>
@@ -175,6 +175,7 @@
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
                         </instanceof>
+                           </or>
                         </not>
                      </and>
                   </iterate>
@@ -259,7 +260,7 @@
                                      value="com._1c.g5.v8.dt.metadata.mdclass.Template">
 
                                </instanceof>
-                           </or>
+
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.Method">
                         </instanceof>
@@ -272,6 +273,7 @@
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
                         </instanceof>
+                           </or>
                          </not>
                       </and>
                       </iterate>
@@ -543,7 +545,7 @@
                                      value="com._1c.g5.v8.dt.metadata.mdclass.Template">
 
                                </instanceof>
-                           </or>
+
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.Method">
                         </instanceof>
@@ -556,6 +558,7 @@
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
                         </instanceof>
+                           </or>
                          </not>
                             </and>
                             <test
@@ -675,7 +678,7 @@
                                      value="com._1c.g5.v8.dt.metadata.mdclass.Template">
 
                                </instanceof>
-                           </or>
+
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.Method">
                         </instanceof>
@@ -688,6 +691,7 @@
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
                         </instanceof>
+                           </or>
                          </not>
                             </and>
                             <test
@@ -807,7 +811,7 @@
                                          value="com._1c.g5.v8.dt.metadata.mdclass.Template">
 
                                    </instanceof>
-                           </or>
+
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.Method">
                         </instanceof>
@@ -820,6 +824,7 @@
                         <instanceof
                               value="com._1c.g5.v8.dt.metadata.mdclass.Parameter">
                         </instanceof>
+                           </or>
                              </not>
                           </and>
                           <test

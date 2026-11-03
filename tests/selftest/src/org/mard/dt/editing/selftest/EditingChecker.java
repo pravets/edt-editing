@@ -83,11 +83,10 @@ public final class EditingChecker
             {
                 EObject top = objects.next();
                 rows.add(row(top, project, service, fileSystemSupportProvider, provider));
-                java.util.Iterator<?> children = (java.util.Iterator<?>) EcoreUtil.getAllContents(List.of(top));
-                while (children.hasNext())
+                for (java.util.Iterator<EObject> children = EcoreUtil.getAllProperContents(top, false); children
+                    .hasNext();)
                 {
-                    Object child = children.next();
-                    rows.add(row((EObject) child, project, service, fileSystemSupportProvider, provider));
+                    rows.add(row(children.next(), project, service, fileSystemSupportProvider, provider));
                 }
             }
         }
@@ -263,7 +262,7 @@ public final class EditingChecker
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(report.toPath(), StandardCharsets.UTF_8)))
         {
             writer.println("# project\t" + project.getName());
-            writer.println("# type\tbmFqn\tourFqn\tpath\tprovider\tcontent\tcreate\tstructural\tother");
+            writer.println("# type\tbmFqn\tourFqn\tpath\tprovider(OTHER)\tcontent\tcreate\tstructural\tother");
             for (String[] row : rows)
             {
                 writer.println(String.join("\t", row));

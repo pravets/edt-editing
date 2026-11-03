@@ -178,6 +178,19 @@ public class EditingSettingsYamlUpdaterTest
     }
 
     @Test
+    public void testCrlfPreservedWhenAddingMissingSection()
+    {
+        String content = "disable:\r\n  fullname:\r\n    - Catalog.Products\r\n"; //$NON-NLS-1$
+
+        String expected = "disable:\r\n  fullname:\r\n    - Catalog.Products\r\n\r\nenable:\r\n  fullname:\r\n    - " //$NON-NLS-1$
+            + FQN + "\r\n"; //$NON-NLS-1$
+
+        String actual = EditingSettingsYamlUpdater.appendFullname(content, "enable", FQN); //$NON-NLS-1$
+        assertEquals(expected, actual);
+        assertEquals(-1, actual.replace("\r\n", "").indexOf('\n')); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    @Test
     public void testInvalidYamlThrows()
     {
         assertThrows(IllegalArgumentException.class,

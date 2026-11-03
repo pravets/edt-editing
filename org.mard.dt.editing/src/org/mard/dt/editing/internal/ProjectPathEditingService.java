@@ -288,9 +288,12 @@ public class ProjectPathEditingService
             boolean ownerDecision = ownerPath != null ? canEditWithPatterns(project, cache, ownerPath) : true;
             // An explicit rule for the module file itself wins over the owner's restriction.
             boolean result = isEnabledByPattern(cache, modulePath) || (moduleDecision && ownerDecision);
-            debugLog("module|" + modulePath + "|" + ownerPath + "|" + result, //$NON-NLS-1$
-                MessageFormat.format("canEdit module: modulePath={0}, ownerPath={1}, result={2}", //$NON-NLS-1$
-                    modulePath, ownerPath, result));
+            if (DEBUG_EDITING)
+            {
+                debugLog("module|" + modulePath + "|" + ownerPath + "|" + result, //$NON-NLS-1$
+                    MessageFormat.format("canEdit module: modulePath={0}, ownerPath={1}, result={2}", //$NON-NLS-1$
+                        modulePath, ownerPath, result));
+            }
             return result;
         }
 
@@ -360,9 +363,12 @@ public class ProjectPathEditingService
                 }
                 result = path != null ? canEditWithPatterns(project, cache, path) : true;
             }
-            debugLog("sub|" + eObject.eClass().getName() + "|" + subObjectFqn + "|" + result, //$NON-NLS-1$
-                MessageFormat.format("canEdit sub-object: type={0}, fqn={1}, result={2}, enableFullnames={3}", //$NON-NLS-1$
-                    eObject.eClass().getName(), subObjectFqn, result, cache.getEnableFullnames()));
+            if (DEBUG_EDITING)
+            {
+                debugLog("sub|" + eObject.eClass().getName() + "|" + subObjectFqn + "|" + result, //$NON-NLS-1$
+                    MessageFormat.format("canEdit sub-object: type={0}, fqn={1}, result={2}, enableFullnames={3}", //$NON-NLS-1$
+                        eObject.eClass().getName(), subObjectFqn, result, cache.getEnableFullnames()));
+            }
             return result;
         }
 
@@ -493,8 +499,11 @@ public class ProjectPathEditingService
         }
 
         // Files of a disabled owner (e.g. the module of a disabled task's form) must stay
-        // closed even when the path rules alone would allow them.
-        if (result && fqnText != null && !cache.getDisablePatterns().isEmpty())
+        // closed even when the path rules alone would allow them. An explicit enable path
+        // wins over a disable full name.
+        boolean enabledByPath = cache.getEnable().contains(path)
+            || cache.getEnable().stream().anyMatch(enablePath -> enablePath.isPrefixOf(path));
+        if (result && !enabledByPath && fqnText != null && !cache.getDisablePatterns().isEmpty())
         {
             for (String pattern : cache.getDisablePatterns())
             {
@@ -518,8 +527,11 @@ public class ProjectPathEditingService
             }
         }
 
-        debugLog("path|" + path + "|" + result, //$NON-NLS-1$
-            MessageFormat.format("canEdit path: path={0}, result={1}", path, result)); //$NON-NLS-1$
+        if (DEBUG_EDITING)
+        {
+            debugLog("path|" + path + "|" + result, //$NON-NLS-1$
+                MessageFormat.format("canEdit path: path={0}, result={1}", path, result)); //$NON-NLS-1$
+        }
         return result;
     }
 
@@ -1339,7 +1351,7 @@ public class ProjectPathEditingService
         if (settings.getDisable() != null)
             addAllPath(project, settings.getDisable(), disable);
 
-        if (!disable.isEmpty() && settings.getEnable() != null)
+        if (settings.getEnable() != null)
             addAllPath(project, settings.getEnable(), enable);
 
         // Remove disable path if there is higher enable (permissive) path
@@ -1379,33 +1391,47 @@ public class ProjectPathEditingService
                 continue;
 
             String fqn = fullname.trim();
+            String ownerFqn;
+            List<IPath> candidates;
             IPath configurationModulePath = configurationModulePath(fqn);
             if (configurationModulePath != null)
             {
-                missing.add(configurationModulePath);
-                continue;
+                ownerFqn = "Configuration"; //$NON-NLS-1$
+                candidates = List.of(configurationModulePath);
             }
-            if (!fqn.endsWith(".ObjectModule") && !fqn.endsWith(".ManagerModule") && !fqn.endsWith(".Module")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                continue;
-
-            List<IPath> paths =
-                qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(fqn));
-            if ((paths == null || paths.isEmpty()) && fqn.endsWith(".Module")) //$NON-NLS-1$
+            else if (fqn.endsWith(".ObjectModule") || fqn.endsWith(".ManagerModule") || fqn.endsWith(".Module")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             {
-                // Form module: resolve the form path and use the sibling Module.bsl file.
-                String baseFqn = fqn.substring(0, fqn.length() - ".Module".length()); //$NON-NLS-1$
-                List<IPath> formPaths =
-                    qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(baseFqn));
-                if (formPaths != null)
+                String trimmedFqn = fqn;
+                ownerFqn = trimmedFqn.substring(0, trimmedFqn.lastIndexOf('.'));
+                candidates =
+                    qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(trimmedFqn));
+                if ((candidates == null || candidates.isEmpty()) && trimmedFqn.endsWith(".Module")) //$NON-NLS-1$
                 {
-                    formPaths.stream().filter(Objects::nonNull)
-                        .map(p -> p.removeLastSegments(1).append("Module.bsl")) //$NON-NLS-1$
-                        .forEach(missing::add);
+                    // Form module: resolve the form path and use the sibling Module.bsl file.
+                    List<IPath> formPaths = qualifiedNameFilePathConverter
+                        .getAllPossibleFilePaths(QualifiedName.create(ownerFqn));
+                    if (formPaths != null)
+                    {
+                        candidates = formPaths.stream().filter(Objects::nonNull)
+                            .map(path -> path.removeLastSegments(1).append("Module.bsl")) //$NON-NLS-1$
+                            .collect(java.util.stream.Collectors.toList());
+                    }
                 }
             }
-            else if (paths != null)
+            else
             {
-                paths.stream().filter(Objects::nonNull).forEach(missing::add);
+                continue;
+            }
+
+            // Only a rule that points to an existing owner may create its module file: a typo
+            // must not add folders or empty modules to the project.
+            if (!ownerExists(project, ownerFqn))
+                continue;
+
+            if (candidates != null)
+            {
+                // One path per rule, so a rule cannot create several files at once.
+                candidates.stream().filter(Objects::nonNull).findFirst().ifPresent(missing::add);
             }
         }
 
@@ -1436,6 +1462,15 @@ public class ProjectPathEditingService
                 }
             }
         }).schedule();
+    }
+
+    /** True when the owner named by a module rule exists as a resource of the project. */
+    private boolean ownerExists(IProject project, String ownerFqn)
+    {
+        List<IPath> paths = qualifiedNameFilePathConverter.getAllPossibleFilePaths(QualifiedName.create(ownerFqn));
+        if (paths == null)
+            return false;
+        return paths.stream().filter(Objects::nonNull).anyMatch(path -> project.getFile(path).exists());
     }
 
     private class ProjectCache
@@ -1471,7 +1506,7 @@ public class ProjectPathEditingService
                 this.disable = Set.copyOf(disable);
             }
 
-            if (enable == null || enable.isEmpty() || this.getDisable().isEmpty())
+            if (enable == null || enable.isEmpty())
             {
                 this.enable = Set.of();
             }

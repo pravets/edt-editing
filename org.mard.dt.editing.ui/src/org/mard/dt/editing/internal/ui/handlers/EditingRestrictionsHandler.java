@@ -14,6 +14,7 @@ package org.mard.dt.editing.internal.ui.handlers;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Objects;
@@ -192,7 +193,14 @@ public class EditingRestrictionsHandler
             return;
         }
 
-        String oldContent = file.exists() ? new String(file.getContents().readAllBytes(), StandardCharsets.UTF_8) : null;
+        String oldContent = null;
+        if (file.exists())
+        {
+            try (InputStream in = file.getContents())
+            {
+                oldContent = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+            }
+        }
 
         String newContent = EditingSettingsYamlUpdater.appendFullname(oldContent, section, fqn);
         if (Objects.equals(newContent, oldContent))

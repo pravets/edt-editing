@@ -33,9 +33,13 @@ public class HasModulePropertyTester extends PropertyTester
         EObject object = (EObject)receiver;
         // mdclass form nodes have no own 'module' feature; the module lives on getForm()
         if ("module".equals(feature) && object instanceof BasicForm) //$NON-NLS-1$
-            return true;
+        {
+            BasicForm form = (BasicForm)object;
+            return form.getForm() != null && form.getForm().getModule() != null;
+        }
 
-        return object.eClass().getEStructuralFeature(feature) != null;
+        var structuralFeature = object.eClass().getEStructuralFeature(feature);
+        return structuralFeature != null && object.eGet(structuralFeature) != null;
     }
 
 }

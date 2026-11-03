@@ -29,13 +29,14 @@ $pool = Get-ChildItem "$env:USERPROFILE\.eclipse" -Directory | ForEach-Object {
     $plugins = Join-Path $_.FullName "plugins"
     if (Test-Path $plugins)
     {
-        Get-ChildItem $plugins -Filter "org.mard.dt.editing_0.6.*.jar" -ErrorAction SilentlyContinue
+        Get-ChildItem $plugins -Filter "org.mard.dt.editing_0.7.*.jar" -ErrorAction SilentlyContinue
     }
 } | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-if ($pool)
+if (-not $pool)
 {
-    $jars += $pool.FullName
+    throw "The editing plugin 0.7.* is not installed in the user Eclipse pool (%~\.eclipse). Install build 0.7.1 first."
 }
+$jars += $pool.FullName
 
 $classPath = ($jars -join ";")
 # The installation contains old fragments of the same packages: put the current
@@ -45,8 +46,8 @@ if ($preferred)
 {
     $classPath = $preferred.FullName + ";" + $classPath
 }
-$javacArgs = @("-cp", "$classPath", "-d", "$target\classes")
-$javacArgs += Get-ChildItem "$here\src" -Recurse -Filter *.java | ForEach-Object FullName
+$javacArgs = @("-cp", "`"$($classPath.Replace('\','/'))`"", "-d", "`"$($target.Replace('\','/'))/classes`"")
+$javacArgs += Get-ChildItem "$here\src" -Recurse -Filter *.java | ForEach-Object { "`"$($_.FullName.Replace('\','/'))`"" }
 
 # The class path is too long for the command line: use an argument file.
 $argsFile = Join-Path $target "javac.args"
@@ -65,12 +66,14 @@ Write-Host "built $jar"
 
 if ($Install)
 {
-    $dropins = Join-Path $Edt "configuration\dropins"
+    $dropins = Join-Path $Edt "dropins"
     if (-not (Test-Path $dropins))
     {
         # The installation folder is protected: ask for elevation once.
-        $script = "New-Item -ItemType Directory -Force '$dropins' | Out-Null; " +
-            "Copy-Item '$jar' '$dropins' -Force"
+        $dropinsPath = $dropins.Replace("'", "''")
+        $jarPath = $jar.Replace("'", "''")
+        $script = "New-Item -ItemType Directory -Force '$dropinsPath' | Out-Null; " +
+            "Copy-Item '$jarPath' '$dropinsPath' -Force"
         Start-Process powershell -Verb RunAs -ArgumentList "-NoProfile", "-Command", $script -Wait
     }
     else

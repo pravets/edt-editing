@@ -358,29 +358,19 @@ public class EditingSettingsYamlUpdater
         StringBuilder sb = new StringBuilder();
         if (lines.length > 0)
         {
-            sb.append(String.join("\n", lines)); //$NON-NLS-1$
+            sb.append(String.join(eol, lines));
             if (trailingNewline)
             {
-                sb.append('\n');
+                sb.append(eol);
             }
             // Blank line between the existing content and the new section.
-            sb.append('\n');
+            sb.append(eol);
         }
-        sb.append(section).append(':');
-        if (eol.equals("\r\n")) //$NON-NLS-1$
-        {
-            sb.append('\r');
-        }
-        sb.append('\n');
+        sb.append(section).append(':').append(eol);
         String[] block = new String[] { DEFAULT_INDENT + FULLNAME + ":", DEFAULT_INDENT + DEFAULT_INDENT + "- " + scalar(fqn) }; //$NON-NLS-1$ //$NON-NLS-2$
         for (String line : block)
         {
-            sb.append(line);
-            if (eol.equals("\r\n")) //$NON-NLS-1$
-            {
-                sb.append('\r');
-            }
-            sb.append('\n');
+            sb.append(line).append(eol);
         }
         return sb.toString();
     }
