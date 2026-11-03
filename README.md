@@ -18,7 +18,12 @@ Disable Editing plugin developer set up some rules to make read-only mode in UI 
 ## Install
 
 
-Current builds: `0.7.1` for 1C:EDT 2026.2.2 and newer, `0.6.1` for 1C:EDT 2026.1.
+| 1C:EDT | Plugin version |
+|---|---|
+| 2026.2.2 and newer | `0.7.1` |
+| 2026.1 | `0.6.1` (maintenance) |
+
+The same p2 URL serves both versions: `Help -> Check for Updates` picks the one that matches your 1C:EDT.
 
 For manual install select menu: `Help -> Install New Software...` and paste the p2 repository URL [https://pravets.github.io/edt-editing/update](https://pravets.github.io/edt-editing/update)
 
@@ -193,7 +198,12 @@ Open metadata objects to check out disabling and enabling features!
 ## Установка
 
 
-Текущие версии — `0.7.1` для 1C:EDT 2026.2.2 и новее, `0.6.1` для 1C:EDT 2026.1.
+| 1C:EDT | Версия плагина |
+|---|---|
+| 2026.2.2 и новее | `0.7.1` |
+| 2026.1 | `0.6.1` (поддержка) |
+
+Один и тот же p2-адрес отдаёт обе версии: `Help -> Check for Updates` сам выберет подходящую для вашей 1C:EDT.
 
 Для ручной установки выберите меню: `Help -> Install New Software...` и вставьте адрес p2-репозитория [https://pravets.github.io/edt-editing/update](https://pravets.github.io/edt-editing/update)
 
