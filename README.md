@@ -18,12 +18,13 @@ Disable Editing plugin developer set up some rules to make read-only mode in UI 
 ## Install
 
 
-| 1C:EDT | Plugin version |
-|---|---|
-| 2026.2.2 and newer | `0.7.1` |
-| 2026.1 | `0.6.1` (maintenance) |
+| 1C:EDT | Plugin version | Editing restrictions from the configuration tree |
+|---|---|---|
+| 2026.2.2 and newer | `0.7.1` | yes |
+| 2026.2.2 | `0.7.0` | no - port of the 2026.2 runtime only |
+| 2026.1 | `0.6.1` (maintenance) | yes |
 
-The same p2 URL serves both versions: `Help -> Check for Updates` picks the one that matches your 1C:EDT. An early `0.7.0` build (2026.2, without the features described below) is still visible in that repository - install `0.7.1` instead.
+The same p2 URL serves all versions: `Help -> Check for Updates` picks the one that matches your 1C:EDT. Use `0.7.1` unless you specifically need the `0.7.0` build.
 
 For manual install select menu: `Help -> Install New Software...` and paste the p2 repository URL [https://pravets.github.io/edt-editing/update](https://pravets.github.io/edt-editing/update)
 
@@ -198,12 +199,13 @@ Open metadata objects to check out disabling and enabling features!
 ## Установка
 
 
-| 1C:EDT | Версия плагина |
-|---|---|
-| 2026.2.2 и новее | `0.7.1` |
-| 2026.1 | `0.6.1` (поддержка) |
+| 1C:EDT | Версия плагина | Запрет редактирования из дерева конфигурации |
+|---|---|---|
+| 2026.2.2 и новее | `0.7.1` | да |
+| 2026.2.2 | `0.7.0` | нет — только порт на рантайм 2026.2 |
+| 2026.1 | `0.6.1` (поддержка) | да |
 
-Один и тот же p2-адрес отдаёт обе версии: `Help -> Check for Updates` сам выберет подходящую для вашей 1C:EDT. Ранняя сборка `0.7.0` (2026.2, без описанных ниже возможностей) всё ещё видна в этом репозитории — устанавливайте `0.7.1`.
+Один и тот же p2-адрес отдаёт все версии: `Help -> Check for Updates` сам выберет подходящую для вашей 1C:EDT. Если сборка `0.7.0` не нужна специально — ставьте `0.7.1`.
 
 Для ручной установки выберите меню: `Help -> Install New Software...` и вставьте адрес p2-репозитория [https://pravets.github.io/edt-editing/update](https://pravets.github.io/edt-editing/update)
 
