@@ -1,18 +1,18 @@
 # Builds the self test bundle and installs it into the EDT installation.
 #
-#   .\build.ps1 -Edt "C:\Program Files\1C\1CE\components\1c-edt-2026.1.2+2-x86_64" -Install
+#   .\build.ps1 -Edt "C:\Program Files\1C\1CE\components\1c-edt-2026.2.2+21-x86_64" -Install
 #
 # Without -Install the jar is only built into target\.
 
 param(
-    [string]$Edt = "C:\Program Files\1C\1CE\components\1c-edt-2026.1.2+2-x86_64",
+    [string]$Edt = "C:\Program Files\1C\1CE\components\1c-edt-2026.2.2+21-x86_64",
     [switch]$Install
 )
 
 $ErrorActionPreference = "Stop"
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $target = Join-Path $here "target"
-$jdk = "C:\Program Files\1C\1CE\components\axiom-jdk-full-17.0.16+12-x86_64\bin"
+$jdk = "C:\Program Files\1C\1CE\components\axiom-jdk-full-25.0.4+5-x86_64\bin"
 
 Remove-Item -Recurse -Force $target -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force $target, "$target\classes" | Out-Null
@@ -58,7 +58,7 @@ if ($LASTEXITCODE -ne 0)
 }
 
 Copy-Item "$here\META-INF\MANIFEST.MF" "$target\MANIFEST.MF" -Force
-$jar = Join-Path $target "org.mard.dt.editing.selftest_1.0.7.jar"
+$jar = Join-Path $target "org.mard.dt.editing.selftest_1.0.8.jar"
 & "$jdk\jar.exe" cfm $jar "$target\MANIFEST.MF" -C "$target\classes" .
 subst X: /D
 Write-Host "built $jar"
