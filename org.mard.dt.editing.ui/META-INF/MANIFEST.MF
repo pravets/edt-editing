@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.mard.dt.editing.ui;singleton:=true
-Bundle-Version: 0.6.1.qualifier
+Bundle-Version: 0.7.1.qualifier
 Bundle-Activator: org.mard.dt.editing.internal.ui.UiPlugin
 Bundle-Vendor: %vendor
 Bundle-Localization: plugin
@@ -13,13 +13,13 @@ Require-Bundle: org.eclipse.ui;bundle-version="[3.0.0,4.0.0)",
  org.eclipse.ui.forms;bundle-version="[3.11.300,4.0.0)",
  org.eclipse.jface.notifications;bundle-version="[0.7.0,0.8.0)",
  org.eclipse.ui.ide;bundle-version="[3.18.500,4.0.0)"
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Automatic-Module-Name: org.mard.dt.editing.ui
 Bundle-ActivationPolicy: lazy
 Import-Package: com._1c.g5.v8.bm.core;version="[9.0.0,10.0.0)",
  com._1c.g5.v8.dt.bsl.model;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.core.filesystem;version="[6.0.0,8.0.0)",
- com._1c.g5.v8.dt.core.platform;version="[11.0.0,13.0.0)",
+ com._1c.g5.v8.dt.core.platform;version="[11.0.0,14.0.0)",
  com._1c.g5.v8.dt.metadata.mdclass;version="[8.0.0,13.0.0)",
  com._1c.g5.v8.dt.ui.editor;version="[7.0.0,8.0.0)",
  com._1c.g5.wiring;version="[2.0.0,3.0.0)",
@@ -27,4 +27,4 @@ Import-Package: com._1c.g5.v8.bm.core;version="[9.0.0,10.0.0)",
  com.google.inject;version="[1.4.0,2.0.0)",
  org.eclipse.core.expressions,
  org.eclipse.xtext.naming,
- org.mard.dt.editing;version="[0.6.0,0.7.0)"
+ org.mard.dt.editing;version="[0.7.1,0.8.0)"
