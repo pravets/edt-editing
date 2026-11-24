@@ -22,10 +22,13 @@ import java.util.Set;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Test;
 
+import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.core.filesystem.IProjectFileSystemSupport;
 
 import org.mard.dt.editing.EditCallKind;
@@ -158,6 +161,32 @@ public class ProjectPathEditingServiceHelpersTest
         assertEquals(new Path("CommonModules/My/Module.bsl"),
             ProjectPathEditingService.moduleFilePath(new Path("CommonModules/My/Module.bsl")));
         assertNull(ProjectPathEditingService.moduleFilePath(null));
+    }
+
+    @Test
+    public void testResolveModulePath()
+    {
+        Resource resource = (Resource)Proxy.newProxyInstance(Resource.class.getClassLoader(),
+            new Class<?>[] {Resource.class}, (proxy, method, args) -> {
+                if ("getURI".equals(method.getName()))
+                {
+                    return URI.createPlatformResourceURI("/MyProject/src/CommonModules/My/Module.bsl", true);
+                }
+                return null;
+            });
+
+        Module module = (Module)Proxy.newProxyInstance(Module.class.getClassLoader(),
+            new Class<?>[] {Module.class}, (proxy, method, args) -> {
+                if ("eResource".equals(method.getName()))
+                {
+                    return resource;
+                }
+                return null;
+            });
+
+        assertEquals(new Path("src/CommonModules/My/Module.bsl"),
+            ProjectPathEditingService.resolveModulePath(null, module));
+        assertNull(ProjectPathEditingService.resolveModulePath(null, null));
     }
 
     @Test

@@ -32,4 +32,5 @@ Import-Package: com._1c.g5.v8.bm.core;version="[9.0.0,10.0.0)",
  org.yaml.snakeyaml;version="[1.15.0,2.0.0)",
  org.yaml.snakeyaml.constructor;version="[1.15.0,2.0.0)",
  org.yaml.snakeyaml.introspector;version="[1.15.0,2.0.0)"
-Export-Package: org.mard.dt.editing;version="0.7.1"
+Export-Package: org.mard.dt.editing;version="0.7.1",
+ org.mard.dt.editing.internal;version="0.7.1";x-friends:="org.mard.dt.editing.tests"
