@@ -253,7 +253,22 @@ public class ProjectPathEditingService
             IProjectFileSystemSupport fileSystemSupport =
                 fileSystemSupportProvider.getProjectFileSystemSupport(project);
             IPath modulePath = fileSystemSupport != null ? fileSystemSupport.getPath(eObject) : null;
+            if (modulePath == null)
+            {
+                modulePath = resolveModulePath(project, module);
+            }
             EObject owner = module.getOwner();
+            if (owner != null && owner.eIsProxy())
+            {
+                try
+                {
+                    owner = EcoreUtil.resolve(owner, module);
+                }
+                catch (RuntimeException e)
+                {
+                    // unable to resolve proxy; keep
+                }
+            }
             if (owner instanceof Configuration)
             {
                 // Configuration modules live in src/Configuration under their own file names.
@@ -284,6 +299,12 @@ public class ProjectPathEditingService
             IPath ownerPath = fileSystemSupport != null && owner != null && !owner.eIsProxy()
                 ? fileSystemSupport.getPath(owner)
                 : null;
+            if (ownerPath == null && modulePath != null && modulePath.segmentCount() > 2)
+            {
+                // When owner is unresolved or its path cannot be resolved directly,
+                // fall back to the metadata container directory (e.g. src/CommonModules/Foo).
+                ownerPath = modulePath.removeLastSegments(1);
+            }
             boolean moduleDecision = modulePath != null ? canEditWithPatterns(project, cache, modulePath) : true;
             boolean ownerDecision = ownerPath != null ? canEditWithPatterns(project, cache, ownerPath) : true;
             // An explicit rule for the module file itself wins over the owner's restriction.
@@ -929,6 +950,38 @@ public class ProjectPathEditingService
         if (basePath == null)
             return null;
         return basePath.removeLastSegments(1).append("Module.bsl"); //$NON-NLS-1$
+    }
+
+    /**
+     * Resolves the project-relative path of a BSL module file using its EMF Resource URI.
+     */
+    public static IPath resolveModulePath(IProject project, Module module)
+    {
+        if (module == null)
+            return null;
+        org.eclipse.emf.ecore.resource.Resource resource = module.eResource();
+        if (resource != null && resource.getURI() != null)
+        {
+            URI uri = resource.getURI();
+            if (uri.isPlatformResource())
+            {
+                IPath platformPath = new Path(uri.toPlatformString(true));
+                if (platformPath.segmentCount() > 1)
+                {
+                    return platformPath.removeFirstSegments(1);
+                }
+            }
+            else if (uri.isFile() && project != null && project.getLocation() != null)
+            {
+                IPath filePath = Path.fromOSString(uri.toFileString());
+                IPath projectPath = project.getLocation();
+                if (projectPath.isPrefixOf(filePath))
+                {
+                    return filePath.removeFirstSegments(projectPath.segmentCount());
+                }
+            }
+        }
+        return null;
     }
 
     private static final IPath CONFIGURATION_PATH = new Path("src/Configuration"); //$NON-NLS-1$
